@@ -211,10 +211,6 @@ const Filters = {
             tag.classList.remove('active');
         });
         
-        // Clear URL parameters
-        window.history.pushState({}, '', window.location.pathname);
-        
-        // Re-apply empty filters
-        Events.filterEvents([], 'recommended');
+     
     }
 };
