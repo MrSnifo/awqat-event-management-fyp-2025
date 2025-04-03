@@ -98,7 +98,7 @@
             </div>
 
             <!-- Main Content Area - Events Listing -->
-            <div class="col-lg-7 p-4" id="events-container">
+            <div class="col-lg-7 p-3" id="events-container">
                 <!-- Events will be loaded here -->
             </div>
 
@@ -149,19 +149,27 @@
                         <h5><i class="bi bi-tags me-2"></i>Popular Categories</h5>
                     </div>
                     <div class="category-tags-flex">
-                        <span class="category-tag" data-tag="music">
+                    <span class="category-tag" data-tag="music">
                         <i class="bi bi-music-note-beamed"></i>
                         <span>Music</span>
-                        </span>
-                        <span class="category-tag" data-tag="food">
-                        <i class="bi bi-egg-fried"></i>
-                        <span>Food</span>
-                        </span>
-                        <span class="category-tag" data-tag="tech">
+                     </span>
+                     <span class="category-tag" data-tag="tech">
                         <i class="bi bi-laptop"></i>
                         <span>Tech</span>
-                        </span>
-                        <!-- More tags... -->
+                     </span>
+                     <span class="category-tag" data-tag="sports">
+                        <i class="bi bi-trophy"></i>
+                        <span>Sports</span>
+                     </span>
+                     <span class="category-tag" data-tag="gaming">
+                        <i class="bi bi-joystick"></i>
+                        <span>Gaming</span>
+                     </span>
+                     <span class="category-tag" data-tag="comedy">
+                        <i class="bi bi-emoji-laughing"></i>
+                        <span>Comedy</span>
+                     </span>
+                                          <!-- More tags... -->
                     </div>
                 </div>
             </div>

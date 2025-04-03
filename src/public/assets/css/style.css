@@ -168,6 +168,10 @@ body {
     color: rgba(248, 249, 250, 0.3); /* Semi-transparent light color */
 }
 
+.sidebar, .right-sidebar {
+    margin-top: 1rem;
+}
+
 /* Sidebar styles */
 .sidebar {
     background: var(--surface);
@@ -566,7 +570,6 @@ body {
     }
     
     .sidebar, .right-sidebar {
-        margin-top: 12px;
         position: static;
         height: auto;
     }
@@ -675,10 +678,11 @@ body {
   }
 
   .category-tag.active {
-    background: var(--primary);
-    color: white;
-  }
-  
-  .category-tag.active i {
-    color: white;
-  }
+  background: var(--primary);
+  color: white;
+}
+
+.category-tag.active i {
+  color: white;
+}
+
