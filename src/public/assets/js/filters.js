@@ -165,12 +165,11 @@ const Filters = {
             });
         }
 
-        // Set sort value (default to 'recent' if not specified)
-        document.getElementById('sort-by').value = urlSort || 'recent';
+        document.getElementById('sort-by').value = urlSort || 'recommended';
 
         // Apply filters if URL has parameters
         if (urlTags || urlSort) {
-            Events.filterEvents(this.tags, urlSort || 'recent');
+            Events.filterEvents(this.tags, urlSort || 'recommended');
         }
     },
 
@@ -187,7 +186,7 @@ const Filters = {
 
         // Add sort value if not default
         const sortValue = document.getElementById('sort-by').value;
-        if (sortValue !== 'recent') {
+        if (sortValue !== 'recommended') {
             params.set('sort', sortValue);
         }
 
@@ -205,7 +204,7 @@ const Filters = {
         this.renderTags();
         
         // Reset sort dropdown to default
-        document.getElementById('sort-by').value = 'recent';
+        document.getElementById('sort-by').value = 'recommended';
         
         // Remove highlights from all category tags
         document.querySelectorAll('.category-tag.active').forEach(tag => {
@@ -216,6 +215,6 @@ const Filters = {
         window.history.pushState({}, '', window.location.pathname);
         
         // Re-apply empty filters
-        Events.filterEvents([], 'recent');
+        Events.filterEvents([], 'recommended');
     }
 };

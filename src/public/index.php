@@ -70,8 +70,8 @@
                         <div class="mb-3">
                             <label for="sort-by" class="form-label small mb-2">Sort by</label>
                             <select id="sort-by" class="form-select">
-                                <option value="recent">Most Recent</option>
                                 <option value="recommended">Recommended for you</option>
+                                <option value="recent">Most Recent</option>
                                 <option value="interests_high">Interests (High to Low)</option>
                                 <option value="interests_low">Interests (Low to High)</option>
                             </select>
