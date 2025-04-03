@@ -70,6 +70,8 @@ const Events = {
     renderEvents: function(filteredEvents = null) {
         const eventsToRender = filteredEvents || this.events;
         const container = document.getElementById('events-container');
+
+        
         
         container.innerHTML = eventsToRender.map(event => `
             <div class="event-card" data-category="${event.category}" data-tags="${event.tags.join(',')}">

@@ -97,6 +97,18 @@
                 </div>
             </div>
 
+         
+            <!--Not Found -->
+            <!--
+            <div class="col-lg-7 p-3">
+               <div class="empty-events">
+                  <i class="bi bi-calendar2-event empty-icon"></i>
+                  <h3 class="empty-title">No Events Found</h3>
+                  <p class="empty-message">Try broadening your search or check different categories</p>
+               </div>
+            </div>
+            -->
+            
             <!-- Main Content Area - Events Listing -->
             <div class="col-lg-7 p-3" id="events-container">
                 <!-- Events will be loaded here -->
@@ -169,7 +181,7 @@
                         <i class="bi bi-emoji-laughing"></i>
                         <span>Comedy</span>
                      </span>
-                                          <!-- More tags... -->
+                      <!-- More tags... -->
                     </div>
                 </div>
             </div>
