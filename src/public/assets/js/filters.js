@@ -1,8 +1,37 @@
+
 const Filters = {
+
+    
     init: function() {
         this.tags = [];
         this.setupEventHandlers();
+        this.setupCategoryTagListeners();
         this.loadFromURL();
+    },
+
+
+    setupCategoryTagListeners: function() {
+        const categoryTags = document.querySelectorAll('.category-tag');
+
+    
+        categoryTags.forEach((categoryTag) => {
+            categoryTag.addEventListener('click', (e) => {
+
+                const tag = categoryTag.getAttribute('data-tag');
+                
+                // Toggle tag existence
+                if (this.tags.includes(tag)) {
+                    const index = this.tags.indexOf(tag);
+                    this.removeTag(index);
+                } else {
+                    this.clearFilters();
+                    this.addTag(tag);
+                }
+                
+                this.updateURL();
+                Events.filterEvents(this.tags, document.getElementById('sort-by').value);
+            });
+        });
     },
 
     setupEventHandlers: function() {
@@ -29,6 +58,7 @@ const Filters = {
             this.clearFilters();
         });
     },
+    
 
     addTag: function(tag) {
         if (!this.tags.includes(tag)) {
