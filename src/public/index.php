@@ -17,28 +17,28 @@
       <!-- Main Navigation Bar -->
       <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
          <div class="container-fluid">
-            <!-- Brand Logo -->
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.php">
-            <span class="brand-gradient">Ouqat</span>
-            <span class="brand-arabic">ما يفوتك شي</span>
+               <span class="brand-gradient">Ouqat</span>
+               <span class="brand-arabic">ما يفوتك شي</span>
             </a>
-            <!-- Search and User Section -->
-            <div class="d-flex align-items-center gap-3">
-               <!-- Search Bar -->
-               <div class="position-relative">
-                  <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
-                  <input type="search" class="form-control search-bar rounded-pill" placeholder="Search events...">
+            
+            <div class="mx-auto" style="max-width: 500px; width: 100%;">
+               <div class="position-relative w-100">
+                  <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3" style="color: var(--primary)"></i>
+                  <input type="search" class="form-control search-bar rounded-pill w-100" placeholder="Search events...">
                </div>
-               <!-- Create Event Button -->
-               <button class="btn btn-orange rounded-pill">Create Event</button>
-               <!-- User Profile Image -->
-               <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle" alt="Profile" width="36" height="36">
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+               <a href="login.php" class="btn btn-outline-light rounded-pill">Log In</a>
+               <a href="register.php" class="btn btn-orange rounded-pill">Sign Up</a>
             </div>
          </div>
       </nav>
+     
       <!-- Main Content Container -->
-      <div class="container-fluid">
-         <div class="row">
+      <div class="container-fluid mt-0 pt-0">
+         <div class="row g-0"> <!-- Remove gaps between columns -->
             <!-- Left Sidebar - Navigation and Filters -->
             <div class="col-lg-2 sidebar">
                <!-- Navigation Menu -->
@@ -52,6 +52,9 @@
                      </a>
                      <a class="nav-link" href="interests.php">
                      <i class="bi bi-star me-2"></i> My Interests
+                     </a>
+                     <a class="nav-link" href="create-event.php">
+                     <i class="bi bi-plus-circle me-2"></i> Create Event
                      </a>
                   </nav>
                </div>
@@ -90,10 +93,12 @@
                   </div>
                </div>
             </div>
+            
             <!-- Main Content Area - Events Listing -->
             <div class="col-lg-7 p-4" id="events-container">
                <!-- Events will be loaded here -->
             </div>
+            
             <!-- Right Sidebar - Recommended and Trending Events -->
             <div class="col-lg-3 right-sidebar">
                <!-- Trending Events Section -->
