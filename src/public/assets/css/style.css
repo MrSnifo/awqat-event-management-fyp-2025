@@ -260,7 +260,7 @@ body {
 
 /* Event content styling */
 .event-content {
-    padding: 1.5rem;
+    padding: 0.8rem;
     display: flex;
     flex-direction: column;
     height: 100%;

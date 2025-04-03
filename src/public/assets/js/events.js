@@ -1,6 +1,18 @@
 const Events = {
     events: [
         {
+            id: 4,
+            title: "Gourmet Food Festival",
+            description: "A culinary journey featuring 50+ top chefs, cooking demonstrations, and unlimited tastings from world-class restaurants.",
+            date: "May 10-12, 2024",
+            location: "Chicago, IL",
+            category: "food",
+            tags: ["culinary", "tasting"],
+            image: "https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            interested: 950,
+            badge: "Popular"
+        },
+        {
             id: 1,
             title: "Night Music Festival 2024",
             description: "Experience three nights of electronic music with top international DJs including Martin Garrix, David Guetta, and Armin van Buuren under the spectacular city lights.",
@@ -12,8 +24,21 @@ const Events = {
             interested: 1800,
             badge: "Trending"
         },
+
         {
-            id: 2,
+            id: 5,
+            title: "Urban Marathon Challenge",
+            description: "Annual 42km race through the city with 10,000 participants. Different categories for professionals and amateurs with cash prizes.",
+            date: "Nov 3, 2024",
+            location: "Boston, MA",
+            category: "sports",
+            tags: ["running", "competition"],
+            image: "https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            interested: 3200,
+            badge: "Featured"
+        },
+        {
+            id: 3,
             title: "Tech Innovators Summit 2024",
             description: "Join industry leaders and innovators as they discuss the latest trends in AI, blockchain, and quantum computing. Networking opportunities with top tech companies.",
             date: "Apr 15-17, 2024",
@@ -26,40 +51,17 @@ const Events = {
         },
         {
             id: 2,
-            title: "Tech Innovators Summit 2024",
-            description: "Join industry leaders and innovators as they discuss the latest trends in AI, blockchain, and quantum computing. Networking opportunities with top tech companies.",
-            date: "Apr 15-17, 2024",
-            location: "San Francisco, CA",
-            category: "tech",
-            tags: ["conference", "networking"],
-            image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-            interested: 1200,
-            badge: "New"
-        },
-        {
-            id: 2,
-            title: "Tech Innovators Summit 2024",
-            description: "Join industry leaders and innovators as they discuss the latest trends in AI, blockchain, and quantum computing. Networking opportunities with top tech companies.",
-            date: "Apr 15-17, 2024",
-            location: "San Francisco, CA",
-            category: "tech",
-            tags: ["conference", "networking"],
-            image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-            interested: 1200,
-            badge: "New"
-        },
-        {
-            id: 2,
-            title: "Tech Innovators Summit 2024",
-            description: "Join industry leaders and innovators as they discuss the latest trends in AI, blockchain, and quantum computing. Networking opportunities with top tech companies.",
-            date: "Apr 15-17, 2024",
-            location: "San Francisco, CA",
-            category: "tech",
-            tags: ["conference", "networking"],
-            image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-            interested: 1200,
-            badge: "New"
+            title: "International Art Biennale",
+            description: "Contemporary art exhibition featuring 200+ artists from 40 countries, with installations, paintings, and digital art experiences.",
+            date: "Jun 5-Sep 5, 2024",
+            location: "Venice, Italy",
+            category: "art",
+            tags: ["exhibition", "contemporary"],
+            image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            interested: 750,
+            badge: "International"
         }
+       
     ],
 
     init: function() {
