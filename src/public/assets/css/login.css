@@ -52,7 +52,7 @@ body {
     width: 93%; /* Adjusted width to fill the container */
     padding: 1.4rem 0.8rem 0.8rem 0.8rem; /* Slightly larger padding for better input feel */
     border: 2px solid transparent;
-
+    border-radius: 7px;
     background: var(--accent);
     color: var(--text-primary);
     transition: border 0.3s;
