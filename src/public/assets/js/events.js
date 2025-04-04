@@ -104,7 +104,7 @@ const Events = {
                                     <span>Interested</span>
                                     <span class="count">${(event.interested/1000).toFixed(1)}k</span>
                                 </button>
-                                <a href="event.php?id=${event.id}" class="btn details-btn">
+                                <a href="event/${event.id}" class="btn details-btn">
                                     <span>View Details</span>
                                     <i class="bi bi-arrow-right"></i>
                                 </a>

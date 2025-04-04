@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.recommended-event').forEach(event => {
         event.addEventListener('click', function(e) {
             e.preventDefault();
-            const eventId = 'event-' + Math.floor(1000 + Math.random() * 9000);
+            const eventId = Math.floor(1000 + Math.random() * 9000);
             window.location.href = `event/${eventId}`;
         });
     });
