@@ -18,7 +18,7 @@ const Filters = {
      */
     setupCategoryTagListeners: function() {
         // Add click handler to all category tags
-        document.querySelectorAll('.category-tag').forEach((categoryTag) => {
+        document.querySelectorAll('.popular-tag').forEach((categoryTag) => {
             categoryTag.addEventListener('click', (e) => {
                 this.toggleCategoryTag(categoryTag);
             });

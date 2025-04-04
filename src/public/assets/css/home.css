@@ -584,22 +584,22 @@ body {
 }
 
 
-/* Category Tags Container */
-.category-tags-container {
+/* popular Tags Container */
+.popular-tags-container {
     background: var(--surface);
     border-radius: 12px;
     padding: 1rem;
     margin-bottom: 1.5rem;
   }
   
-  .category-tags-header {
+  .popular-tags-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.75rem;
   }
   
-  .category-tags-header h5 {
+  .popular-tags-header h5 {
     font-size: 1rem;
     margin: 0;
     color: var(--text-primary);
@@ -618,14 +618,14 @@ body {
   }
   
   /* Flexbox Layout */
-  .category-tags-flex {
+  .popular-tags-flex {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
   
   /* Individual Tag Styling */
-  .category-tag {
+  .popular-tag {
     flex: 1 1 calc(33.333% - 0.5rem); /* 3 items per row accounting for gap */
     display: flex;
     flex-direction: column;
@@ -645,31 +645,31 @@ body {
     word-break: break-word;
   }
   
-  .category-tag i {
+  .popular-tag i {
     font-size: 1rem;
     color: var(--primary);
     margin-bottom: 0.25rem;
     transition: all 0.2s ease;
   }
   
-  .category-tag:hover {
+  .popular-tag:hover {
     background: var(--primary-light);
     transform: translateY(-1px);
   }
   
-  .category-tag:hover i {
+  .popular-tag:hover i {
     transform: scale(1.1);
   }
   
   /* Responsive Adjustments */
   @media (max-width: 768px) {
-    .category-tag {
+    .popular-tag {
       flex: 1 1 calc(50% - 0.5rem); /* 2 items per row on tablets */
     }
   }
   
   @media (max-width: 480px) {
-    .category-tag {
+    .popular-tag {
       flex: 1 1 calc(33.333% - 0.5rem); /* Back to 3 on mobile */
       font-size: 0.75rem;
       padding: 0.5rem 0.2rem;
@@ -677,12 +677,12 @@ body {
     }
   }
 
-  .category-tag.active {
+  .popular-tag.active {
   background: var(--primary);
   color: white;
 }
 
-.category-tag.active i {
+.popular-tag.active i {
   color: white;
 }
 
