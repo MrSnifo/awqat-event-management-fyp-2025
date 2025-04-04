@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <!-- Title on the left -->
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="index">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
@@ -33,8 +33,8 @@
 
             <!-- Auth buttons on the right -->
             <div class="auth-buttons">
-                <a href="login.php" class="btn btn-outline-light">Log In</a>
-                <a href="register.php" class="btn btn-orange">Sign Up</a>
+                <a href="login" class="btn btn-outline-light">Log In</a>
+                <a href="register" class="btn btn-orange">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -47,16 +47,16 @@
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link active" href="index.php">
+                        <a class="nav-link active" href="index">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
-                        <a class="nav-link" href="profile.php">
+                        <a class="nav-link" href="profile">
                             <i class="bi bi-person me-2"></i>Profile
                         </a>
-                        <a class="nav-link" href="interests.php">
+                        <a class="nav-link" href="interests">
                             <i class="bi bi-star me-2"></i> My Interests
                         </a>
-                        <a class="nav-link" href="create-event.php">
+                        <a class="nav-link" href="create-event">
                             <i class="bi bi-plus-circle me-2"></i> Create Event
                         </a>
                     </nav>
