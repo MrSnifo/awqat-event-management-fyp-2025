@@ -18,56 +18,48 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
+    margin: 0;
 }
 
-.btn a{
-    position: absolute;
-    width: 5%;
-    height: 2%;
-    left:500px;
-    top: 90px;
-    background: #FF6B35;
-    list-style-type: none;
+.login-container {
+    position: relative; 
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 0 12px var(--primary-light);
+    text-align: center;
+    width: 400px;
+    height: 480px;
+}
 
+.btn a {
+    position: absolute;
+    width: 30%;
+    top: 0px;
+    left: -23px; 
+    background: linear-gradient(to right, #fd6027, #1A1A1A);
     font-weight: bold;
     text-decoration: none;
     text-transform: capitalize;
-
-    padding: 0.81rem 0.81rem;
-
-    border: 2px solid #333; 
-    cursor: pointer; 
-      cursor: pointer;
-      clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+    padding: 0.81rem;
+    border: 2px solid #1A1A1A;
+    cursor: pointer;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
     color: white;
 }
 
-.btn a:hover{
-        background: white;
-        
-        border: 2px solid #1A1A1A;
-        color: #e03e00;
-}
 
-
-
-
-.login-container {
-    background: var(--surface);
-    padding: 2.5rem 2rem; 
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 0 12px var(--primary-light); 
-    text-align: center;
-    width: 400px;
-    height: 480px; 
+.btn a:hover {
+    background: linear-gradient(to right, #ffffff, #1A1A1A) ;
+    border: 2px solid #1A1A1A;
+    color: black;
 }
 
 .login-container h2 {
     margin-bottom: 4rem;
-    padding-top: 1.5rem; 
-    background: linear-gradient(to right, var(--primary), #E09D00); 
+    padding-top: 1.5rem;
+    background: linear-gradient(to right, var(--primary), #E09D00);
     -webkit-background-clip: text;
     color: transparent;
     font-size: 30px;
@@ -75,20 +67,18 @@ body {
 
 .input-group {
     position: relative;
-    margin: 1.2rem 0; 
+    margin: 1.2rem 0;
     text-align: left;
 }
 
 .input-group input {
-    position: relative;
-    width: 93%; 
-    padding: 1.4rem 0.8rem 0.8rem 0.8rem; 
+    width: 93%;
+    padding: 1.4rem 0.8rem 0.8rem 0.8rem;
     border: 2px solid transparent;
-
     background: var(--accent);
     color: var(--text-primary);
     transition: border 0.3s;
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
 }
 
 .input-group input:focus {
@@ -115,7 +105,7 @@ body {
 .input-group input:focus + label,
 .input-group input:not(:placeholder-shown) + label {
     top: 2%;
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
     color: var(--primary);
     background-color: var(--accent);
 }
@@ -125,7 +115,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.5rem;
-    font-size: 0.95rem; 
+    font-size: 0.95rem;
     color: var(--text-secondary);
 }
 
@@ -134,9 +124,9 @@ body {
 }
 
 .login-container button {
-    width: 100%; 
-    padding: 1.2rem; 
-    margin-top: 1.5rem; 
+    width: 100%;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
     border: none;
     background-color: var(--primary);
     color: var(--text-primary);
@@ -155,7 +145,7 @@ body {
     color: var(--text-secondary);
 }
 
-.login-container a label{
+.login-container a label {
     color: var(--primary);
     text-decoration: none;
 }
