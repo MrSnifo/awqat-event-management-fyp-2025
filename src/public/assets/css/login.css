@@ -1,0 +1,129 @@
+:root {
+    --primary: #FF6B35;
+    --primary-light: rgba(255, 107, 53, 0.1);
+    --surface: #1A1A1A;
+    --surface-light: #242424;
+    --background: #121212;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --accent: #2A2A2A;
+    --border-color: #333;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-container {
+    background: var(--surface);
+    padding: 2.5rem 2rem; /* Slightly adjusted padding */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 0 12px var(--primary-light); /* Slightly stronger shadow */
+    text-align: center;
+    width: 400px; /* Increased width for better proportions */
+    height: 480px; /* Increased height to give more space */
+}
+
+.login-container h2 {
+    margin-bottom: 4rem;
+    padding-top: 1.5rem; /* Reduced padding for a more compact look */
+    background: linear-gradient(to right, var(--primary), #E09D00); 
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 30px;
+}
+
+.input-group {
+    position: relative;
+    margin: 1.2rem 0; /* Slightly larger margin between input fields */
+    text-align: left;
+}
+
+.input-group input {
+    position: relative;
+    width: 93%; /* Adjusted width to fill the container */
+    padding: 1.4rem 0.8rem 0.8rem 0.8rem; /* Slightly larger padding for better input feel */
+    border: 2px solid transparent;
+
+    background: var(--accent);
+    color: var(--text-primary);
+    transition: border 0.3s;
+    font-size: 1.1rem; /* Slightly larger font size */
+}
+
+.input-group input:focus {
+    border: 2px solid var(--primary);
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: transparent;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    padding: 0 0.2rem;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: 2%;
+    font-size: 0.9rem; /* Slightly adjusted font size */
+    color: var(--primary);
+    background-color: var(--accent);
+}
+
+.remember-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem; /* Slightly larger font size for better legibility */
+    color: var(--text-secondary);
+}
+
+#rememberMe {
+    accent-color: #FF6B35;
+}
+
+.login-container button {
+    width: 100%; /* Full width for button */
+    padding: 1.2rem; /* Slightly larger padding for better click area */
+    margin-top: 1.5rem; /* Increased margin for better spacing */
+    border: none;
+    background-color: var(--primary);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+.login-container button:hover {
+    background: #e03e00;
+}
+
+.login-container p {
+    margin-top: 1rem;
+    color: var(--text-secondary);
+}
+
+.login-container a {
+    color: var(--primary);
+    text-decoration: none;
+}
