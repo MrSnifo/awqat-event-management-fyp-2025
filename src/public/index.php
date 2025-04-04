@@ -6,7 +6,6 @@ $cleanPath = str_replace($basePath, '', $path);
 
 switch ($cleanPath) {
     case '/':
-    case '/home':
         include __DIR__ . '/../views/home.php';
         break;
 

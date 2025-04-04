@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <!-- Title on the left -->
-            <a class="navbar-brand" href="index">
+            <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
@@ -47,7 +47,7 @@
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link active" href="index">
+                        <a class="nav-link active" href="./">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
                         <a class="nav-link" href="profile">
