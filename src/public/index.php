@@ -1,5 +1,4 @@
 <?php
-// Get requested path and clean it
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/' . implode('/', array_slice(explode('/', str_replace('\\', '/', __DIR__)), -3));
 $cleanPath = str_replace($basePath, '', $path);
