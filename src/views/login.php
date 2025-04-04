@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="login-container">
+        <div class="btn"><a href="#">← Home</a></div>
         <h2>Login to Ouqat</h2>
 
         <div class="input-group">
@@ -27,7 +28,7 @@
 
         <button>Log In</button>
 
-        <p>Don't have an account? <a href="#">Sign Up</a></p>
+        <p>Don't have an account? <a href="#"><label for="">Sign Up</label></a></p>
     </div>
 </body>
 </html>
