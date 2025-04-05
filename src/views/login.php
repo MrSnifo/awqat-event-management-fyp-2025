@@ -29,6 +29,7 @@
         <div class="remember-container">
             <input type="checkbox" id="rememberMe" />
             <label for="rememberMe">Remember Me</label>
+            <a href="#">Forgot password?</a>
         </div>
 
         <button>Log In</button>
