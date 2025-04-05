@@ -1,3 +1,6 @@
+<?php
+    include("assets/config/database.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
