@@ -35,7 +35,7 @@
 
         <p>Don't have an account? <a href="#"><label for="">Sign Up</label></a></p>
 
-        <div class="btn"><a href="C:\xampp\htdocs\PFA-2024-2025test\src\views\home.php">Return Home</a></div>
+        <div class="btn"><a href="C:\xampp\htdocs\PFA-2024-2025test\src\views\home.php"> Back Home</a></div>
     </form>
 </body>
 </html>

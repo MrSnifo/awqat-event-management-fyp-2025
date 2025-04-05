@@ -35,10 +35,10 @@ body {
 
 .btn a {
     position: relative;
-    left: 70px;
+    left: 85px;
     padding-top: 20px;
     transform: translate(50%);
-    width: 24%;
+    width: 21%;
     background: transparent;
     color: var(--text-secondary);
     border: 1px solid var(--border-color);
