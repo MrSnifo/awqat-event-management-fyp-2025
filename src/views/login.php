@@ -13,7 +13,7 @@
 
 <body>
     <form  action="<?php  htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST" class="login-container">
-        <div class="btn"><a href="assets/views/home.php">← Home</a></div>
+        
         <h2>Login to Ouqat</h2>
 
         <div class="input-group">
@@ -34,6 +34,8 @@
         <button>Log In</button>
 
         <p>Don't have an account? <a href="#"><label for="">Sign Up</label></a></p>
+
+        <div class="btn"><a href="C:\xampp\htdocs\PFA-2024-2025test\src\views\home.php">Return Home</a></div>
     </form>
 </body>
 </html>
