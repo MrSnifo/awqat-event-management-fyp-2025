@@ -1,5 +1,6 @@
 <?php
-    include("assets/config/database.php");
+/*
+    include("C:\Users\chahed\Documents\GitHub\PFA-2024-2025\src\config\database.php");*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,20 +39,20 @@
 </html>
 
 <?php
-
+/*
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        /*add a filter against injections  */
+        
         $Email = filter_input(INPUT_POST,"mail",FILTER_SANITIZE_SPECIAL_CHARS);
         $password = filter_input(INPUT_POST,"password",FILTER_SANITIZE_SPECIAL_CHARS);
 
-        /*check if it is empty*/
+        
         if(empty($Email)){
             echo "Please Enter an Email !!";
         }
         elseif(empty($password)){
             echo "Please Enter a Password !!";
         }else{
-            /*add a hash to the password  */
+            
             $hash = password_hash($password,PASSWORD_DEFAULT);
             $sql = "INSERT INTO users_login (user_mail , password) values ('$Email','$hash')";
 
@@ -68,5 +69,5 @@
     mysqli_close($conn);
 
 
-
+*/
 ?>
