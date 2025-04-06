@@ -1,5 +1,18 @@
-/* CSS Variables for theming */
 :root {
+    --primary: #FF6B35;
+    --primary-light: rgba(255, 107, 53, 0.1);
+    --surface: #FFFFFF;
+    --surface-light: #F9F9F9; 
+    --background: #FAFAFA; 
+    --text-primary: #1A1A1A;
+    --text-secondary: #666666;
+    --accent: #EAEAEA;
+    --border-color: #DADADA;
+    --text-nav-primary: #FF6B35;
+}
+
+
+.dark-theme {
     --primary: #FF6B35;
     --primary-light: rgba(255, 107, 53, 0.1);
     --surface: #1A1A1A;
@@ -9,7 +22,10 @@
     --text-secondary: #B3B3B3;
     --accent: #2A2A2A;
     --border-color: #333;
+    --text-nav-primary: #EAEAEA;
 }
+
+
 
 /* Base styles */
 body {
@@ -44,27 +60,13 @@ body {
 }
 
 .brand-gradient {
-    background: linear-gradient(90deg, #FF6B35, #FFA62B);
+    background: linear-gradient(90deg, #CC562A, #CC8423);
+
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     font-weight: 700;
     font-size: 1.5rem;
-}
-
-.brand-arabic {
-    color: #f8f9fa;
-    font-weight: 500;
-    font-size: 1.1rem;
-    position: relative;
-    padding-left: 0.75rem;
-}
-
-.brand-arabic::before {
-    content: "|";
-    position: absolute;
-    left: 0;
-    color: rgba(248, 249, 250, 0.3);
 }
 
 /* Search bar */
@@ -154,7 +156,7 @@ body {
 }
 
 .brand-arabic {
-    color: #f8f9fa; /* Light color */
+    color: var(--text-nav-primary); /* Light color */
     font-weight: 500;
     font-size: 1.1rem;
     position: relative;
@@ -165,7 +167,7 @@ body {
     content: "|";
     position: absolute;
     left: 0;
-    color: rgba(248, 249, 250, 0.3); /* Semi-transparent light color */
+    color: var(--border-color);
 }
 
 .sidebar, .right-sidebar {
@@ -713,3 +715,61 @@ body {
     margin: 0 auto;
     line-height: 1.5;
   }
+
+  /* Enhanced Footer Styles */
+.footer-container {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2.5rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem; /* Increased gap for longer text */
+    margin-bottom: 1rem;
+}
+
+.footer-link,
+.theme-toggle-btn {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem; /* Slightly larger text */
+    padding: 0.25rem 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.footer-link:hover,
+.theme-toggle-btn:hover {
+    color: var(--primary);
+    text-decoration: underline;
+    transform: translateY(-1px); /* Subtle lift effect */
+}
+
+.copyright {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+/* Dark mode adjustment */
+.dark-theme .footer-container {
+    border-color: var(--accent);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-links {
+        gap: 1rem;
+    }
+    .footer-link,
+    .theme-toggle-btn {
+        font-size: 0.8rem;
+    }
+}
