@@ -18,9 +18,16 @@ function applyTheme() {
   function init() {
     applyTheme();
 
+    // Toggle apperence
     document.getElementById('themeToggle')?.addEventListener('click', function() {
         toggleTheme();
       });
+
+
+    // Home button
+    document.getElementById("homeRefresh")?.addEventListener("dblclick", function() {
+      window.location.reload(); // Refreshes the page
+    });
     
     // Initialize other modules
     Events.init();
