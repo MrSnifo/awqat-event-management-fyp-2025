@@ -12,8 +12,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="AddEvent.css">
+    <link rel="stylesheet" href="assets/css/AddEvent.css">
 
 </head>
 
@@ -174,24 +173,6 @@
                                 <div class="tags-list"></div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="eventLocation">Age Restriction : </label>
-
-                            <label>&nbsp;
-                                <input type="radio" name="age" value="18-" />
-                                <span class="custom-radio"></span> Under 18
-                            </label>
-                            
-                            <label>&nbsp;
-                                <input type="radio" name="age" value="18+" />
-                                <span class="custom-radio"></span> 18+
-                            </label>
-                            
-                            <label>&nbsp;
-                                <input type="radio" name="age" value="all" />
-                                <span class="custom-radio"></span> All ages
-                            </label>
-                        </div>
                         <br>
                         <button type="submit" id="apply-filters" class="btn btn-orange flex-grow-1">
                             Save Event
@@ -276,9 +257,8 @@
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
-    <script src="assets/js/events.js"></script>
     <script src="assets/js/filters.js"></script>
-    <script src="AddEvent.js"></script>
+    <script src="assests/js/AddEvent.js"></script>
 </body>
 
 </html>
