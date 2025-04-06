@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+    // Immediately set theme class on <html> element
+    (function() {
+      const savedTheme = localStorage.getItem('user-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle(
+        'dark-theme', 
+        savedTheme ? savedTheme === 'dark' : prefersDark
+      );
+    })();
+  </script>
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/home.css">
 
@@ -47,7 +61,7 @@
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link active" href="./">
+                        <a class="nav-link active" id="homeRefresh" href="#">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
                         <a class="nav-link" href="profile">
@@ -184,6 +198,16 @@
                       <!-- More tags... -->
                     </div>
                 </div>
+
+                <div class="footer-container mt-4 pt-3 border-top">
+                <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Cookie Policy</a>
+                    <button class="theme-toggle-btn" id="themeToggle">Switch Appearance</button>
+                </div>
+                <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
+            </div>
             </div>
         </div>
     </div>
