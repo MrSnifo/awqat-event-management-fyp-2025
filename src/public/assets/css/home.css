@@ -156,11 +156,16 @@ body {
 }
 
 .brand-arabic {
-    color: var(--text-nav-primary); /* Light color */
+    font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+    color: var(--text-nav-primary);
     font-weight: 500;
     font-size: 1.1rem;
+    line-height: 1.6; /* Better for Arabic script */
     position: relative;
     padding-left: 0.75rem;
+    text-align: right; /* Right alignment for Arabic */
+    letter-spacing: 0; /* Remove letter spacing */
+    margin: 0.2rem 0; /* Add vertical spacing */
 }
 
 .brand-arabic::before {
