@@ -61,39 +61,10 @@
                         </a>
                     </nav>
                 </div>
-                <hr class="sidebar-divider">
+                
                 <!-- Filter Section -->
                 <div class="sidebar-section">
-                    <h6 class="sidebar-header">Filters</h6>
-                    <div class="filter-section">
-                        <!-- Sort Dropdown -->
-                        <div class="mb-3">
-                            <label for="sort-by" class="form-label small mb-2">Sort by</label>
-                            <select id="sort-by" class="form-select">
-                                <option value="recommended">Recommended for you</option>
-                                <option value="recent">Most Recent</option>
-                                <option value="interests_high">Interests (High to Low)</option>
-                                <option value="interests_low">Interests (Low to High)</option>
-                            </select>
-                        </div>
-                        <!-- Tags Input -->
-                        <div class="tags-input-container mb-3">
-                            <label class="form-label small mb-2">Add Tags</label>
-                            <div class="tags-input-wrapper">
-                                <input type="text" class="tags-input form-control" placeholder="Type and press Enter">
-                                <div class="tags-list"></div>
-                            </div>
-                        </div>
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2">
-                            <button id="apply-filters" class="btn btn-orange flex-grow-1">
-                                <i class="bi bi-funnel me-1"></i> Apply
-                            </button>
-                            <button id="clear-filters" class="btn btn-outline-secondary">
-                                Clear
-                            </button>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -119,29 +90,20 @@
                             <input type="text" class="tags-input form-control" id="eventTopic" placeholder="What's your event?" required>
                         </div>
                         <br>
-                        <!-- Start Date -->
-                        <div class="form-group">
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" class="custom-date-input form-control" id="startDate" required>
+                        <div className="flex gap-4 items-center mb-4">
+                        <label className="w-20 font-semibold">Start Date</label>
+                        <input type="date" class="custom-date-input form-control" id="startDate" required>
+                        <label className="w-20 font-semibold">Start Time</label>
+                        <input type="time" class="tags-input form-control" id="startTime" required>
                         </div>
-                        <br>
-                        <!-- Start Time -->
-                        <div class="form-group">
-                            <label for="startTime">Start Time:</label>
-                            <input type="time" class="tags-input form-control" id="startTime" required>
+
+                        <div className="flex gap-4 items-center">
+                        <label className="w-20 font-semibold">End Date</label>
+                        <input type="date" class="custom-date-input form-control" id="endDate" required>
+                        <label className="w-20 font-semibold">End Time</label>
+                        <input type="time" class="tags-input form-control" id="endTime" required>
                         </div>
-                        <br>
-                        <!-- End Date -->
-                        <div class="form-group">
-                            <label for="endDate">End Date:</label>
-                            <input type="date" class="custom-date-input form-control" id="endDate" required>
-                        </div>
-                        <br>
-                        <!-- End Time -->
-                        <div class="form-group">
-                            <label for="endTime">End Time:</label>
-                            <input type="time" class="tags-input form-control" id="endTime" required>
-                        </div>
+                    
                         <br>
                         <!-- Event Frequency -->
                         <div class="form-group">
@@ -164,19 +126,26 @@
                         <div class="form-group">
                             <label for="coverImage">Cover Image:</label>
                             <input type="file" class="file-upload-input tags-input form-control" id="coverImage" accept="image/*" required>
-                            <small>We recommend an image that’s at least 800px wide and 320px tall.</small>
+                            <label class="form-label small mb-2">We recommend an image that’s at least 800px wide and 320px tall.</label>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="eventTopic">Location:</label>
+                            <input type="text" class="tags-input form-control" id="eventlocation" placeholder="What's the location of the Event ?" required>
                         </div><br>
                         <div class="tags-input-container mb-3">
-                            <label class="form-label small mb-2">Add Tags</label>
+                            <label for="eventTopic">Add Tags:</label>
                             <div class="tags-input-wrapper">
                                 <input type="text" class="tags-input form-control" placeholder="Type and press Enter">
                                 <div class="tags-list"></div>
                             </div>
                         </div>
                         <br>
-                        <button type="submit" id="apply-filters" class="btn btn-orange flex-grow-1">
-                            Save Event
+                        <button type="submit" id="submit-form" class="btn btn-orange flex-grow-1">
+                            Create
                         </button>
+                        <button id="clear-filters" class="btn btn-outline-secondary">
+                                Clear
+                            </button>
                     </form>
                 </div>
             </div>
