@@ -16,13 +16,8 @@ switch ($cleanPath) {
         break;
     case '/create-event':
         include __DIR__ . '/../views/AddEvent.php';
-        
-    case '/404':
-        include __DIR__ . '/../views/404.php';
-        break;
 
     default:
-        http_response_code(404);
         break;
 }
 ?>

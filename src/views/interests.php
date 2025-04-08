@@ -11,8 +11,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+    // Immediately set theme class on <html> element
+    (function() {
+      const savedTheme = localStorage.getItem('user-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle(
+        'dark-theme', 
+        savedTheme ? savedTheme === 'dark' : prefersDark
+      );
+    })();
+  </script>
+    
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/global.css">
 
 </head>
 
@@ -34,7 +48,7 @@
             <!-- Auth buttons on the right -->
             <div class="auth-buttons">
                 <a href="login" class="btn btn-outline-light">Log In</a>
-                <a href="myintrests" class="btn btn-orange">Sign Up</a>
+                <a href="register" class="btn btn-orange">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -47,13 +61,13 @@
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link active" href="./">
+                        <a class="nav-link" id="homeRefresh" href="./">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
                         <a class="nav-link" href="profile">
                             <i class="bi bi-person me-2"></i>Profile
                         </a>
-                        <a class="nav-link" href="interests">
+                        <a class="nav-link active" href="interests">
                             <i class="bi bi-star me-2"></i> My Interests
                         </a>
                         <a class="nav-link" href="create-event">
@@ -61,57 +75,11 @@
                         </a>
                     </nav>
                 </div>
-                <hr class="sidebar-divider">
-                <!-- Filter Section -->
-                <div class="sidebar-section">
-                    <h6 class="sidebar-header">Filters</h6>
-                    <div class="filter-section">
-                        <!-- Sort Dropdown -->
-                        <div class="mb-3">
-                            <label for="sort-by" class="form-label small mb-2">Sort by</label>
-                            <select id="sort-by" class="form-select">
-                                <option value="recommended">Recommended for you</option>
-                                <option value="recent">Most Recent</option>
-                                <option value="interests_high">Interests (High to Low)</option>
-                                <option value="interests_low">Interests (Low to High)</option>
-                            </select>
-                        </div>
-                        <!-- Tags Input -->
-                        <div class="tags-input-container mb-3">
-                            <label class="form-label small mb-2">Add Tags</label>
-                            <div class="tags-input-wrapper">
-                                <input type="text" class="tags-input form-control" placeholder="Type and press Enter">
-                                <div class="tags-list"></div>
-                            </div>
-                        </div>
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2">
-                            <button id="apply-filters" class="btn btn-orange flex-grow-1">
-                                <i class="bi bi-funnel me-1"></i> Apply
-                            </button>
-                            <button id="clear-filters" class="btn btn-outline-secondary">
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-         
-            <!--Not Found -->
-            <!--
+            <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
-               <div class="empty-events">
-                  <i class="bi bi-calendar2-event empty-icon"></i>
-                  <h3 class="empty-title">No Events Found</h3>
-                  <p class="empty-message">Try broadening your search or check different categories</p>
-               </div>
-            </div>
-            -->
-            
-            <!-- Main Content Area - Events Listing -->
-            <div class="col-lg-7 p-3">
-                jdklkajdkadkaeejdklzajlkdjazlkdj
+                <!-- You can cook here -->
             </div>
 
             <!-- Right Sidebar - Recommended and Trending Events -->
@@ -122,9 +90,9 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                     </div>
-                    <div class="recommended-event">
+                    <div class="side-event-card">
                         <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="recommended-event-img" alt="Event">
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
                             <div>
                                 <h6 class="mb-1 fw-semibold">Food Truck Festival</h6>
                                 <div class="d-flex align-items-center text-muted small mb-1">
@@ -138,9 +106,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="recommended-event">
+                    <div class="side-event-card">
                         <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="recommended-event-img" alt="Event">
+                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
                             <div>
                                 <h6 class="mb-1 fw-semibold">Blockchain Conference</h6>
                                 <div class="d-flex align-items-center text-muted small mb-1">
@@ -184,14 +152,22 @@
                       <!-- More tags... -->
                     </div>
                 </div>
+
+                <div class="footer-container mt-4 pt-3 border-top">
+                <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Cookie Policy</a>
+                    <button class="theme-toggle-btn" id="themeToggle">Switch Appearance</button>
+                </div>
+                <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
+            </div>
             </div>
         </div>
     </div>
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
-    <script src="assets/js/events.js"></script>
-    <script src="assets/js/filters.js"></script>
     <script src="assets/js/home.js"></script>
 </body>
 
