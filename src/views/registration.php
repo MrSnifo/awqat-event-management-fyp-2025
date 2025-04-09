@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sign UP - Ouqat</title>
-    <link rel="stylesheet" href="assets/css/registration.php">
+    <link rel="stylesheet" href="assets/css/registration.css">
 </head>
 
 <body >
@@ -39,10 +39,7 @@
 				<a href="#" class="sign-link">Sign In</a>
 			  </p>
 
-			  <a href="index.html" class="back-home-btn">← Back Home</a>
-
-	  
-	  
+			  <a href="./" class="back-home-btn">← Back Home</a>
 			
 		</form>
 	</div>
