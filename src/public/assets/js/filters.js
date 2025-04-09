@@ -1,216 +1,82 @@
-/**
- * Filters module - Handles tag filtering, URL persistence, and category tag highlighting
- */
 const Filters = {
-    tags: [], // Array to store currently selected tags
-    
-    /**
-     * Initialize the filters module
-     */
-    init: function() {
-        this.setupEventHandlers();
-        this.setupCategoryTagListeners();
-        this.loadFromURL(); // Load any filters from URL on page load
+    tags: [],
+    sortBy: 'recommended', // Default sort value
+
+    init() {
+        // Load initial state from URL
+        const params = new URLSearchParams(location.search);
+        this.tags = params.get('tags')?.split(',').filter(Boolean) || [];
+        this.sortBy = params.get('sort') || 'recommended';
+
+        this.render();
+        this.setupEventListeners();
     },
 
-    /**
-     * Set up event listeners for category tags (predefined tags)
-     */
-    setupCategoryTagListeners: function() {
-        // Add click handler to all category tags
-        document.querySelectorAll('.popular-tag').forEach((categoryTag) => {
-            categoryTag.addEventListener('click', (e) => {
-                this.toggleCategoryTag(categoryTag);
-            });
-        });
-    },
-
-    /**
-     * Toggle a category tag's active state and update filters
-     * @param {HTMLElement} categoryTag - The clicked category tag element
-     */
-    toggleCategoryTag: function(categoryTag) {
-        const tag = categoryTag.dataset.tag;
-        
-        // Toggle visual active state
-        categoryTag.classList.toggle('active');
-        
-        // Update tags array
-        if (this.tags.includes(tag)) {
-            this.removeTag(this.tags.indexOf(tag));
-        } else {
-            this.addTag(tag);
-        }
-        
-        // Update URL and apply filters
-        this.updateURL();
-        Events.filterEvents(this.tags, document.getElementById('sort-by').value);
-    },
-
-    /**
-     * Set up all event handlers for the filters
-     */
-    setupEventHandlers: function() {
-        const tagsInput = document.querySelector('.tags-input');
-
-        // Add tag when user presses Enter in input field
-        tagsInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && tagsInput.value.trim()) {
-                e.preventDefault();
-                this.addTag(tagsInput.value.trim().toLowerCase());
-                tagsInput.value = ''; // Clear input after adding
+    setupEventListeners() {
+        // Tag input
+        document.querySelector('.tags-input')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && e.target.value.trim()) {
+                this.tags.push(e.target.value.trim().toLowerCase());
+                e.target.value = '';
+                this.render();
             }
         });
 
-        // Apply filters button handler
-        document.getElementById('apply-filters').addEventListener('click', () => {
+        // Sort select
+        document.getElementById('sort-by')?.addEventListener('change', e => {
+            this.sortBy = e.target.value;
+        });
+
+        // Apply filters
+        document.getElementById('apply-filters')?.addEventListener('click', () => {
             this.updateURL();
-            Events.filterEvents(this.tags, document.getElementById('sort-by').value);
         });
 
-        // Clear filters button handler
-        document.getElementById('clear-filters').addEventListener('click', () => {
-            this.clearFilters();
+        // Clear filters
+        document.getElementById('clear-filters')?.addEventListener('click', () => {
+            this.tags = [];
+            this.sortBy = 'recommended';
+            document.getElementById('sort-by').value = 'recommended';
+            this.render();
         });
-    },
 
-    /**
-     * Add a tag to the filters
-     * @param {string} tag - The tag to add
-     */
-    addTag: function(tag) {
-        if (!this.tags.includes(tag)) {
-            this.tags.push(tag);
-            this.renderTags();
-            this.highlightMatchingCategoryTag(tag); // Highlight matching category tag
-        }
-    },
-
-    /**
-     * Remove a tag from the filters
-     * @param {number} index - Index of the tag to remove
-     */
-    removeTag: function(index) {
-        const removedTag = this.tags[index];
-        this.tags.splice(index, 1);
-        this.renderTags();
-        this.unhighlightMatchingCategoryTag(removedTag); // Unhighlight matching category tag
-    },
-
-    /**
-     * Highlight a category tag that matches the given tag
-     * @param {string} tag - The tag to match against category tags
-     */
-    highlightMatchingCategoryTag: function(tag) {
-        document.querySelectorAll('.category-tag').forEach(categoryTag => {
-            if (categoryTag.dataset.tag === tag) {
-                categoryTag.classList.add('active');
+        // Remove tag
+        document.querySelector('.tags-list')?.addEventListener('click', e => {
+            if (e.target.classList.contains('tag-remove')) {
+                this.tags.splice(e.target.dataset.index, 1);
+                this.render();
             }
         });
     },
 
-    /**
-     * Unhighlight a category tag that matches the given tag
-     * @param {string} tag - The tag to match against category tags
-     */
-    unhighlightMatchingCategoryTag: function(tag) {
-        document.querySelectorAll('.category-tag').forEach(categoryTag => {
-            if (categoryTag.dataset.tag === tag) {
-                categoryTag.classList.remove('active');
-            }
-        });
-    },
-
-    /**
-     * Render all current tags in the tags list
-     */
-    renderTags: function() {
-        const tagsList = document.querySelector('.tags-list');
-        tagsList.innerHTML = ''; // Clear current tags
-
-        // Create a badge element for each tag
-        this.tags.forEach((tag, index) => {
-            const tagElement = document.createElement('div');
-            tagElement.className = 'badge';
-            tagElement.innerHTML = `
-                ${tag}
-                <span class="tag-remove" data-index="${index}">&times;</span>
-            `;
-            tagsList.appendChild(tagElement);
-
-            // Add click handler to remove button
-            tagElement.querySelector('.tag-remove').addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.removeTag(index);
-            });
-        });
-    },
-
-    /**
-     * Load filters from URL parameters
-     */
-    loadFromURL: function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlTags = urlParams.get('tags');
-        const urlSort = urlParams.get('sort');
-
-        // Load tags from URL if present
-        if (urlTags) {
-            this.tags = urlTags.split(',');
-            this.renderTags();
-            
-            // Highlight any matching category tags
-            this.tags.forEach(tag => {
-                this.highlightMatchingCategoryTag(tag);
-            });
-        }
-
-        document.getElementById('sort-by').value = urlSort || 'recommended';
-
-        // Apply filters if URL has parameters
-        if (urlTags || urlSort) {
-            Events.filterEvents(this.tags, urlSort || 'recommended');
-        }
-    },
-
-    /**
-     * Update the URL with current filter state
-     */
-    updateURL: function() {
+    updateURL() {
         const params = new URLSearchParams();
+        if (this.tags.length) params.set('tags', this.tags.join(','));
+        if (this.sortBy !== 'recommended') params.set('sort', this.sortBy);
 
-        // Add tags to URL if any exist
-        if (this.tags.length > 0) {
-            params.set('tags', this.tags.join(','));
-        }
+        const newUrl = params.toString() ? `${location.pathname}?${params}` : location.pathname;
 
-        // Add sort value if not default
-        const sortValue = document.getElementById('sort-by').value;
-        if (sortValue !== 'recommended') {
-            params.set('sort', sortValue);
-        }
-
-        // Update URL without reloading page
-        const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
-        window.history.pushState({}, '', newUrl);
+        window.location.href = newUrl;
     },
 
-    /**
-     * Clear all filters and reset to default state
-     */
-    clearFilters: function() {
-        // Clear tags array and UI
-        this.tags = [];
-        this.renderTags();
-        
-        // Reset sort dropdown to default
-        document.getElementById('sort-by').value = 'recommended';
-        
-        // Remove highlights from all category tags
-        document.querySelectorAll('.category-tag.active').forEach(tag => {
-            tag.classList.remove('active');
-        });
-        
-     
+    render() {
+        // Render tags
+        const tagsList = document.querySelector('.tags-list');
+        if (tagsList) {
+            tagsList.innerHTML = this.tags.map((tag, i) => `
+          <div class="badge">
+            ${tag}
+            <span class="tag-remove" data-index="${i}">×</span>
+          </div>
+        `).join('');
+        }
+
+        // Set sort dropdown value
+        const sortSelect = document.getElementById('sort-by');
+        if (sortSelect) {
+            sortSelect.value = this.sortBy;
+        }
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => Filters.init());

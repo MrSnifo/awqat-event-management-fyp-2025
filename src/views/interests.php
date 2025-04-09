@@ -5,16 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ouqat</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
-
     <script>
-    // Immediately set theme class on <html> element
     (function() {
       const savedTheme = localStorage.getItem('user-theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -24,8 +20,6 @@
       );
     })();
   </script>
-    
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/global.css">
 
 </head>
@@ -34,18 +28,13 @@
     <!-- Main Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
-            <!-- Title on the left -->
             <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
-
-            <!-- Search bar in the middle -->
             <div class="search-container">
                 <input type="search" class="form-control search-bar" placeholder="Search events...">
             </div>
-
-            <!-- Auth buttons on the right -->
             <div class="auth-buttons">
                 <a href="login" class="btn btn-outline-light">Log In</a>
                 <a href="register" class="btn btn-orange">Sign Up</a>
@@ -55,8 +44,7 @@
 
     <div class="container-fluid mt-0 pt-0">
         <div class="row g-0">
-            <!-- Remove gaps between columns -->
-            <!-- Left Sidebar - Navigation and Filters -->
+            <!-- Left Sidebar -->
             <div class="col-lg-2 sidebar">
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
@@ -82,7 +70,7 @@
                 <!-- You can cook here -->
             </div>
 
-            <!-- Right Sidebar - Recommended and Trending Events -->
+            <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
 
                 <!-- Trending Events Section -->
@@ -90,85 +78,82 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                     </div>
-                    <div class="side-event-card">
-                        <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
-                            <div>
-                                <h6 class="mb-1 fw-semibold">Food Truck Festival</h6>
-                                <div class="d-flex align-items-center text-muted small mb-1">
-                                    <i class="bi bi-calendar me-2"></i>
-                                    <span>Mar 28</span>
+                    <?php
+                        $events = [
+                            [
+                                'title' => 'Food Truck Festival',
+                                'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                                'date' => 'Mar 28',
+                                'location' => 'Miami, FL'
+                            ],
+                            [
+                                'title' => 'Blockchain Conference',
+                                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                                'date' => 'Apr 12-14',
+                                'location' => 'Austin, TX'
+                            ],
+                        ];
+
+                        foreach ($events as $event) {
+                            echo '<div class="side-event-card">
+                                <div class="d-flex gap-3">
+                                    <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
+                                        <div class="d-flex align-items-center text-muted small mb-1">
+                                            <i class="bi bi-calendar me-2"></i>
+                                            <span>' . htmlspecialchars($event['date']) . '</span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted small">
+                                            <i class="bi bi-geo-alt me-2"></i>
+                                            <span>' . htmlspecialchars($event['location']) . '</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <i class="bi bi-geo-alt me-2"></i>
-                                    <span>Miami, FL</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="side-event-card">
-                        <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
-                            <div>
-                                <h6 class="mb-1 fw-semibold">Blockchain Conference</h6>
-                                <div class="d-flex align-items-center text-muted small mb-1">
-                                    <i class="bi bi-calendar me-2"></i>
-                                    <span>Apr 12-14</span>
-                                </div>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <i class="bi bi-geo-alt me-2"></i>
-                                    <span>Austin, TX</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </div>';
+                        }
+                    ?>
                 </div>
+                
                 <!-- Popular Tags Section -->
                 <div class="popular-tags-container">
                     <div class="popular-tags-header">
                         <h5><i class="bi bi-tags me-2"></i>Popular Tags</h5>
                     </div>
                     <div class="popular-tags-flex">
-                    <span class="popular-tag" data-tag="music">
-                        <i class="bi bi-music-note-beamed"></i>
-                        <span>Music</span>
-                     </span>
-                     <span class="popular-tag" data-tag="tech">
-                        <i class="bi bi-laptop"></i>
-                        <span>Tech</span>
-                     </span>
-                     <span class="popular-tag" data-tag="sports">
-                        <i class="bi bi-trophy"></i>
-                        <span>Sports</span>
-                     </span>
-                     <span class="popular-tag" data-tag="gaming">
-                        <i class="bi bi-joystick"></i>
-                        <span>Gaming</span>
-                     </span>
-                     <span class="popular-tag" data-tag="comedy">
-                        <i class="bi bi-emoji-laughing"></i>
-                        <span>Comedy</span>
-                     </span>
-                      <!-- More tags... -->
+                        <?php
+                        $popularTags = [
+                            ['tag' => 'music', 'icon' => 'music-note-beamed', 'label' => 'Music'],
+                            ['tag' => 'tech', 'icon' => 'laptop', 'label' => 'Tech'],
+                            ['tag' => 'sports', 'icon' => 'trophy', 'label' => 'Sports'],
+                            ['tag' => 'gaming', 'icon' => 'joystick', 'label' => 'Gaming'],
+                            ['tag' => 'comedy', 'icon' => 'emoji-laughing', 'label' => 'Comedy'],
+                        ];
+                        
+                        foreach ($popularTags as $tag) {
+                            echo '<span class="popular-tag" data-tag="' . htmlspecialchars($tag['tag']) . '">
+                                <i class="bi bi-' . htmlspecialchars($tag['icon']) . '"></i>
+                                <span>' . htmlspecialchars($tag['label']) . '</span>
+                            </span>';
+                        }
+                        ?>
                     </div>
                 </div>
-
+                <!-- Footer Section -->
                 <div class="footer-container mt-4 pt-3 border-top">
-                <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <a href="#" class="footer-link">Cookie Policy</a>
-                    <button class="theme-toggle-btn" id="themeToggle">Switch Appearance</button>
+                    <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Cookie Policy</a>
+                        <button class="theme-toggle-btn" id="themeToggle">Switch Appearance</button>
+                    </div>
+                    <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
                 </div>
-                <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
-            </div>
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="assets/js/home.js"></script>
+    <script src="assets/js/global.js"></script>
 </body>
 
 </html>
