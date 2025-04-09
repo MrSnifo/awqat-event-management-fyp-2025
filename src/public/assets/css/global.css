@@ -237,6 +237,7 @@ body {
 }
 
 .side-event-card {
+    background-color: var(--surface-light);
 	padding: 1rem;
 	border-radius: 8px;
 	margin-bottom: 0.5rem;
