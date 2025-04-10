@@ -11,15 +11,16 @@ switch ($cleanPath) {
     case '/login':
         include __DIR__ . '/../views/login.php';
         break;
+    case '/register':
+        include __DIR__ . '/../views/registration.php';
+        break;
     case '/interests':
         include __DIR__ . '/../views/interests.php';
         break;
-    case '/404':
-        include __DIR__ . '/../views/404.php';
-        break;
+    case '/create-event':
+        include __DIR__ . '/../views/AddEvent.php';
 
     default:
-        http_response_code(404);
         break;
 }
 ?>
