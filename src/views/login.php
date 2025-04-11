@@ -1,51 +1,71 @@
-<?php
-/*
-    include("C:\Users\chahed\Documents\GitHub\PFA-2024-2025\src\config\database.php");*/
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Ouqat</title>
-
-    <script>
-    (function() {
-      const savedTheme = localStorage.getItem('user-theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle(
-        'dark-theme', 
-        savedTheme ? savedTheme === 'dark' : prefersDark
-      );
-    })();
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/login.css">
 </head>
-
 <body>
-    <form  action="<?php  htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST" class="login-container">
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-header clickable-logo" id="homeLink">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue to Ouqat</p>
+            </div>
+            
+            <form class="login-form">
+                <div class="input-group">
+                    <span class="input-icon"><i class="bi bi-at"></i></span>
+                    <input type="email" id="email" placeholder=" " required>
+                    <label for="email">Email Address</label>
+                </div>
+                
+                <div class="input-group">
+                    <span class="input-icon"><i class="bi bi-key-fill"></i></span>
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">Password</label>
+                    <button type="button" class="password-toggle">
+                        <i class="bi bi-eye-fill"></i>
+                    </button>
+                </div>
+                
+                <div class="login-options">
+                    <div class="remember-container">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="forgot-password" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Log In
+                </button>
+            </form>
+
+            <div class="theme-switcher">
+                <button type="button" id="themeToggle" class="theme-toggle-btn">
+                    <i class="bi bi-moon-fill theme-icon"></i>
+                    <span>Switch Appearance</span>
+                </button>
+            </div>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="register">Sign up</a></p>
+            </div>
+        </div>
         
-        <h2>Login to Ouqat</h2>
-
-        <div class="input-group">
-            <input type="text" id="username" placeholder=" " required />
-            <label for="username">Username or Email</label>
+        <div class="login-decoration">
+            <div class="decoration-circle"></div>
+            <div class="decoration-circle"></div>
+            <div class="decoration-circle"></div>
         </div>
+    </div>
 
-        <div class="input-group">
-            <input type="password" id="password" placeholder=" " required />
-            <label for="password">Password</label>
-        </div>
-
-        <div class="remember-container">
-            <input type="checkbox" id="rememberMe" />
-            <label for="rememberMe">Remember Me</label>
-            <a href="#">Forgot password?</a>
-        </div>
-
-        <button>Log In</button>
-
-        <p>Don't have an account? <a href="#"><label for="">Sign Up</label></a></p>
-    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/login.js"></script>
 </body>
 </html>
