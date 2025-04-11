@@ -151,11 +151,11 @@ body {
 }
 
 .remember-container input[type="checkbox"]:checked {
-    background-color: #FF6B35; /* green when checked */
-    border-color: #FF6B35;
+    background-color: var(--primary); /* green when checked */
+    border-color: var(--primary);
 }
 #rememberMe {
-    accent-color: #FF6B35;
+    accent-color: var(--primary);
     
 }
 
@@ -174,7 +174,7 @@ body {
 }
 
 .login-container button:hover {
-    background: #e03e00;
+    background: var(--primary);
 }
 
 .login-container p {
