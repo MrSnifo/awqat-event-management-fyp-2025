@@ -120,9 +120,31 @@ body {
     color: var(--text-secondary);
 }
 
+.remember-container a{
+    color: #FF6B35;
+    transform: translate(110%);
+    text-decoration: none;
+    font-weight: 500;
+}
+.remember-container input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #888;
+    background-color: #121212; /* ← this will now work */
+    cursor: pointer;
+}
+
+.remember-container input[type="checkbox"]:checked {
+    background-color: #FF6B35; /* green when checked */
+    border-color: #FF6B35;
+}
 #rememberMe {
     accent-color: #FF6B35;
+    
 }
+
 
 .login-container button {
     width: 100%;
@@ -146,7 +168,7 @@ body {
     color: var(--text-secondary);
 }
 
-.login-container a label {
+.login-container a {
     color: var(--primary);
     text-decoration: none;
 }
