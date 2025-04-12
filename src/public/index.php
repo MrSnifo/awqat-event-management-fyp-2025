@@ -14,6 +14,9 @@ switch ($cleanPath) {
     case '/register':
         include __DIR__ . '/../views/registration.php';
         break;
+    case '/profile':
+        include __DIR__ . '/../views/profile.php';
+        break;
     case '/interests':
         include __DIR__ . '/../views/interests.php';
         break;
