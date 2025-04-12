@@ -186,8 +186,6 @@
 	color: var(--text-primary);
 }
 
-/*  FORM ELEMENTS IMPROVED  */
-.form-control,
 .form-select {
 	background-color: var(--surface);
 	border: 1px solid var(--border-color);

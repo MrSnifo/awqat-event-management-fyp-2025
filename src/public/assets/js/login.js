@@ -8,21 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Password toggle functionality
-    const passwordToggle = document.querySelector('.password-toggle');
-    if (passwordToggle) {
-        passwordToggle.addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
+    const passwordToggles = document.querySelectorAll('.password-toggle');
+    passwordToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
             const icon = this.querySelector('i');
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
+            if (input.type === 'password') {
+                input.type = 'text';
                 icon.classList.replace('bi-eye-fill', 'bi-eye-slash-fill');
             } else {
-                passwordInput.type = 'password';
+                input.type = 'password';
                 icon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
             }
         });
-    }
+    });
 
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isDark = document.documentElement.classList.toggle('dark-theme');
             localStorage.setItem('user-theme', isDark ? 'dark' : 'light');
             updateThemeIcon(isDark);
-            
         });
 
         function updateThemeIcon(isDark) {
@@ -57,14 +56,88 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Form submission
-    const loginForm = document.querySelector('.login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+    // Form validation
+    const form = document.getElementById('registrationForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            // Add your form submission logic here
-            console.log('Form submitted');
-            // Example: window.location.href = '/dashboard';
+            clearErrors();
+
+            // Validate username
+            const username = document.getElementById('username');
+            if (!username.validity.valid) {
+                showError(username, 'Username must be 3-20 alphanumeric characters');
+                return;
+            }
+
+            // Validate email
+            const email = document.getElementById('email');
+            if (!email.validity.valid) {
+                showError(email, 'Please enter a valid email address');
+                return;
+            }
+
+            // Validate password
+            const password = document.getElementById('password');
+            if (!password.validity.valid) {
+                showError(password, 'Password must be at least 8 characters with uppercase, lowercase, and number');
+                return;
+            }
+
+            // Validate password confirmation
+            const confirmPassword = document.getElementById('confirm_password');
+            if (confirmPassword.value !== password.value) {
+                showError(confirmPassword, 'Passwords do not match');
+                return;
+            }
+
+            // If all validations pass
+            alert('Form submitted successfully!');
+            // form.submit(); // Uncomment to actually submit the form
+        });
+
+        // Real-time validation on input change
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (input.id === 'confirm_password') {
+                    const password = document.getElementById('password');
+                    if (this.value !== password.value) {
+                        showError(this, 'Passwords do not match');
+                    } else {
+                        clearError(this);
+                    }
+                } else {
+                    if (!input.validity.valid) {
+                        showError(input, input.title);
+                    } else {
+                        clearError(input);
+                    }
+                }
+            });
+        });
+    }
+
+    function showError(input, message) {
+        const inputGroup = input.closest('.input-group');
+        inputGroup.classList.add('invalid');
+        const errorElement = inputGroup.querySelector('.error-message');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    function clearError(input) {
+        const inputGroup = input.closest('.input-group');
+        inputGroup.classList.remove('invalid');
+        const errorElement = inputGroup.querySelector('.error-message');
+        errorElement.style.display = 'none';
+    }
+
+    function clearErrors() {
+        document.querySelectorAll('.input-group').forEach(group => {
+            group.classList.remove('invalid');
+            const errorElement = group.querySelector('.error-message');
+            errorElement.style.display = 'none';
         });
     }
 });
