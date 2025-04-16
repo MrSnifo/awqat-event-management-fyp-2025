@@ -25,32 +25,13 @@
         .profile-header {
             background: var(--surface);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1rem;
             margin-bottom: 1.5rem;
             position: relative;
             border: 1px solid var(--border-color);
         }
         
-        .cover-photo {
-            height: 180px;
-            background: var(--primary-light);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .profile-picture {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--surface);
-            position: absolute;
-            bottom: -60px;
-            left: 2rem;
-            background: var(--surface-light);
-            overflow: hidden;
-        }
+       
         
         .profile-actions {
             position: absolute;
@@ -59,7 +40,7 @@
         }
         
         .profile-info {
-            margin-top: 70px;
+            margin-top: 10px;
         }
         
         .profile-stats {
@@ -68,9 +49,6 @@
             margin: 1.5rem 0;
         }
         
-        .stat-item {
-            text-align: center;
-        }
         
         .stat-value {
             font-size: 1.2rem;
@@ -83,25 +61,8 @@
             color: var(--text-secondary);
         }
         
-        .profile-tabs {
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
-        }
+     
         
-        .profile-tab {
-            padding: 0.75rem 1rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 2px solid transparent;
-            margin-right: 1rem;
-            transition: all 0.2s ease;
-        }
-        
-        .profile-tab:hover, .profile-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
         
         .event-card {
             background: var(--surface);
@@ -158,10 +119,6 @@
             <div class="col-lg-7 p-3">
                 <!-- Profile Header -->
                 <div class="profile-header">
-        
-
-           
-                    
                     <div class="profile-actions">
                         <button class="btn btn-outline-light me-2">
                             <i class="bi bi-pencil me-1"></i> Edit Profile
@@ -172,41 +129,33 @@
                     </div>
                     
                     <div class="profile-info">
-                        <h2 class="mb-1">Sarah Johnson</h2>
-                        <p class="text-muted mb-2">@sarahj</p>
+                        <h2 class="mb-1">Groupe 14</h2>
+                        <p class="text-muted mb-2">@username</p>
                         <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
                         
                         <div class="profile-stats">
                             <div class="stat-item">
-                                <div class="stat-value">142</div>
-                                <div class="stat-label">Events</div>
+                                <div class="stat-value">4</div>
+                                <div class="stat-label">Active events</div>
                             </div>
+
                             <div class="stat-item">
-                                <div class="stat-value">3.2k</div>
-                                <div class="stat-label">Followers</div>
+                                <div class="stat-value">39</div>
+                                <div class="stat-label">Created events</div>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-value">487</div>
-                                <div class="stat-label">Following</div>
-                            </div>
+                            
+                            
                         </div>
                     </div>
                 </div>
-                
-                <!-- Profile Tabs -->
-                <div class="profile-tabs">
-                    <a href="#" class="profile-tab active">My Events</a>
-                    <a href="#" class="profile-tab">Interested</a>
-                    <a href="#" class="profile-tab">Saved</a>
-                    <a href="#" class="profile-tab">Following</a>
-                </div>
-                
+            
+    
                 <!-- Events List -->
                 <div class="event-card">
                     <div class="d-flex gap-3">
                         <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="rounded" width="100" height="100" style="object-fit:cover" alt="Event">
                         <div>
-                            <h5 class="mb-1">Jazz in the Park</h5>
+                            <h5 class="mb-1">Jazz in the Park [Padding verification]</h5>
                             <div class="d-flex align-items-center text-muted small mb-1">
                                 <i class="bi bi-calendar me-2"></i>
                                 <span>Jul 7-9, 2024</span>
