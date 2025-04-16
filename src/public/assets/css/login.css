@@ -10,6 +10,28 @@
     --border-color: #DADADA;
     --error: #ff4444;
 }
+/* Universal scrollbar styling */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-light) transparent;
+}
+
+body::-webkit-scrollbar,
+.login-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track,
+.login-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb,
+.login-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-light);
+    border-radius: 3px;
+}
+
 
 .dark-theme {
     --primary: #FF6B35;
