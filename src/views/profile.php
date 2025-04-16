@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouqat</title>
+    <title>Profile | Ouqat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
@@ -19,9 +18,99 @@
         savedTheme ? savedTheme === 'dark' : prefersDark
       );
     })();
-  </script>
-  <link rel="stylesheet" href="assets/css/global.css">
-
+    </script>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <style>
+        /* PROFILE PAGE SPECIFIC STYLES */
+        .profile-header {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+        
+        .cover-photo {
+            height: 180px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--surface);
+            position: absolute;
+            bottom: -60px;
+            left: 2rem;
+            background: var(--surface-light);
+            overflow: hidden;
+        }
+        
+        .profile-actions {
+            position: absolute;
+            right: 2rem;
+            bottom: 1rem;
+        }
+        
+        .profile-info {
+            margin-top: 70px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .profile-tabs {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-tab {
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            margin-right: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .profile-tab:hover, .profile-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .event-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+    </style>
 </head>
 
 <body>
@@ -67,52 +156,142 @@
 
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
-                <!-- You can cook here -->
+                <!-- Profile Header -->
+                <div class="profile-header">
+        
+
+           
+                    
+                    <div class="profile-actions">
+                        <button class="btn btn-outline-light me-2">
+                            <i class="bi bi-pencil me-1"></i> Edit Profile
+                        </button>
+                        <button class="btn btn-orange">
+                            <i class="bi bi-share me-1"></i> Share
+                        </button>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2 class="mb-1">Sarah Johnson</h2>
+                        <p class="text-muted mb-2">@sarahj</p>
+                        <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">142</div>
+                                <div class="stat-label">Events</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3.2k</div>
+                                <div class="stat-label">Followers</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">487</div>
+                                <div class="stat-label">Following</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <a href="#" class="profile-tab active">My Events</a>
+                    <a href="#" class="profile-tab">Interested</a>
+                    <a href="#" class="profile-tab">Saved</a>
+                    <a href="#" class="profile-tab">Following</a>
+                </div>
+                
+                <!-- Events List -->
+                <div class="event-card">
+                    <div class="d-flex gap-3">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="rounded" width="100" height="100" style="object-fit:cover" alt="Event">
+                        <div>
+                            <h5 class="mb-1">Jazz in the Park</h5>
+                            <div class="d-flex align-items-center text-muted small mb-1">
+                                <i class="bi bi-calendar me-2"></i>
+                                <span>Jul 7-9, 2024</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small mb-2">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                <span>Chicago, IL</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="d-flex gap-3">
+                        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="rounded" width="100" height="100" style="object-fit:cover" alt="Event">
+                        <div>
+                            <h5 class="mb-1">Food Truck Festival</h5>
+                            <div class="d-flex align-items-center text-muted small mb-1">
+                                <i class="bi bi-calendar me-2"></i>
+                                <span>Mar 28, 2024</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small mb-2">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                <span>Miami, FL</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
-
                 <!-- Trending Events Section -->
                 <div class="sidebar-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                     </div>
-                    <?php
-                        $events = [
-                            [
-                                'title' => 'Food Truck Festival',
-                                'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                                'date' => 'Mar 28',
-                                'location' => 'Miami, FL'
-                            ],
-                            [
-                                'title' => 'Blockchain Conference',
-                                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                                'date' => 'Apr 12-14',
-                                'location' => 'Austin, TX'
-                            ],
-                        ];
-
-                        foreach ($events as $event) {
-                            echo '<div class="side-event-card">
-                                <div class="d-flex gap-3">
-                                    <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
-                                        <div class="d-flex align-items-center text-muted small mb-1">
-                                            <i class="bi bi-calendar me-2"></i>
-                                            <span>' . htmlspecialchars($event['date']) . '</span>
-                                        </div>
-                                        <div class="d-flex align-items-center text-muted small">
-                                            <i class="bi bi-geo-alt me-2"></i>
-                                            <span>' . htmlspecialchars($event['location']) . '</span>
-                                        </div>
-                                    </div>
+                    <div class="side-event-card">
+                        <div class="d-flex gap-3">
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
+                            <div>
+                                <h6 class="mb-1 fw-semibold">Food Truck Festival</h6>
+                                <div class="d-flex align-items-center text-muted small mb-1">
+                                    <i class="bi bi-calendar me-2"></i>
+                                    <span>Mar 28</span>
                                 </div>
-                            </div>';
-                        }
-                    ?>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="bi bi-geo-alt me-2"></i>
+                                    <span>Miami, FL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side-event-card">
+                        <div class="d-flex gap-3">
+                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
+                            <div>
+                                <h6 class="mb-1 fw-semibold">Blockchain Conference</h6>
+                                <div class="d-flex align-items-center text-muted small mb-1">
+                                    <i class="bi bi-calendar me-2"></i>
+                                    <span>Apr 12-14</span>
+                                </div>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="bi bi-geo-alt me-2"></i>
+                                    <span>Austin, TX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Popular Tags Section -->
@@ -121,24 +300,29 @@
                         <h5><i class="bi bi-tags me-2"></i>Popular Tags</h5>
                     </div>
                     <div class="popular-tags-flex">
-                        <?php
-                        $popularTags = [
-                            ['tag' => 'music', 'icon' => 'music-note-beamed', 'label' => 'Music'],
-                            ['tag' => 'tech', 'icon' => 'laptop', 'label' => 'Tech'],
-                            ['tag' => 'sports', 'icon' => 'trophy', 'label' => 'Sports'],
-                            ['tag' => 'gaming', 'icon' => 'joystick', 'label' => 'Gaming'],
-                            ['tag' => 'comedy', 'icon' => 'emoji-laughing', 'label' => 'Comedy'],
-                        ];
-                        
-                        foreach ($popularTags as $tag) {
-                            echo '<span class="popular-tag" data-tag="' . htmlspecialchars($tag['tag']) . '">
-                                <i class="bi bi-' . htmlspecialchars($tag['icon']) . '"></i>
-                                <span>' . htmlspecialchars($tag['label']) . '</span>
-                            </span>';
-                        }
-                        ?>
+                        <span class="popular-tag" data-tag="music">
+                            <i class="bi bi-music-note-beamed"></i>
+                            <span>Music</span>
+                        </span>
+                        <span class="popular-tag" data-tag="tech">
+                            <i class="bi bi-laptop"></i>
+                            <span>Tech</span>
+                        </span>
+                        <span class="popular-tag" data-tag="sports">
+                            <i class="bi bi-trophy"></i>
+                            <span>Sports</span>
+                        </span>
+                        <span class="popular-tag" data-tag="gaming">
+                            <i class="bi bi-joystick"></i>
+                            <span>Gaming</span>
+                        </span>
+                        <span class="popular-tag" data-tag="comedy">
+                            <i class="bi bi-emoji-laughing"></i>
+                            <span>Comedy</span>
+                        </span>
                     </div>
                 </div>
+                
                 <!-- Footer Section -->
                 <div class="footer-container mt-4 pt-3 border-top">
                     <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
@@ -155,5 +339,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
 </body>
-
 </html>

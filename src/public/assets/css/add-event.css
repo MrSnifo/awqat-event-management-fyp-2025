@@ -1,123 +1,129 @@
 /* CREATE EVENT FORM STYLES */
 .create-event-container {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--border-color);
+	background: var(--surface);
+	border-radius: 12px;
+	padding: 2rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	border: 1px solid var(--border-color);
 }
 
 .create-event-title {
-  color: var(--text-nav-primary);
-  font-weight: 600;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
+	color: var(--text-nav-primary);
+	font-weight: 600;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--border-color);
 }
 
 .form-label {
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+	font-weight: 500;
+	color: var(--text-primary);
+	margin-bottom: 0.5rem;
+}
+
+
+.form-control::placeholder {
+	color: var(--text-secondary);
+	opacity: 1;
 }
 
 .form-control {
-  background: var(--surface-light);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+	background: var(--surface-light);
+	border: 1px solid var(--border-color);
+	color: var(--text-secondary);
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
 }
 
 .form-control:focus {
-  background: var(--surface-light);
-  color: var(--text-primary);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.15);
+	background: var(--surface-light);
+	color: var(--text-primary);
+	border-color: var(--primary);
+	box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.15);
 }
 
 /* Image Upload Styles */
 .image-upload-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
 .image-preview {
-  width: 100%;
-  height: 200px;
-  background: var(--surface-light);
-  border: 2px dashed var(--border-color);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  overflow: hidden;
-  position: relative;
+	width: 100%;
+	height: 200px;
+	background: var(--surface-light);
+	border: 2px dashed var(--border-color);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-secondary);
+	overflow: hidden;
+	position: relative;
 }
 
 .image-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .image-placeholder {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+	font-size: 3rem;
+	margin-bottom: 0.5rem;
 }
 
 .image-text {
-  font-size: 0.9rem;
+	font-size: 0.9rem;
 }
 
 /* Tags Input Styles */
 .tags-input-container {
-  position: relative;
+	position: relative;
 }
 
 .tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  min-height: 2.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+	min-height: 2.5rem;
 }
 
 .tags-list .badge {
-  background: var(--primary-light);
-  color: var(--primary);
-  padding: 0.5rem 0.75rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+	background: var(--primary-light);
+	color: var(--primary);
+	padding: 0.5rem 0.75rem;
+	border-radius: 50px;
+	font-size: 0.85rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
 
 .tags-list .badge .tag-remove {
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  margin-left: 0.25rem;
+	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1;
+	margin-left: 0.25rem;
 }
 
 .tags-list .badge .tag-remove:hover {
-  color: var(--text-primary);
+	color: var(--text-primary);
 }
 
 /* Form Validation */
 .was-validated .form-control:invalid {
-  border-color: #dc3545;
+	border-color: #dc3545;
 }
 
 .was-validated .form-control:invalid:focus {
-  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+	box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
 
 .invalid-feedback {
-  color: #dc3545;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
+	color: #dc3545;
+	font-size: 0.85rem;
+	margin-top: 0.25rem;
 }
