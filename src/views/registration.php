@@ -19,12 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    if ($password != $confirm_password) {
-        $password_identique_error = "Password and Confirm Password do not match";
-        $error = true;
-    }
 
     require_once __DIR__ . '/../config/database.php';
     $dbConnection = getDatabaseConnection();
@@ -50,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $_SESSION['username'] = $username;
         $_SESSION['email'] = $email;
 
-        header("Location: /PFA-2024-2025test/src/public/");
+        header("Location: /PFA-2024-2025/src/public/");
         exit;
     }
 }
