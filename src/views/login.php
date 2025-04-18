@@ -109,13 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-        ?>
-            
-<<<<<<< HEAD
+        ?>  
             <form class="login-form" method="post">
-=======
-            <form class="login-form" method="POST">
->>>>>>> 38d8d3b5b18ae33c9c7362932ea9fec4a3cd6eb8
                 <div class="input-group">
                     <span class="input-icon"><i class="bi bi-at"></i></span>
                     <input type="email" name="email" id="email" placeholder=" " required>
