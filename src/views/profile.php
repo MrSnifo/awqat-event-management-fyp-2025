@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,58 +21,7 @@
     })();
     </script>
     <link rel="stylesheet" href="assets/css/global.css">
-    <style>
-        /* PROFILE PAGE SPECIFIC STYLES */
-        .profile-header {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            border: 1px solid var(--border-color);
-        }
-        
-       
-        
-        .profile-actions {
-            position: absolute;
-            right: 2rem;
-            bottom: 1rem;
-        }
-        
-        .profile-info {
-            margin-top: 10px;
-        }
-        
-        .profile-stats {
-            display: flex;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-     
-        
-        
-        .event-card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/profile.css">
 </head>
 
 <body>
@@ -119,83 +69,107 @@
             <div class="col-lg-7 p-3">
                 <!-- Profile Header -->
                 <div class="profile-header">
-                    <div class="profile-actions">
-                        <button class="btn btn-outline-light me-2">
-                            <i class="bi bi-pencil me-1"></i> Edit Profile
-                        </button>
-                        <button class="btn btn-orange">
-                            <i class="bi bi-share me-1"></i> Share
+                    <div class="profile-picture-container">
+                        <img src="../storage/uploads/profile_default.jpg" alt="Profile Picture" class="profile-picture">
+                        <button class="edit-picture-btn">
+                            <i class="bi bi-camera-fill"></i>
                         </button>
                     </div>
                     
                     <div class="profile-info">
-                        <h2 class="mb-1">Groupe 14</h2>
-                        <p class="text-muted mb-2">@username</p>
-                        <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
-                        
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value">4</div>
-                                <div class="stat-label">Active events</div>
-                            </div>
-
-                            <div class="stat-item">
-                                <div class="stat-value">39</div>
-                                <div class="stat-label">Created events</div>
-                            </div>
-                            
-                            
+                        <div class="profile-name-container">
+                            <h1 class="profile-name">Ouqat</h1>
+                            <button class="edit-profile-btn">
+                                Edit Profile
+                            </button>
                         </div>
-                    </div>
-                </div>
-            
-    
-                <!-- Events List -->
-                <div class="event-card">
-                    <div class="d-flex gap-3">
-                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="rounded" width="100" height="100" style="object-fit:cover" alt="Event">
-                        <div>
-                            <h5 class="mb-1">Jazz in the Park [Padding verification]</h5>
-                            <div class="d-flex align-items-center text-muted small mb-1">
-                                <i class="bi bi-calendar me-2"></i>
-                                <span>Jul 7-9, 2024</span>
-                            </div>
-                            <div class="d-flex align-items-center text-muted small mb-2">
-                                <i class="bi bi-geo-alt me-2"></i>
-                                <span>Chicago, IL</span>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-pencil me-1"></i> Edit
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash me-1"></i> Delete
-                                </button>
-                            </div>
+                        <p class="profile-username">@ouqat</p>
+                        <p class="profile-bio">
+                        We don't know much about them, but we're sure username is great.
+                        </p>
+                        
+                        <div class="profile-meta">
+                            <span><i class="bi bi-calendar"></i> Joined June 2022</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="event-card">
-                    <div class="d-flex gap-3">
-                        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="rounded" width="100" height="100" style="object-fit:cover" alt="Event">
-                        <div>
-                            <h5 class="mb-1">Food Truck Festival</h5>
-                            <div class="d-flex align-items-center text-muted small mb-1">
-                                <i class="bi bi-calendar me-2"></i>
-                                <span>Mar 28, 2024</span>
+                <!-- Events Section -->
+                <div class="events-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-calendar-event"></i> My Events
+                    </h2>
+                    
+                    <div class="events-grid">
+                        <!-- Event 1 -->
+                        <div class="event-card">
+                            <span class="event-badge active">Upcoming</span>
+                            <div class="event-image-container">
+                                <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Tech & Arts Festival" class="event-image">
                             </div>
-                            <div class="d-flex align-items-center text-muted small mb-2">
-                                <i class="bi bi-geo-alt me-2"></i>
-                                <span>Miami, FL</span>
+                            <div class="event-content">
+                                <h3 class="event-title">Tech & Arts Festival 2023</h3>
+                                <div class="event-meta">
+                                    <span><i class="bi bi-calendar"></i> Nov 10-12, 2023</span>
+                                    <span><i class="bi bi-geo-alt"></i> Miami, FL</span>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="details-btn">
+                                        View Details
+                                    </button>
+                                    <button class="delete-btn">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-pencil me-1"></i> Edit
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash me-1"></i> Delete
-                                </button>
+                        </div>
+                        
+                        <!-- Event 2 -->
+                        <div class="event-card">
+                            <span class="event-badge past">Past</span>
+                            <div class="event-image-container">
+                                <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Sunset Music Series" class="event-image">
+                            </div>
+                            <div class="event-content">
+                                <h3 class="event-title">Sunset Music Series</h3>
+                                <div class="event-meta">
+                                    <span><i class="bi bi-calendar"></i> Oct 15, 2023</span>
+                                    <span><i class="bi bi-geo-alt"></i> Bayfront Park</span>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="details-btn">
+                                        View Details
+                                    </button>
+                                    <button class="delete-btn">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event 3 -->
+                        <div class="event-card">
+                            <span class="event-badge">Upcoming</span>
+                            <div class="event-image-container">
+                                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Blockchain Workshop" class="event-image">
+                            </div>
+                            <div class="event-content">
+                                <h3 class="event-title">Blockchain Workshop</h3>
+                                <div class="event-meta">
+                                    <span><i class="bi bi-calendar"></i> Dec 5, 2023</span>
+                                    <span><i class="bi bi-geo-alt"></i> Miami Tech Hub</span>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="details-btn">
+                                        View Details
+                                    </button>
+                                    <button class="delete-btn">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -287,5 +261,33 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delete event functionality
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to delete this event?')) {
+                        const card = this.closest('.event-card');
+                        card.style.transform = 'scale(0.95)';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.remove();
+                        }, 300);
+                    }
+                });
+            });
+            
+            // Edit profile button
+            document.querySelector('.edit-profile-btn')?.addEventListener('click', function() {
+                alert('Edit profile functionality would open a modal or redirect to an edit page.');
+            });
+            
+            // Edit picture button
+            document.querySelector('.edit-picture-btn')?.addEventListener('click', function() {
+                alert('Edit picture functionality would open a file selector.');
+            });
+        });
+    </script>
 </body>
 </html>
