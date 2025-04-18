@@ -1,18 +1,15 @@
 <?php
-    $db_server = "localhost";
-    $db_user = "root";
-    $db_pass = ""; 
-    $db_name = "logindb";
-    $conn ="";
-    try{
-        /*Verify Connection */
-        $conn = mysqli_connect($db_server , $db_user, $db_pass, $db_name);
-    }catch(mysqli_sql_exception){
-        echo "couldn't Connect <br>";
-    }
-    /* test connection 
-    if ($conn) {
-        echo "connected ! <br>";
-    }*/
+function getDatabaseConnection(){
+    $servername = "localhost";
+    $username = "root";
+    $password = ""; 
+    $database = "ouquat";
 
+        $connection = mysqli_connect($servername ,$username , $password, $database);
+
+        if ($connection->connect_error){
+            die("Error failed to connect to MySQL".$connection->connect_error);
+        }
+        return $connection;
+    }
 ?>

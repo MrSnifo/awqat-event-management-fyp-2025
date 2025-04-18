@@ -1,3 +1,40 @@
+<?php
+session_start(); // Required for sessions to work
+
+$email = "";
+$error = "";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (empty($email) || empty($password)) {
+        $error = "Email and Password are required !";
+    } else {
+        require_once __DIR__ . '/../config/database.php';
+        $dbConnection = getDatabaseConnection();
+
+        $statement = $dbConnection->prepare("SELECT id,username,email,password FROM users WHERE email =?");
+        $statement->bind_param("s", $email);
+        $statement->execute();
+        $statement->bind_result($id, $username, $email, $stored_password);
+
+        if ($statement->fetch()) {
+            if ($password === $stored_password) {
+                $_SESSION["id"] = $id;
+                $_SESSION["email"] = $email;
+                $_SESSION["username"] = $username;
+                header("Location: /PFA-2024-2025test/src/public/");
+                exit;
+            }
+        }
+
+        $statement->close();
+        $error = "Email or Password invalide ";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,16 +64,16 @@
                 <p>Sign in to continue to Ouqat</p>
             </div>
             
-            <form class="login-form">
+            <form class="login-form" method="post">
                 <div class="input-group">
                     <span class="input-icon"><i class="bi bi-at"></i></span>
-                    <input type="email" id="email" placeholder=" " required>
+                    <input type="email" name="email" id="email" placeholder=" " required>
                     <label for="email">Email Address</label>
                 </div>
                 
                 <div class="input-group">
                     <span class="input-icon"><i class="bi bi-key-fill"></i></span>
-                    <input type="password" id="password" placeholder=" " required>
+                    <input type="password" id="password" name="password" placeholder=" " required>
                     <label for="password">Password</label>
                     <button type="button" class="password-toggle">
                         <i class="bi bi-eye-fill"></i>

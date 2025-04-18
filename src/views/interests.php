@@ -1,3 +1,14 @@
+<?php
+session_start();
+// define authenticated var : 
+$authenticated = false;
+// checkif the user is authenticated :
+
+if (isset($_SESSION['email'])) {
+    //echo "logged in.";
+    $authenticated = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,17 +39,39 @@
     <!-- Main Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
-            <a class="navbar-brand" href="./">
+        <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
+
             <div class="search-container">
                 <input type="search" class="form-control search-bar" placeholder="Search events...">
             </div>
+            <?php
+            // if the user authenticated 
+            if ($authenticated){
+            ?>
+            <!-- Dropdown wrapper -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                   <?php echo $_SESSION['username']; ?>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href='profile'>Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="logout">Logout</a></li>
+                </ul>
+            </div>
+            <?php
+            }else {
+            ?>
             <div class="auth-buttons">
                 <a href="login" class="btn btn-outline-light">Log In</a>
                 <a href="register" class="btn btn-orange">Sign Up</a>
             </div>
+            <?php
+            }
+            ?>
         </div>
     </nav>
 

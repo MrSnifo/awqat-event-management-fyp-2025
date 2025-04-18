@@ -1,3 +1,11 @@
+<?php
+session_start();
+$authenticated = false;
+if (isset($_SESSION['email'])) {
+    //echo "logged in.";
+    $authenticated = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,19 +84,42 @@
 
 <body>
     <!-- Main Navigation Bar -->
-    <nav class="navbar navbar-expand navbar-dark sticky-top">
+<!-- Main Navigation Bar -->
+<nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
+
             <div class="search-container">
                 <input type="search" class="form-control search-bar" placeholder="Search events...">
             </div>
+            <?php
+            // if the user authenticated 
+            if ($authenticated){
+            ?>
+            <!-- Dropdown wrapper -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                   <?php echo $_SESSION['username']; ?>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href='profile'>Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="logout">Logout</a></li>
+                </ul>
+            </div>
+            <?php
+            }else {
+            ?>
             <div class="auth-buttons">
                 <a href="login" class="btn btn-outline-light">Log In</a>
                 <a href="register" class="btn btn-orange">Sign Up</a>
             </div>
+            <?php
+            }
+            ?>
         </div>
     </nav>
 
@@ -127,12 +158,24 @@
                             <i class="bi bi-share me-1"></i> Share
                         </button>
                     </div>
-                    
+                    <?php
+                        // if the user authenticated 
+                        if ($authenticated){
+                    ?>
                     <div class="profile-info">
-                        <h2 class="mb-1">Groupe 14</h2>
+                        <h2 class="mb-1"><?php echo $_SESSION['username']; ?></h2>
                         <p class="text-muted mb-2">@username</p>
                         <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
-                        
+                    <?php
+                        }else{ 
+                    ?>
+                                        <div class="profile-info">
+                        <h2 class="mb-1">Group14</h2>
+                        <p class="text-muted mb-2">@username</p>
+                        <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
+                        <?php
+                        }
+                    ?>           
                         <div class="profile-stats">
                             <div class="stat-item">
                                 <div class="stat-value">4</div>

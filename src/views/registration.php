@@ -1,3 +1,65 @@
+<?php
+session_start(); // <-- Add this line!
+if (isset($_SESSION['email'])){
+    header("Location: /PFA-2024-2025test/src/public/");
+    exit;
+}
+
+// Initialization
+$username = "";
+$email = "";
+$password = "";
+$confirm_password = "";
+
+$password_identique_error = "";
+$email_error = "";
+$error = false;
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    if ($password != $confirm_password) {
+        $password_identique_error = "Password and Confirm Password do not match";
+        $error = true;
+    }
+
+    require_once __DIR__ . '/../config/database.php';
+    $dbConnection = getDatabaseConnection();
+
+    $statement = $dbConnection->prepare("SELECT id FROM users WHERE email =?");
+    $statement->bind_param("s", $email);
+    $statement->execute();
+    $statement->store_result();
+
+    if ($statement->num_rows > 0) {
+        $email_error = "Email is already Used!";
+        $error = true;
+    }
+    $statement->close();
+
+    if (!$error) {
+        $statement = $dbConnection->prepare("INSERT INTO users (username,email,password) VALUES(?,?,?)");
+        $statement->bind_param('sss', $username, $email, $password);
+        $statement->execute();
+        $insert_id = $statement->insert_id;
+        $statement->close();
+
+        $_SESSION['username'] = $username;
+        $_SESSION['email'] = $email;
+
+        header("Location: /PFA-2024-2025test/src/public/");
+        exit;
+    }
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +88,7 @@
                 <p>Join Ouqat today</p>
             </div>
             
-            <form id="registrationForm" class="registration-form">
+            <form id="registrationForm" class="registration-form" method="post">
                 <div class="form-fields">
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-person-fill"></i></span>
@@ -34,7 +96,7 @@
                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
                                title="Username must be 3-20 characters (letters, numbers, underscores)">
                         <label for="username">Username</label>
-                        <div class="error-message" id="username-error"></div>
+                        <div class="error-message" id="username-error" value="<?php echo $username ?>"></div>
                     </div>
                     
                     <div class="input-group">
@@ -43,14 +105,14 @@
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                title="Please enter a valid email address">
                         <label for="email">Email Address</label>
-                        <div class="error-message" id="email-error"></div>
+                        <div class="error-message" id="email-error" value="<?php echo $email_error ?>" ></div>
                     </div>
                     
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-key-fill"></i></span>
                         <input type="password" id="password" name="password" placeholder=" " required
                                minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
-                               title="Password must be at least 8 characters with uppercase, lowercase, and number">
+                               title="Password must be at least 8 characters with uppercase, lowercase, and number" value="">
                         <label for="password">Password</label>
                         <button type="button" class="password-toggle">
                             <i class="bi bi-eye-fill"></i>
@@ -60,12 +122,12 @@
                     
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required value="">
                         <label for="confirm_password">Confirm Password</label>
                         <button type="button" class="password-toggle">
                             <i class="bi bi-eye-fill"></i>
                         </button>
-                        <div class="error-message" id="confirm-password-error"></div>
+                        <div class="error-message" id="confirm-password-error"><?= $password_identique_error?></div>
                     </div>
                 </div>
                 
