@@ -63,8 +63,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h2>Welcome Back</h2>
                 <p>Sign in to continue to Ouqat</p>
             </div>
+
+            <?php
+            session_start();
+            require_once '../config/database.php';
+            require_once '../controllers/auth.php';
+
+
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+                $password = $_POST['password'];
+                // $remember = isset($_POST['remember']) ? true : false;
+
+                if (empty($email) || empty($password)) {
+                    $error = "Please fill in all fields";
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $error = "Invalid email format";
+                } else {
+                    try {
+                        $auth = new Auth();
+                        $result = $auth->verifyLogin($email, $password);
+                        if ($result['success']) {
+                            $auth->createSession($result['user_id']);
+                            header('Location: dashboard.php');
+                            exit();
+                        } else { 
+                            echo $result['message'];
+                        }
+
+                        if (!$auth->verifySession()) {
+                            header('Location: login.php');
+                            exit();
+                        }
+
+                        // Logout
+                        $auth->logout();
+                        header('Location: login.php');
+
+
+                    } catch (PDOException $e) {
+                        error_log("Login error: " . $e->getMessage());
+                        $error = "A system error occurred. Please try again later.";
+                    }
+                }
+            }
+
+        ?>
             
+<<<<<<< HEAD
             <form class="login-form" method="post">
+=======
+            <form class="login-form" method="POST">
+>>>>>>> 38d8d3b5b18ae33c9c7362932ea9fec4a3cd6eb8
                 <div class="input-group">
                     <span class="input-icon"><i class="bi bi-at"></i></span>
                     <input type="email" name="email" id="email" placeholder=" " required>
