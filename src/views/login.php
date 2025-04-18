@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION["id"] = $id;
                 $_SESSION["email"] = $email;
                 $_SESSION["username"] = $username;
-                header("Location: /PFA-2024-2025test/src/public/");
+                header("Location: ./");
                 exit;
             }
         }
