@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $statement->close();
 
     if (!$error) {
-        $statement = $dbConnection->prepare("INSERT INTO users (username,email,password) VALUES(?,?,?)");
+        $statement = $dbConnection->prepare("INSERT INTO users (username,email,password_hash) VALUES(?,?,?)");
         $statement->bind_param('sss', $username, $email, $password);
         $statement->execute();
         $insert_id = $statement->insert_id;

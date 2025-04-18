@@ -1,6 +1,4 @@
 <?php
-session_start(); // Required for sessions to work
-
 $email = "";
 $error = "";
 
@@ -14,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         require_once __DIR__ . '/../config/database.php';
         $dbConnection = getDatabaseConnection();
 
-        $statement = $dbConnection->prepare("SELECT id,username,email,password FROM users WHERE email =?");
+        $statement = $dbConnection->prepare("SELECT id,username,email,password_hash FROM users WHERE email =?");
         $statement->bind_param("s", $email);
         $statement->execute();
         $statement->bind_result($id, $username, $email, $stored_password);

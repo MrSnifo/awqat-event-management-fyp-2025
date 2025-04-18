@@ -111,7 +111,6 @@ if (isset($_SESSION['email'])) {
                         if ($authenticated){
                     ?>
                     <div class="profile-info">
-<<<<<<< HEAD
                         <h2 class="mb-1"><?php echo $_SESSION['username']; ?></h2>
                         <p class="text-muted mb-2">@username</p>
                         <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
@@ -137,13 +136,6 @@ if (isset($_SESSION['email'])) {
                             </div>
                             
                             
-=======
-                        <div class="profile-name-container">
-                            <h1 class="profile-name">Ouqat</h1>
-                            <button class="edit-profile-btn">
-                                Edit Profile
-                            </button>
->>>>>>> 38d8d3b5b18ae33c9c7362932ea9fec4a3cd6eb8
                         </div>
                         <p class="profile-username">@ouqat</p>
                         <p class="profile-bio">
