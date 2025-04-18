@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 function getDatabaseConnection(){
     $servername = "localhost";
     $username = "root";
