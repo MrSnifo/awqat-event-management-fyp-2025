@@ -3,6 +3,7 @@ require_once '../config/Database.php';
 
 class EventInterest {
     private $conn;
+    private $table = 'event_interests';
 
     public function __construct($db) {
         $this->conn = $db;
