@@ -1,17 +1,13 @@
 <?php
 session_start();
-// define authenticated var : 
-$authenticated = false;
-// checkif the user is authenticated :
+require_once '../config/database.php';
+require_once '../controllers/Auth.php';
 
-if (isset($_SESSION['email'])) {
-    //echo "logged in.";
-    $authenticated = true;
-}
+// Create Auth instance
+$auth = new Auth();
+$isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+$username = $isLoggedIn ? $_SESSION['username'] : '';
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,50 +29,43 @@ if (isset($_SESSION['email'])) {
         savedTheme ? savedTheme === 'dark' : prefersDark
       );
     })();
-  </script>
-  <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/home.css">
-
+    </script>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/home.css">
 </head>
 
 <body>
-    <!-- Main Navigation Bar -->
-<!-- Main Navigation Bar -->
+    <!-- Improved Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
-
+            
             <div class="search-container">
-                <input type="search" class="form-control search-bar" placeholder="Search events...">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" class="search-bar" placeholder="Search events...">
             </div>
-            <?php
-            // if the user authenticated 
-            if ($authenticated){
-            ?>
-            <!-- Dropdown wrapper -->
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                   <?php echo $_SESSION['username']; ?>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href='profile'>Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="logout">Logout</a></li>
-                </ul>
-            </div>
-            <?php
-            }else {
-            ?>
+            
             <div class="auth-buttons">
-                <a href="login" class="btn btn-outline-light">Log In</a>
-                <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php if ($isLoggedIn) : ?>
+                    <div class="user-section">
+                        <div class="user-info">
+                            <a href="profile" class="username-link">
+                                <span class="username"><?php echo htmlspecialchars($username); ?></span>
+                            </a>
+                            <a href="logout" class="logout-btn">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <a href="login" class="btn btn-outline-light">Log In</a>
+                    <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php endif; ?>
             </div>
-            <?php
-            }
-            ?>
         </div>
     </nav>
 
@@ -309,6 +298,7 @@ if (isset($_SESSION['email'])) {
                         }
                     ?>
                 </div>
+                
                 <!-- Popular Tags Section -->
                 <div class="popular-tags-container">
                     <div class="popular-tags-header">
@@ -334,7 +324,7 @@ if (isset($_SESSION['email'])) {
                     </div>
                 </div>
                 <!-- Footer Section -->
-                <div class="footer-container mt-4 pt-3 border-top">
+                <div class="footer-container mt-4 pt-3">
                     <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
                         <a href="#" class="footer-link">Terms of Service</a>
                         <a href="#" class="footer-link">Privacy Policy</a>
@@ -343,6 +333,7 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
                 </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,10 +1,19 @@
 <?php
 session_start();
-$authenticated = false;
-if (isset($_SESSION['email'])) {
-    //echo "logged in.";
-    $authenticated = true;
+require_once '../config/database.php';
+require_once '../controllers/Auth.php';
+
+// Create Auth instance
+$auth = new Auth();
+$isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+$username = $isLoggedIn ? $_SESSION['username'] : '';
+
+// Redirect to login if not authenticated
+if (!$isLoggedIn) {
+    header("Location: login");
+    exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +21,7 @@ if (isset($_SESSION['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | Ouqat</title>
+    <title>Ouqat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
@@ -33,45 +42,40 @@ if (isset($_SESSION['email'])) {
 </head>
 
 <body>
-    <!-- Main Navigation Bar -->
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand navbar-dark sticky-top">
+    <!-- Improved Navigation Bar -->
+    <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
-
+            
             <div class="search-container">
-                <input type="search" class="form-control search-bar" placeholder="Search events...">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" class="search-bar" placeholder="Search events...">
             </div>
-            <?php
-            // if the user authenticated 
-            if ($authenticated){
-            ?>
-            <!-- Dropdown wrapper -->
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                   <?php echo $_SESSION['username']; ?>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href='profile'>Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="logout">Logout</a></li>
-                </ul>
-            </div>
-            <?php
-            }else {
-            ?>
+            
             <div class="auth-buttons">
-                <a href="login" class="btn btn-outline-light">Log In</a>
-                <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php if ($isLoggedIn) : ?>
+                    <div class="user-section">
+                        <div class="user-info">
+                            <a href="profile" class="username-link">
+                                <span class="username"><?php echo htmlspecialchars($username); ?></span>
+                            </a>
+                            <a href="logout" class="logout-btn">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <a href="login" class="btn btn-outline-light">Log In</a>
+                    <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php endif; ?>
             </div>
-            <?php
-            }
-            ?>
         </div>
     </nav>
+
 
     <div class="container-fluid mt-0 pt-0">
         <div class="row g-0">
@@ -106,38 +110,15 @@ if (isset($_SESSION['email'])) {
                             <i class="bi bi-camera-fill"></i>
                         </button>
                     </div>
-                    <?php
-                        // if the user authenticated 
-                        if ($authenticated){
-                    ?>
+                    
                     <div class="profile-info">
-                        <h2 class="mb-1"><?php echo $_SESSION['username']; ?></h2>
-                        <p class="text-muted mb-2">@username</p>
-                        <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
-                    <?php
-                        }else{ 
-                    ?>
-                                        <div class="profile-info">
-                        <h2 class="mb-1">Group14</h2>
-                        <p class="text-muted mb-2">@username</p>
-                        <p>Event enthusiast and organizer. Love connecting people through shared interests!</p>
-                        <?php
-                        }
-                    ?>           
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value">4</div>
-                                <div class="stat-label">Active events</div>
-                            </div>
-
-                            <div class="stat-item">
-                                <div class="stat-value">39</div>
-                                <div class="stat-label">Created events</div>
-                            </div>
-                            
-                            
+                        <div class="profile-name-container">
+                            <h1 class="profile-name"><?php echo htmlspecialchars($username); ?></h1>
+                            <button class="edit-profile-btn">
+                                Edit Profile
+                            </button>
                         </div>
-                        <p class="profile-username">@ouqat</p>
+                        <p class="profile-username">@<?php echo htmlspecialchars($username); ?></p>
                         <p class="profile-bio">
                         We don't know much about them, but we're sure username is great.
                         </p>
@@ -232,43 +213,47 @@ if (isset($_SESSION['email'])) {
 
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
+
                 <!-- Trending Events Section -->
                 <div class="sidebar-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                     </div>
-                    <div class="side-event-card">
-                        <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
-                            <div>
-                                <h6 class="mb-1 fw-semibold">Food Truck Festival</h6>
-                                <div class="d-flex align-items-center text-muted small mb-1">
-                                    <i class="bi bi-calendar me-2"></i>
-                                    <span>Mar 28</span>
+                    <?php
+                        $events = [
+                            [
+                                'title' => 'Food Truck Festival',
+                                'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                                'date' => 'Mar 28',
+                                'location' => 'Miami, FL'
+                            ],
+                            [
+                                'title' => 'Blockchain Conference',
+                                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                                'date' => 'Apr 12-14',
+                                'location' => 'Austin, TX'
+                            ],
+                        ];
+
+                        foreach ($events as $event) {
+                            echo '<div class="side-event-card">
+                                <div class="d-flex gap-3">
+                                    <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
+                                        <div class="d-flex align-items-center text-muted small mb-1">
+                                            <i class="bi bi-calendar me-2"></i>
+                                            <span>' . htmlspecialchars($event['date']) . '</span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted small">
+                                            <i class="bi bi-geo-alt me-2"></i>
+                                            <span>' . htmlspecialchars($event['location']) . '</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <i class="bi bi-geo-alt me-2"></i>
-                                    <span>Miami, FL</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="side-event-card">
-                        <div class="d-flex gap-3">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" class="side-event-card-img" alt="Event">
-                            <div>
-                                <h6 class="mb-1 fw-semibold">Blockchain Conference</h6>
-                                <div class="d-flex align-items-center text-muted small mb-1">
-                                    <i class="bi bi-calendar me-2"></i>
-                                    <span>Apr 12-14</span>
-                                </div>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <i class="bi bi-geo-alt me-2"></i>
-                                    <span>Austin, TX</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </div>';
+                        }
+                    ?>
                 </div>
                 
                 <!-- Popular Tags Section -->
@@ -277,31 +262,26 @@ if (isset($_SESSION['email'])) {
                         <h5><i class="bi bi-tags me-2"></i>Popular Tags</h5>
                     </div>
                     <div class="popular-tags-flex">
-                        <span class="popular-tag" data-tag="music">
-                            <i class="bi bi-music-note-beamed"></i>
-                            <span>Music</span>
-                        </span>
-                        <span class="popular-tag" data-tag="tech">
-                            <i class="bi bi-laptop"></i>
-                            <span>Tech</span>
-                        </span>
-                        <span class="popular-tag" data-tag="sports">
-                            <i class="bi bi-trophy"></i>
-                            <span>Sports</span>
-                        </span>
-                        <span class="popular-tag" data-tag="gaming">
-                            <i class="bi bi-joystick"></i>
-                            <span>Gaming</span>
-                        </span>
-                        <span class="popular-tag" data-tag="comedy">
-                            <i class="bi bi-emoji-laughing"></i>
-                            <span>Comedy</span>
-                        </span>
+                        <?php
+                        $popularTags = [
+                            ['tag' => 'music', 'icon' => 'music-note-beamed', 'label' => 'Music'],
+                            ['tag' => 'tech', 'icon' => 'laptop', 'label' => 'Tech'],
+                            ['tag' => 'sports', 'icon' => 'trophy', 'label' => 'Sports'],
+                            ['tag' => 'gaming', 'icon' => 'joystick', 'label' => 'Gaming'],
+                            ['tag' => 'comedy', 'icon' => 'emoji-laughing', 'label' => 'Comedy'],
+                        ];
+                        
+                        foreach ($popularTags as $tag) {
+                            echo '<span class="popular-tag" data-tag="' . htmlspecialchars($tag['tag']) . '">
+                                <i class="bi bi-' . htmlspecialchars($tag['icon']) . '"></i>
+                                <span>' . htmlspecialchars($tag['label']) . '</span>
+                            </span>';
+                        }
+                        ?>
                     </div>
                 </div>
-                
                 <!-- Footer Section -->
-                <div class="footer-container mt-4 pt-3 border-top">
+                <div class="footer-container mt-4 pt-3">
                     <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
                         <a href="#" class="footer-link">Terms of Service</a>
                         <a href="#" class="footer-link">Privacy Policy</a>
@@ -315,33 +295,6 @@ if (isset($_SESSION['email'])) {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Delete event functionality
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (confirm('Are you sure you want to delete this event?')) {
-                        const card = this.closest('.event-card');
-                        card.style.transform = 'scale(0.95)';
-                        card.style.opacity = '0';
-                        setTimeout(() => {
-                            card.remove();
-                        }, 300);
-                    }
-                });
-            });
-            
-            // Edit profile button
-            document.querySelector('.edit-profile-btn')?.addEventListener('click', function() {
-                alert('Edit profile functionality would open a modal or redirect to an edit page.');
-            });
-            
-            // Edit picture button
-            document.querySelector('.edit-picture-btn')?.addEventListener('click', function() {
-                alert('Edit picture functionality would open a file selector.');
-            });
-        });
-    </script>
 </body>
+
 </html>

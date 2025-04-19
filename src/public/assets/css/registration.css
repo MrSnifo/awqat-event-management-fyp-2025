@@ -8,7 +8,6 @@
 	--text-secondary: #666666;
 	--accent: #EAEAEA;
 	--border-color: #DADADA;
-	--error: #ff4444;
 }
 
 .dark-theme {
@@ -21,7 +20,6 @@
 	--text-secondary: #B3B3B3;
 	--accent: #2A2A2A;
 	--border-color: #333;
-	--error: #ff6b6b;
 }
 
 /* Base Styles */
@@ -219,12 +217,19 @@ body {
 }
 
 /* Error Handling */
-.error-message {
-	color: var(--error);
-	font-size: 0.75rem;
-	margin-top: 0.25rem;
-	display: none;
-	padding-left: 0.5rem;
+.error-message-content {
+    display: flex;
+    align-items: center;
+  
+    color: #ff6b6b;
+    padding: 0.4rem 0rem;
+   
+    font-size: 0.9rem;
+    gap: 0.5rem;
+}
+
+.error-message-content i {
+    font-size: 1rem;
 }
 
 .input-group.invalid input {

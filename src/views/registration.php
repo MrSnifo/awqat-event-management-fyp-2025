@@ -1,3 +1,47 @@
+<?php
+session_start();
+require_once '../config/database.php';
+require_once '../controllers/auth.php';
+
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get user inputs
+    $data = [
+        'username' => trim(strip_tags($_POST['username'] ?? '')),
+        'email' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL),
+        'password' => $_POST['password'] ?? '',
+        'password_confirm' => $_POST['password_confirm'] ?? ''
+    ];
+
+    // Validate inputs
+    if (empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['password_confirm'])) {
+        $error = "Please fill in all fields.";
+    } elseif ($data['password'] !== $data['password_confirm']) {
+        $error = "Passwords do not match.";
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    } else {
+        // Proceed with registration
+        $auth = new Auth();
+        $result = $auth->register($data);
+
+        if ($result['success']) {
+            $loginResult = $auth->login($data['email'], $data['password']);
+            if ($loginResult['success']) {
+                $auth->createSession($loginResult['user_id'], $loginResult['username']);
+                header('Location: dashboard.php');
+                exit();
+            } else {
+                $error = "Login failed after registration.";
+            }
+        } else {
+            $error = $result['message'];
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +71,12 @@
             </div>
             
             <?php if (!empty($error)): ?>
-                <div class="error-message" style="display: block; text-align: center; margin-bottom: 1rem;">
-                    <?php echo htmlspecialchars($error); ?>
+                <div class="error-message-container">
+                    <div class="error-message-content">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        <!-- Prevents cross site scripting by wrapping it (Partie) -->
+                        <span><?php echo htmlspecialchars($error); ?></span>
+                    </div>
                 </div>
             <?php endif; ?>
             
@@ -37,7 +85,7 @@
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-person-fill"></i></span>
                         <input type="text" id="username" name="username" placeholder=" " required
-                               minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
+                               minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" 
                                title="Username must be 3-20 characters (letters, numbers, underscores)">
                         <label for="username">Username</label>
                         <div class="error-message" id="username-error"></div>

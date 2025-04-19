@@ -292,25 +292,3 @@
 	background: var(--primary-light);
 	border-color: var(--primary);
 }
-/*new Scroll bar */
-/* ===== Scrollbar Styling (Global) ===== */
-* {
-	scrollbar-width: thin;
-	scrollbar-color: var(--border-color) transparent;
-}
-
-body::-webkit-scrollbar,
-.login-container::-webkit-scrollbar {
-	width: 6px;
-}
-
-body::-webkit-scrollbar-track,
-.login-container::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-body::-webkit-scrollbar-thumb,
-.login-container::-webkit-scrollbar-thumb {
-	background-color: var(--border-color);
-	border-radius: 3px;
-}

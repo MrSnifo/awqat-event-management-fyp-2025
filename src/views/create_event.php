@@ -1,5 +1,23 @@
+<?php
+session_start();
+require_once '../config/database.php';
+require_once '../controllers/Auth.php';
+
+// Create Auth instance
+$auth = new Auth();
+$isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+$username = $isLoggedIn ? $_SESSION['username'] : '';
+
+// Redirect to login if not authenticated
+if (!$isLoggedIn) {
+    header("Location: login");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,29 +36,46 @@
         savedTheme ? savedTheme === 'dark' : prefersDark
       );
     })();
-  </script>
-  <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/add-event.css">
-
+    </script>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/create-event.css">
 </head>
 
 <body>
-    <!-- Main Navigation Bar -->
+    <!-- Improved Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
+            
             <div class="search-container">
-                <input type="search" class="form-control search-bar" placeholder="Search events...">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" class="search-bar" placeholder="Search events...">
             </div>
+            
             <div class="auth-buttons">
-                <a href="login" class="btn btn-outline-light">Log In</a>
-                <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php if ($isLoggedIn) : ?>
+                    <div class="user-section">
+                        <div class="user-info">
+                            <a href="profile" class="username-link">
+                                <span class="username"><?php echo htmlspecialchars($username); ?></span>
+                            </a>
+                            <a href="logout" class="logout-btn">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <a href="login" class="btn btn-outline-light">Log In</a>
+                    <a href="register" class="btn btn-orange">Sign Up</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
+
 
     <div class="container-fluid mt-0 pt-0">
         <div class="row g-0">
@@ -91,7 +126,10 @@
                 </div>
                 <div class="col-md-6">
                     <label for="endDate" class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="endDate">
+                    <input type="date" class="form-control" id="endDate" required>
+                    <div class="invalid-feedback">
+                        Please select a end date.
+                    </div>
                 </div>
             </div>
             
@@ -105,7 +143,10 @@
                 </div>
                 <div class="col-md-6">
                     <label for="endTime" class="form-label">End Time</label>
-                    <input type="time" class="form-control" id="endTime">
+                    <input type="time" class="form-control" id="endTime" required>
+                    <div class="invalid-feedback">
+                        Please select a end time.
+                    </div>
                 </div>
             </div>
             
@@ -227,7 +268,7 @@
                     </div>
                 </div>
                 <!-- Footer Section -->
-                <div class="footer-container mt-4 pt-3 border-top">
+                <div class="footer-container mt-4 pt-3">
                     <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
                         <a href="#" class="footer-link">Terms of Service</a>
                         <a href="#" class="footer-link">Privacy Policy</a>
@@ -242,7 +283,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
     <script src="assets/js/add-event.js"></script>
-</body>
 </body>
 
 </html>

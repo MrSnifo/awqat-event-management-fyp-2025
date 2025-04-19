@@ -1,19 +1,27 @@
 <?php
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'ouqat'); 
-define('DB_USER', 'root'); 
-define('DB_PASS', '');
-
-
-$dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8";
-
-try {
-    // PDO will use exceptions in case of an error
-    $pdo = new PDO($dsn, DB_USER, DB_PASS);
-     // Set the error mode to exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+class Database {
+    private $host = 'localhost';
+    private $db_name = 'ouqat';
+    private $username = 'root';
+    private $password = '';
+    public $conn;
+    
+    public function getConnection() {
+        $this->conn = null;
+        
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name, 
+                $this->username, 
+                $this->password
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $exception) {
+            error_log("Database connection error: " . $exception->getMessage());
+            die("Database connection error. Please try again later.");
+        }
+        
+        return $this->conn;
+    }
 }
 ?>

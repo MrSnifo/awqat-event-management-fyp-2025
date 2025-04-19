@@ -23,10 +23,10 @@ switch ($cleanPath) {
         include __DIR__ . '/../views/interests.php';
         break;
     case '/create-event':
-        include __DIR__ . '/../views/add_event.php';
+        include __DIR__ . '/../views/create_event.php';
         break;
     case '/logout':
-        include __DIR__ . '/../views/logout.php'; // Or wherever logout logic lives
+        include __DIR__ . '/../views/logout.php';
         break;
         
     default:

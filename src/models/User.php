@@ -4,60 +4,42 @@ class User
     private $db;
     private $table = 'users';
 
-    public $id;
-    public $username;
-    public $email;
-    public $password_hash;
-    public $profile_description;
-    public $profile_picture_url;
-    public $social_links;
-    public $role;
-    public $status;
-
-    public function __construct($db)
-    {
+    public function __construct($db) {
         $this->db = $db;
     }
 
-    // Create a new user
-    public function create()
-    {
-        $query = "INSERT INTO " . $this->table . " (username, email, password_hash, profile_description, profile_picture_url, social_links, role, status)
-                  VALUES (:username, :email, :password_hash, :profile_description, :profile_picture_url, :social_links, :role, :status)";
+    // Create a new user.
+    public function create(array $data): bool {
+        $query = "INSERT INTO {$this->table} 
+            (username, email, password_hash, profile_description, profile_picture_url, social_links, role, status)
+            VALUES (:username, :email, :password_hash, :profile_description, :profile_picture_url, :social_links, :role, :status)";
 
         $stmt = $this->db->prepare($query);
 
-        // Bind values (TO prevent SQL injection)
-        $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(':email', $this->email);
-        $stmt->bindParam(':password_hash', $this->password_hash);
-        $stmt->bindParam(':profile_description', $this->profile_description);
-        $stmt->bindParam(':profile_picture_url', $this->profile_picture_url);
-        $stmt->bindParam(':social_links', json_encode($this->social_links));
-        $stmt->bindParam(':role', $this->role);
-        $stmt->bindParam(':status', $this->status);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute([
+            ':username'             => $data['username'],
+            ':email'                => $data['email'],
+            ':password_hash'        => $data['password_hash'],
+            ':profile_description'  => $data['profile_description'] ?? '',
+            ':profile_picture_url'  => $data['profile_picture_url'] ?? '',
+            ':social_links'         => json_encode($data['social_links'] ?? []),
+            ':role'                 => $data['role'] ?? 'user',
+            ':status'               => $data['status'] ?? 'active'
+        ]);
     }
 
-    // Read a user by id
-    public function read($id)
-    {
-        $query = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
+    // Get user by ID.
+    public function getById(int $id): ?array {
+        $query = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    // Update user details
-    public function update()
-    {
-        $query = "UPDATE " . $this->table . " 
+    // Update user by ID.
+    public function update(int $id, array $data): bool {
+        $query = "UPDATE {$this->table} 
                   SET username = :username, email = :email, password_hash = :password_hash, 
                       profile_description = :profile_description, profile_picture_url = :profile_picture_url, 
                       social_links = :social_links, role = :role, status = :status
@@ -65,73 +47,42 @@ class User
 
         $stmt = $this->db->prepare($query);
 
-        // Bind values
-        $stmt->bindParam(':id', $this->id);
-        $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(':email', $this->email);
-        $stmt->bindParam(':password_hash', $this->password_hash);
-        $stmt->bindParam(':profile_description', $this->profile_description);
-        $stmt->bindParam(':profile_picture_url', $this->profile_picture_url);
-        $stmt->bindParam(':social_links', json_encode($this->social_links));
-        $stmt->bindParam(':role', $this->role);
-        $stmt->bindParam(':status', $this->status);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute([
+            ':id'                   => $id,
+            ':username'             => $data['username'],
+            ':email'                => $data['email'],
+            ':password_hash'        => $data['password_hash'],
+            ':profile_description'  => $data['profile_description'] ?? '',
+            ':profile_picture_url'  => $data['profile_picture_url'] ?? '',
+            ':social_links'         => json_encode($data['social_links'] ?? []),
+            ':role'                 => $data['role'] ?? 'user',
+            ':status'               => $data['status'] ?? 'active'
+        ]);
     }
 
-    // Delete a user
-    public function delete()
-    {
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+    // Delete a user by ID.
+    public function delete(int $id): bool {
+        $query = "DELETE FROM {$this->table} WHERE id = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute([':id' => $id]);
     }
 
-    // Check if username exists
-    public function usernameExists()
-    {
-        $query = "SELECT id FROM " . $this->table . " WHERE username = :username LIMIT 1";
+    // Find user by email.
+    public function findByEmail(string $email): ?array {
+        $query = "SELECT * FROM {$this->table} WHERE email = :email LIMIT 1";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':username', $this->username);
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
+        $stmt->execute([':email' => $email]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    // Check if email exists
-    public function emailExists()
-    {
-        $query = "SELECT id FROM " . $this->table . " WHERE email = :email LIMIT 1";
+    // Find user by username.
+    public function findByUsername(string $username): ?array {
+        $query = "SELECT * FROM {$this->table} WHERE username = :username LIMIT 1";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':email', $this->email);
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
-    }
+        $stmt->execute([':username' => $username]);
 
-
-    public function findByUsernameOrEmail($login) {
-        $query = "SELECT * FROM " . $this->table . " 
-                  WHERE username = :login OR email = :login 
-                  LIMIT 1";
-        
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':login', $login);
-        $stmt->execute();
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    
-    public function verifyPassword($password) {
-        return password_verify($password, $this->password_hash);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 }
 ?>

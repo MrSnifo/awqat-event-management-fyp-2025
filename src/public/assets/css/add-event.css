@@ -81,6 +81,7 @@
 /* Tags Input Styles */
 .tags-input-container {
 	position: relative;
+	color: var(--text-secondary);
 }
 
 .tags-list {

@@ -1,27 +1,31 @@
 <?php
-session_start();
 require_once '../config/database.php';
 require_once '../controllers/auth.php';
 
-$email = "";
-$error = "";
+// If user is already logged in
+$auth = new Auth();
+if ($auth->verifySession()) {
+    header('Location: ./');
+    exit();
+}
+
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
-    
+
     if (empty($email) || empty($password)) {
         $error = "Please fill in all fields";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format";
     } else {
         try {
-            $auth = new Auth();
-            $result = $auth->verifyLogin($email, $password);
-            
+            $result = $auth->login($email, $password);
+
             if ($result['success']) {
-                $auth->createSession($result['user_id']);
-                header('Location: dashboard.php');
+                $auth->createSession($result['user_id'], $result['username']);
+                header('Location: ./');
                 exit();
             } else {
                 $error = $result['message'];
@@ -45,12 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         (function() {
-        const savedTheme = localStorage.getItem('user-theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle(
-            'dark-theme', 
-            savedTheme ? savedTheme === 'dark' : prefersDark
-        );
+            const savedTheme = localStorage.getItem('user-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.classList.toggle(
+                'dark-theme', 
+                savedTheme ? savedTheme === 'dark' : prefersDark
+            );
         })();
     </script>
     <link rel="stylesheet" href="assets/css/login.css">
@@ -63,52 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>Sign in to continue to Ouqat</p>
             </div>
 
-            <?php
-            session_start();
-            require_once '../config/database.php';
-            require_once '../controllers/auth.php';
+            <?php if (!empty($error)): ?>
+                <div class="error-message-container">
+                    <div class="error-message-content">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        <!-- Prevents cross site scripting by wrapping it (Partie) -->
+                        <span><?php echo htmlspecialchars($error); ?></span>
+                    </div>
+                </div>
+            <?php endif; ?>
 
-
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                $password = $_POST['password'];
-                // $remember = isset($_POST['remember']) ? true : false;
-
-                if (empty($email) || empty($password)) {
-                    $error = "Please fill in all fields";
-                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $error = "Invalid email format";
-                } else {
-                    try {
-                        $auth = new Auth();
-                        $result = $auth->verifyLogin($email, $password);
-                        if ($result['success']) {
-                            $auth->createSession($result['user_id']);
-                            header('Location: dashboard.php');
-                            exit();
-                        } else { 
-                            echo $result['message'];
-                        }
-
-                        if (!$auth->verifySession()) {
-                            header('Location: login.php');
-                            exit();
-                        }
-
-                        // Logout
-                        $auth->logout();
-                        header('Location: login.php');
-
-
-                    } catch (PDOException $e) {
-                        error_log("Login error: " . $e->getMessage());
-                        $error = "A system error occurred. Please try again later.";
-                    }
-                }
-            }
-
-        ?>  
             <form class="login-form" method="post">
                 <div class="input-group">
                     <span class="input-icon"><i class="bi bi-at"></i></span>
@@ -127,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="login-options">
                     <div class="remember-container">
-                        <input type="checkbox" id="remember">
-                        <label for="remember">Remember me</label>
+                        <input type="checkbox" id="remember" name="remember">
+                        <labe²l for="remember">Remember me</label>
                     </div>
                     <a href="forgot-password" class="forgot-password">Forgot password?</a>
                 </div>
