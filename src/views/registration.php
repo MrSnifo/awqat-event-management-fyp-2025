@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $loginResult = $auth->login($data['email'], $data['password']);
             if ($loginResult['success']) {
                 $auth->createSession($loginResult['user_id'], $loginResult['username']);
-                header('Location: dashboard.php');
+                header('Location: ./');
                 exit();
             } else {
                 $error = "Login failed after registration.";
