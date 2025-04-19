@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 require_once '../config/Database.php';
 require_once '../models/User.php';
@@ -96,6 +95,3 @@ class Auth {
     }
 }
 ?>
-=======
-
->>>>>>> d3c286e63cc3532386efb77333fadbd58b4f2c3b
