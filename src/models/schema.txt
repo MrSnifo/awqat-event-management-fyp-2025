@@ -19,3 +19,19 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+//events 
+CREATE TABLE events (
+    id_event INT PRIMARY KEY,
+    title VARCHAR(255),
+    description TEXT,
+    start_date DATE,
+    end_date DATE,
+    start_time TIME,
+    end_time TIME,
+    location VARCHAR(255),
+    tags JSON,
+    cover_image TEXT,
+    interested INT
+);
+

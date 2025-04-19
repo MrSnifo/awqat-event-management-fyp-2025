@@ -170,6 +170,7 @@ if (!$isLoggedIn) {
                     </div>
                 </div>
             </div>
+            <!-- location -->
             
             <!-- Cover Image Upload -->
             <div class="mb-4">
