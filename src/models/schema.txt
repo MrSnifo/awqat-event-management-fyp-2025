@@ -1,0 +1,21 @@
+
+
+// Just copy paste hethi fl sql 
+// User
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    
+    password_hash VARCHAR(255) NOT NULL,
+    profile_description TEXT DEFAULT NULL,
+    profile_picture_url VARCHAR(255) DEFAULT NULL,
+    social_links JSON DEFAULT NULL,
+
+    role TINYINT UNSIGNED NOT NULL DEFAULT 0, -- role (0=user, 1=mod, 2=admin, 3=superadmin)
+    status TINYINT UNSIGNED NOT NULL DEFAULT 1, -- status (0=inactive, 1=active, 2=banned)
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

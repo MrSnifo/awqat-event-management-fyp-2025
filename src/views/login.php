@@ -1,34 +1,35 @@
 <?php
+session_start();
+require_once '../config/database.php';
+require_once '../controllers/auth.php';
+
 $email = "";
 $error = "";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'];
+    
     if (empty($email) || empty($password)) {
-        $error = "Email and Password are required !";
+        $error = "Please fill in all fields";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format";
     } else {
-        require_once __DIR__ . '/../config/database.php';
-        $dbConnection = getDatabaseConnection();
-
-        $statement = $dbConnection->prepare("SELECT id,username,email,password_hash FROM users WHERE email =?");
-        $statement->bind_param("s", $email);
-        $statement->execute();
-        $statement->bind_result($id, $username, $email, $stored_password);
-
-        if ($statement->fetch()) {
-            if ($password === $stored_password) {
-                $_SESSION["id"] = $id;
-                $_SESSION["email"] = $email;
-                $_SESSION["username"] = $username;
-                header("Location: ./");
-                exit;
+        try {
+            $auth = new Auth();
+            $result = $auth->verifyLogin($email, $password);
+            
+            if ($result['success']) {
+                $auth->createSession($result['user_id']);
+                header('Location: dashboard.php');
+                exit();
+            } else {
+                $error = $result['message'];
             }
+        } catch (PDOException $e) {
+            error_log("Login error: " . $e->getMessage());
+            $error = "A system error occurred. Please try again later.";
         }
-
-        $statement->close();
-        $error = "Email or Password invalide ";
     }
 }
 ?>

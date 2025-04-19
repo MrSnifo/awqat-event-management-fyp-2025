@@ -1,59 +1,3 @@
-<?php
-session_start(); // <-- Add this line!
-if (isset($_SESSION['email'])){
-    header("Location: /PFA-2024-2025test/src/public/");
-    exit;
-}
-
-// Initialization
-$username = "";
-$email = "";
-$password = "";
-$confirm_password = "";
-
-$password_identique_error = "";
-$email_error = "";
-$error = false;
-
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    require_once __DIR__ . '/../config/database.php';
-    $dbConnection = getDatabaseConnection();
-
-    $statement = $dbConnection->prepare("SELECT id FROM users WHERE email =?");
-    $statement->bind_param("s", $email);
-    $statement->execute();
-    $statement->store_result();
-
-    if ($statement->num_rows > 0) {
-        $email_error = "Email is already Used!";
-        $error = true;
-    }
-    $statement->close();
-
-    if (!$error) {
-        $statement = $dbConnection->prepare("INSERT INTO users (username,email,password_hash) VALUES(?,?,?)");
-        $statement->bind_param('sss', $username, $email, $password);
-        $statement->execute();
-        $insert_id = $statement->insert_id;
-        $statement->close();
-
-        $_SESSION['username'] = $username;
-        $_SESSION['email'] = $email;
-
-        header("Location: /PFA-2024-2025/src/public/");
-        exit;
-    }
-}
-?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,14 +6,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <title>Sign Up - Ouqat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-	<script>
+    <script>
         (function() {
-        const savedTheme = localStorage.getItem('user-theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle(
-            'dark-theme', 
-            savedTheme ? savedTheme === 'dark' : prefersDark
-        );
+            const savedTheme = localStorage.getItem('user-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.classList.toggle(
+                'dark-theme', 
+                savedTheme ? savedTheme === 'dark' : prefersDark
+            );
         })();
     </script>
     <link rel="stylesheet" href="assets/css/registration.css">
@@ -82,7 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 <p>Join Ouqat today</p>
             </div>
             
-            <form id="registrationForm" class="registration-form" method="post">
+            <?php if (!empty($error)): ?>
+                <div class="error-message" style="display: block; text-align: center; margin-bottom: 1rem;">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+            
+            <form class="registration-form" method="POST">
                 <div class="form-fields">
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-person-fill"></i></span>
@@ -90,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
                                title="Username must be 3-20 characters (letters, numbers, underscores)">
                         <label for="username">Username</label>
-                        <div class="error-message" id="username-error" value="<?php echo $username ?>"></div>
+                        <div class="error-message" id="username-error"></div>
                     </div>
                     
                     <div class="input-group">
@@ -99,14 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                title="Please enter a valid email address">
                         <label for="email">Email Address</label>
-                        <div class="error-message" id="email-error" value="<?php echo $email_error ?>" ></div>
+                        <div class="error-message" id="email-error"></div>
                     </div>
-                    
+
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-key-fill"></i></span>
                         <input type="password" id="password" name="password" placeholder=" " required
                                minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
-                               title="Password must be at least 8 characters with uppercase, lowercase, and number" value="">
+                               title="Password must be at least 8 characters with uppercase, lowercase, and number">
                         <label for="password">Password</label>
                         <button type="button" class="password-toggle">
                             <i class="bi bi-eye-fill"></i>
@@ -116,12 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     
                     <div class="input-group">
                         <span class="input-icon"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required value="">
-                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="password_confirm" name="password_confirm" placeholder=" " required>
+                        <label for="password_confirm">Confirm Password</label>
                         <button type="button" class="password-toggle">
                             <i class="bi bi-eye-fill"></i>
                         </button>
-                        <div class="error-message" id="confirm-password-error"><?= $password_identique_error?></div>
+                        <div class="error-message" id="confirm-password-error"></div>
                     </div>
                 </div>
                 
@@ -140,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             </div>
             
             <div class="login-footer">
-                <p>Already have an account? <a href="login">Sign in</a></p>
+                <p>Already have an account? <a href="login.php">Sign in</a></p>
             </div>
         </div>
         
