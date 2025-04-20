@@ -162,15 +162,20 @@ if (!$isLoggedIn) {
             <!-- Tags Section -->
             <div class="mb-4">
                 <label class="form-label">Tags</label>
+                
                 <div class="tags-input-container">
                     <input type="text" class="tags-input form-control" placeholder="Type tag and press Enter">
                     <div class="tags-list"></div>
-                    <div class="tags-hint small text-muted mt-2">
-                        Add tags to help people discover your event (e.g. music, art, workshop)
-                    </div>
                 </div>
             </div>
-            
+            <!-- Location -->
+            <div class="mb-4">
+                <label class="form-label">Location</label>
+                <div class="tags-input-container">
+                    <input type="text" class="tags-input form-control" placeholder="Type tag and press Enter">
+                    <div class="tags-list"></div>
+                </div>
+            </div>             
             <!-- Cover Image Upload -->
             <div class="mb-4">
                 <label for="coverImage" class="form-label">Cover Image *</label>
