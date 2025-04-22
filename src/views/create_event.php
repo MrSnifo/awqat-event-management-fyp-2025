@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle file upload if provided
     if (isset($_FILES['cover_image'])) {
         if ($_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = '../storage/uploads/events/';
+            $uploadDir = '../storage/uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (in_array($fileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetPath)) {
-                    $formData['cover_image_url'] = '/uploads/events/' . $fileName;
+                    $formData['cover_image_url'] = 'storage/uploads/' . $fileName;
                 } else {
                     $errors[] = 'Failed to upload image';
                 }

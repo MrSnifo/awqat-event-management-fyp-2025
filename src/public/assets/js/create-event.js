@@ -23,7 +23,12 @@ document.getElementById('coverImage').addEventListener('change', function(e) {
 const tagsInput = document.querySelector('.tags-input');
 const tagsList = document.getElementById('tagsList');
 const tagsHiddenInput = document.getElementById('tagsHiddenInput');
-let tags = [];
+
+// Get initial tags from HTML
+const initialTags = Array.from(tagsList.querySelectorAll('.badge')).map(badge => {
+    return badge.textContent.trim().replace('x', '');
+});
+let tags = [...initialTags];
 
 function renderTags() {
     tagsList.innerHTML = tags.map(tag => `
