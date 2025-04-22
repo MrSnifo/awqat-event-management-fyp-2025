@@ -72,7 +72,7 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
     <!-- Improved Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
-            <a class="navbar-brand" href="./">
+            <a class="navbar-brand" href="../">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
@@ -86,18 +86,18 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                 <?php if ($isLoggedIn) : ?>
                     <div class="user-section">
                         <div class="user-info">
-                            <a href="profile" class="username-link">
+                            <a href="../profile" class="username-link">
                                 <span class="username"><?php echo htmlspecialchars($username); ?></span>
                             </a>
-                            <a href="logout" class="logout-btn">
+                            <a href="../logout" class="logout-btn">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Logout</span>
                             </a>
                         </div>
                     </div>
                 <?php else : ?>
-                    <a href="login" class="btn btn-outline-light">Log In</a>
-                    <a href="register" class="btn btn-orange">Sign Up</a>
+                    <a href="../login" class="btn btn-outline-light">Log In</a>
+                    <a href="../register" class="btn btn-orange">Sign Up</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -111,16 +111,16 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link" id="homeRefresh" href="./">
+                        <a class="nav-link" id="homeRefresh" href="../">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
-                        <a class="nav-link" href="profile">
+                        <a class="nav-link" href="../profile">
                             <i class="bi bi-person me-2"></i>Profile
                         </a>
-                        <a class="nav-link" href="interests">
+                        <a class="nav-link" href="../interests">
                             <i class="bi bi-star me-2"></i> My Interests
                         </a>
-                        <a class="nav-link" href="create-event">
+                        <a class="nav-link" href="../create-event">
                             <i class="bi bi-plus-circle me-2"></i> Create Event
                         </a>
                     </nav>
@@ -142,7 +142,7 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                          onerror="this.src='https://via.placeholder.com/50'">
                     <div class="creator-info">
                         <div class="creator-label">Created by</div>
-                        <a href="/profile/<?php echo $event['creator']['id'] ?>" class="creator-name">
+                        <a href="../profile/<?php echo $event['creator']['id'] ?>" class="creator-name">
                             <?php echo htmlspecialchars($event['creator']['name']) ?>
                         </a>
                     </div>
