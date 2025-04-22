@@ -20,13 +20,14 @@ document.getElementById('coverImage').addEventListener('change', function(e) {
 });
 
 // Tags Functionality
+// Tags Functionality
 const tagsInput = document.querySelector('.tags-input');
 const tagsList = document.getElementById('tagsList');
 const tagsHiddenInput = document.getElementById('tagsHiddenInput');
 
 // Get initial tags from HTML
 const initialTags = Array.from(tagsList.querySelectorAll('.badge')).map(badge => {
-    return badge.textContent.trim().replace('x', '');
+    return badge.textContent.trim().replace('×', '').trim();
 });
 let tags = [...initialTags];
 
@@ -43,8 +44,9 @@ function renderTags() {
     
     // Add event listeners to remove buttons
     document.querySelectorAll('.tag-remove').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const tagToRemove = this.parentNode.textContent.trim().replace('×', '');
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const tagToRemove = this.parentNode.textContent.trim().replace('×', '').trim();
             tags = tags.filter(t => t !== tagToRemove);
             renderTags();
         });
@@ -67,7 +69,6 @@ tagsInput.addEventListener('keydown', function(e) {
 
 // Initialize tags display
 renderTags();
-
 // Form Validation
 document.querySelector('form').addEventListener('submit', function(e) {
     // Check required fields
@@ -101,13 +102,11 @@ document.querySelector('form').addEventListener('submit', function(e) {
     
     if (endDate < startDate) {
         document.getElementById('endDate').classList.add('is-invalid');
-        alert('End date cannot be before start date');
         isValid = false;
     }
     
     if (endDate.getTime() === startDate.getTime() && endTime <= startTime) {
         document.getElementById('endTime').classList.add('is-invalid');
-        alert('End time must be after start time for same-day events');
         isValid = false;
     }
     
@@ -124,4 +123,11 @@ document.querySelectorAll('input, textarea').forEach(input => {
     input.addEventListener('input', function() {
         this.classList.remove('is-invalid');
     });
+
+
+document.getElementById('create_event').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent Enter key from submitting the form
+    }
+});
 });

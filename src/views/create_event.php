@@ -12,7 +12,6 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
 
 // Initialize variables
 $errors = [];
-$success = false;
 $formData = [
     'title' => '',
     'location' => '',
@@ -70,11 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // If no errors, create event
     if (empty($errors)) {
         $result = $eventController->createEvent($formData);
         if ($result['success']) {
-            $success = true;
             // Reset form data
             $formData = [
                 'title' => '',
@@ -87,6 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'cover_image_url' => '',
                 'tags' => []
             ];
+
+            header("Location: ./event/" . $result['event_id']);
+            exit();
         } else {
             $errors[] = $result['message'];
         }
@@ -184,23 +184,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="create-event-container">
                     <h3 class="create-event-title mb-4"><i class="bi bi-plus-circle me-2"></i>Create New Event</h3>
                     
+                    <div class="error-message-container">
                     <?php if (!empty($errors)): ?>
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                <?php foreach ($errors as $error): ?>
-                                    <li><?php echo htmlspecialchars($error); ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                        <ul>
+                            <?php foreach ($errors as $error): ?>
+                                <div class="error-message-content">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <span><?php echo htmlspecialchars($error); ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                        </ul>
                     <?php endif; ?>
+                    </div>
                     
-                    <?php if ($success): ?>
-                        <div class="alert alert-success">
-                            Event created successfully!
-                        </div>
-                    <?php endif; ?>
-                    
-                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <form method="POST" id="create_event" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <!-- Hidden input for tags -->
                         <input type="hidden" name="tags" id="tagsHiddenInput" value="<?php echo htmlspecialchars(implode(',', $formData['tags'])); ?>">
                         
