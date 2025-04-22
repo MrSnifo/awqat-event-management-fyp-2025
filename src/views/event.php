@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../config/database.php';
 require_once '../controllers/Auth.php';
 
@@ -8,6 +9,37 @@ $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 
 // Redirect to login if not authenticated
+if (!$isLoggedIn) {
+    header("Location: login");
+    exit();
+}
+
+$event = [
+    'id' => 123,
+    'title' => 'Tech Conference 2023',
+    'description' => "Join us for the biggest tech conference of the year featuring top industry speakers, workshops, and networking opportunities.\nThis three-day event will cover the latest trends in AI, blockchain, and cloud computing with hands-on sessions and panel discussions.",
+    'location' => 'Dubai World Trade Centre',
+    'start_date' => '2026-12-15',
+    'end_date' => '2023-12-17',
+    'start_time' => '09:00:00',
+    'end_time' => '18:00:00',
+    'cover_image_url' => 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80',
+    'status' => 'unverified',
+    'interests' => 1245,
+    'tags' => json_encode(['technology', 'conference', 'networking', 'workshops', 'dubai']),
+    'creator' => [
+        'id' => 456,
+        'name' => 'Tech Events Dubai',
+        'avatar' => 'http://localhost/PFA-2024-2025/src/public/storage/uploads/profile_default.jpg'
+    ]
+];
+
+// Calculate time remaining
+$now = new DateTime();
+$startDate = new DateTime($event['start_date'] . ' ' . $event['start_time']);
+$endDate = new DateTime($event['end_date'] . ' ' . $event['end_time']);
+$timeRemaining = $now->diff($startDate);
+$eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' : 'ongoing');
 
 ?>
 <!DOCTYPE html>
@@ -33,13 +65,14 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
     })();
     </script>
     <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/event.css">
 </head>
 
 <body>
     <!-- Improved Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
-            <a class="navbar-brand" href="../">
+            <a class="navbar-brand" href="./">
                 <span class="brand-gradient">Ouqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
@@ -53,10 +86,10 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                 <?php if ($isLoggedIn) : ?>
                     <div class="user-section">
                         <div class="user-info">
-                            <a href="../profile" class="username-link">
+                            <a href="profile" class="username-link">
                                 <span class="username"><?php echo htmlspecialchars($username); ?></span>
                             </a>
-                            <a href="../logout" class="logout-btn">
+                            <a href="logout" class="logout-btn">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Logout</span>
                             </a>
@@ -78,16 +111,16 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link" id="homeRefresh" href="../">
+                        <a class="nav-link" id="homeRefresh" href="./">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
-                        <a class="nav-link" href="../profile">
+                        <a class="nav-link" href="profile">
                             <i class="bi bi-person me-2"></i>Profile
                         </a>
-                        <a class="nav-link" href="../interests">
+                        <a class="nav-link" href="interests">
                             <i class="bi bi-star me-2"></i> My Interests
                         </a>
-                        <a class="nav-link" href="../create-event">
+                        <a class="nav-link" href="create-event">
                             <i class="bi bi-plus-circle me-2"></i> Create Event
                         </a>
                     </nav>
@@ -95,10 +128,141 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             </div>
 
             <!-- Main Content Area -->
-            <div class="col-lg-7 p-3">
-                <!-- You can cook here -->
-                 <h2> EVENT ID <?php echo($eventId);?> </h2>
+            <!-- Main Content Area -->
+<div class="col-lg-7 p-3">
+    <div class="event-detail-container">
+        <div class="event-layout">
+            <!-- Left Column - Timer & Info -->
+            <div class="event-info-column">
+                <!-- Creator Section -->
+                <div class="creator-section">
+                    <img src="<?php echo htmlspecialchars($event['creator']['avatar']) ?>" 
+                         class="creator-avatar" 
+                         alt="<?php echo htmlspecialchars($event['creator']['name']) ?>"
+                         onerror="this.src='https://via.placeholder.com/50'">
+                    <div class="creator-info">
+                        <div class="creator-label">Created by</div>
+                        <a href="/profile/<?php echo $event['creator']['id'] ?>" class="creator-name">
+                            <?php echo htmlspecialchars($event['creator']['name']) ?>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event Header -->
+                <div class="event-header">
+                    <h1 class="event-title"><?php echo htmlspecialchars($event['title']) ?></h1>
+                    <div class="event-meta">
+                        <span class="date">
+                            <i class="bi bi-calendar-event"></i>
+                            <?php echo date('M j, Y', strtotime($event['start_date'])) ?>
+                            <?php if ($event['end_date']) : ?>
+                                - <?php echo date('M j, Y', strtotime($event['end_date'])) ?>
+                            <?php endif; ?>
+                        </span>
+                        <span class="time">
+                            <i class="bi bi-clock"></i>
+                            <?php echo date('g:i a', strtotime($event['start_time'])) ?>
+                            <?php if ($event['end_time']) : ?>
+                                - <?php echo date('g:i a', strtotime($event['end_time'])) ?>
+                            <?php endif; ?>
+                        </span>
+                        <span class="location">
+                            <i class="bi bi-geo-alt"></i>
+                            <?php echo htmlspecialchars($event['location']) ?>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer or Ended Message -->
+                <div class="countdown-container" 
+                     data-event-start="<?php echo $event['start_date'] ?>T<?php echo $event['start_time'] ?>" 
+                     data-event-end="<?php echo $event['end_date'] ?>T<?php echo $event['end_time'] ?>">
+                    <?php if ($eventStatus !== 'ended') : ?>
+                        <div class="countdown-card">
+                            <div class="time-unit">
+                                <div class="number" id="countdown-days">00</div>
+                                <div class="label">DAYS</div>
+                            </div>
+                            <div class="time-unit">
+                                <div class="number" id="countdown-hours">00</div>
+                                <div class="label">HOURS</div>
+                            </div>
+                            <div class="time-unit">
+                                <div class="number" id="countdown-minutes">00</div>
+                                <div class="label">MINUTES</div>
+                            </div>
+                            <div class="time-unit">
+                                <div class="number" id="countdown-seconds">00</div>
+                                <div class="label">SECONDS</div>
+                            </div>
+                        </div>
+                        <div class="countdown-status">
+                            <?php echo match($eventStatus) {
+                                'upcoming' => 'EVENT STARTS SOON',
+                                'ongoing' => 'EVENT IS HAPPENING NOW',
+                                default => ''
+                            }; ?>
+                        </div>
+                    <?php else : ?>
+                        <div class="event-ended-message">
+                            EVENT HAS ENDED
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!-- Event Description -->
+                <div class="event-description">
+                    <h3>About the Event</h3>
+                    <p><?php echo nl2br(htmlspecialchars($event['description'])) ?></p>
+                </div>
+
+                <!-- Event Tags -->
+                <div class="event-tags">
+                    <?php foreach (json_decode($event['tags']) as $tag) : ?>
+                        <span class="tag-badge"><?php echo htmlspecialchars($tag) ?></span>
+                    <?php endforeach; ?>
+                </div>
             </div>
+
+            <!-- Right Column - Image -->
+            <div class="event-image-column">
+                <img src="<?php echo htmlspecialchars($event['cover_image_url']) ?>" 
+                     class="event-cover-img" 
+                     alt="Event cover"
+                     onerror="this.src='https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80'">
+                
+                <?php if ($event['status'] === 'verified') : ?>
+                    <div class="verified-badge">
+                        <i class="bi bi-patch-check-fill"></i>
+                        Verified Event
+                    </div>
+                <?php elseif ($event['status'] === 'unverified') : ?>
+                    <div class="unverified-badge">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        Unverified
+                    </div>
+                <?php endif; ?>
+
+                <div class="action-text">
+                <h4>Ready to join this event?</h4>
+                <p>Show your interest or share with friends</p>
+            </div>
+
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="interested-btn" id="interest-btn">
+                        <i class="bi bi-star"></i>
+                        <span>Interested</span>
+                        <span class="count"><?php echo number_format($event['interests']) ?></span>
+                    </button>
+                    <a href="#" class="btn-share" id="share-btn" data-event-title="<?php echo htmlspecialchars($event['title']) ?>">
+                        <i class="bi bi-share"></i> Share
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
@@ -184,6 +348,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/event.js"></script>
 </body>
 
 </html>
