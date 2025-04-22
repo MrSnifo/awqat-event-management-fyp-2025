@@ -10,79 +10,80 @@ class EventController {
         $this->event = new Event($database->getConnection());
     }
 
-    public function createEvent(mixed $data) {
+    public function createEvent(mixed $data): array {
         $required = [
             'user_id' => 'User ID',
             'title' => 'Event title',
+            'location' => 'Location',
             'start_date' => 'Start date',
+            'end_date' => 'End date',
             'start_time' => 'Start time',
+            'end_time' => 'End time',
             'description' => 'Description',
-            'tags' => 'Tags',
-            'cover_image_url' => 'Cover image URL',
-            'status' => 'Status'
+            'tags' => 'Tags'
         ];
-
+    
         foreach ($required as $field => $name) {
             if (!array_key_exists($field, $data)) {
                 return ['success' => false, 'message' => $name . ' is required'];
             }
             
-            // Special handling for different field types
             if ($field === 'tags') {
                 if (!is_array($data['tags']) || count($data['tags']) < 1) {
                     return ['success' => false, 'message' => 'At least one tag is required'];
                 }
-            } elseif (empty($data[$field]) && $data[$field] !== 0) { // Allow 0 as valid status
+            } elseif (empty($data[$field])) {
                 return ['success' => false, 'message' => $name . ' cannot be empty'];
             }
         }
-
+    
         // Date validation
         if (!DateTime::createFromFormat('Y-m-d', $data['start_date'])) {
             return ['success' => false, 'message' => 'Invalid start date format (YYYY-MM-DD required)'];
         }
-
-        if (!empty($data['end_date'])) {
-            if (!DateTime::createFromFormat('Y-m-d', $data['end_date'])) {
-                return ['success' => false, 'message' => 'Invalid end date format (YYYY-MM-DD required)'];
-            }
-            if (strtotime($data['end_date']) < strtotime($data['start_date'])) {
-                return ['success' => false, 'message' => 'End date cannot be before start date'];
-            }
+    
+        if (!DateTime::createFromFormat('Y-m-d', $data['end_date'])) {
+            return ['success' => false, 'message' => 'Invalid end date format (YYYY-MM-DD required)'];
         }
-
+    
+        if (strtotime($data['end_date']) < strtotime($data['start_date'])) {
+            return ['success' => false, 'message' => 'End date cannot be before start date'];
+        }
+    
         // Time validation
         if (!preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $data['start_time'])) {
             return ['success' => false, 'message' => 'Invalid start time format (HH:MM required)'];
         }
-
-        if (!empty($data['end_time'])) {
-            if (!preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $data['end_time'])) {
-                return ['success' => false, 'message' => 'Invalid end time format (HH:MM required)'];
-            }
+    
+        if (!preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $data['end_time'])) {
+            return ['success' => false, 'message' => 'Invalid end time format (HH:MM required)'];
+        }
+    
+        // Time comparison validation
+        if ($data['start_date'] == $data['end_date'] && $data['end_time'] <= $data['start_time']) {
+            return ['success' => false, 'message' => 'End time must be after start time for same-day events'];
         }
 
-        // Status validation (Aktheria mn server side.)
-        if (!in_array($data['status'], [0, 1])) {
-            return ['success' => false, 'message' => 'Invalid status value (must be 0 or 1)'];
+        if ($this->event->eventExists($data['title'], $data['start_date'], $data['location'])) {
+            return ['success' => false, 'message' => 'Event with the same title, start date, and location already exists'];
         }
-
+    
         // Prepare event data
         $eventData = [
             'user_id' => $data['user_id'],
             'title' => $data['title'],
+            'location' => $data['location'],
             'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'] ?? null,
+            'end_date' => $data['end_date'],
             'start_time' => $data['start_time'],
-            'end_time' => $data['end_time'] ?? null,
-            'description' => $data['description'], // Now required
+            'end_time' => $data['end_time'],
+            'description' => $data['description'],
             'tags' => $data['tags'],
-            'cover_image_url' => $data['cover_image_url'], // Now required
-            'status' => $data['status']
+            'cover_image_url' => isset($data['cover_image_url']) ? $data['cover_image_url'] : null,
+            'status' => 'unverified'
         ];
-
+    
         $eventId = $this->event->create($eventData);
-
         if ($eventId) {
             return [
                 'success' => true,
@@ -90,7 +91,7 @@ class EventController {
                 'event_id' => $eventId
             ];
         }
-    
         return ['success' => false, 'message' => 'Failed to create event'];
     }
+    
 }

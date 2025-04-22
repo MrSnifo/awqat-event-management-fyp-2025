@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $auth->login($email, $password);
 
             if ($result['success']) {
-                $auth->createSession($result['user_id'], $result['username']);
+                $auth->createSession($result['user_id'], $result['username'], $result['role']);
                 header('Location: ./');
                 exit();
             } else {

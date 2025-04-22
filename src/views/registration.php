@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result['success']) {
             $loginResult = $auth->login($data['email'], $data['password']);
             if ($loginResult['success']) {
-                $auth->createSession($loginResult['user_id'], $loginResult['username']);
+                $auth->createSession($loginResult['user_id'], $loginResult['username'], $loginResult['role']);
                 header('Location: ./');
                 exit();
             } else {

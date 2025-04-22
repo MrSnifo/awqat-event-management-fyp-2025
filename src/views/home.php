@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../config/database.php';
-require_once '../controllers/Auth.php';
+require_once '../controllers/auth.php';
 
 // Create Auth instance
 $auth = new Auth();

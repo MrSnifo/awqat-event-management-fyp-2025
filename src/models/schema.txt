@@ -1,55 +1,54 @@
-
-
-// Just copy paste hethi fl sql 
-// User
+-- Users Table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     profile_description TEXT DEFAULT NULL,
     profile_picture_url VARCHAR(255) DEFAULT NULL,
     social_links JSON DEFAULT NULL,
-
-    role TINYINT UNSIGNED NOT NULL DEFAULT 0, -- role (0=user, 1=verified, 2=admin, 3=superadmin)
-    status TINYINT UNSIGNED NOT NULL DEFAULT 1, -- status (0=inactive, 1=active, 2=banned)
-
+    role ENUM('user', 'verified', 'admin', 'superadmin') NOT NULL DEFAULT 'user',
+    status ENUM('inactive', 'active', 'banned') NOT NULL DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY (username),
+    UNIQUE KEY (email),
+    INDEX (role),
+    INDEX (status)
 );
 
-
-// Event
-
+-- Events Table
 CREATE TABLE events (
-  id INT NOT NULL AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  title VARCHAR(255) NOT NULL,
-  start_date DATE NOT NULL,
-  end_date DATE DEFAULT NULL,
-  start_time TIME NOT NULL,
-  end_time TIME DEFAULT NULL,
-  description TEXT NOT NULL,
-  tags json DEFAULT NULL,
-  cover_image_url VARCHAR(255) DEFAULT NULL,  -- Changed from cover_image
-  status TINYINT(1) DEFAULT 1,
-  interests INT DEFAULT 0,
-  created_at TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-  updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE DEFAULT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME DEFAULT NULL,
+    description TEXT NOT NULL,
+    tags JSON NOT NULL DEFAULT ('[]'),
+    cover_image_url VARCHAR(255) DEFAULT NULL,
+    status ENUM('blocked', 'unverified', 'verified') NOT NULL DEFAULT 'unverified',
+    interests INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX (user_id),
+    INDEX (status),
+    INDEX (start_date)
+);
 
-
-// event_interests
+-- Event Interests Table
 CREATE TABLE event_interests (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  event_id INT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  UNIQUE KEY unique_interest (user_id, event_id) -- Prevent duplicate interests
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_interest (user_id, event_id),
+    INDEX (user_id),
+    INDEX (event_id)
 );

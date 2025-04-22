@@ -1,20 +1,99 @@
 <?php
 session_start();
-require_once '../config/database.php';
-require_once '../controllers/Auth.php';
+require_once '../controllers/auth.php';
+require_once '../controllers/event.php';
+
 
 // Create Auth instance
 $auth = new Auth();
+$eventController = new EventController();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 
-// Redirect to login if not authenticated
-if (!$isLoggedIn) {
-    header("Location: login");
-    exit();
-}
+// Initialize variables
+$errors = [];
+$success = false;
+$formData = [
+    'title' => '',
+    'location' => '',
+    'start_date' => '',
+    'end_date' => '',
+    'start_time' => '',
+    'end_time' => '',
+    'description' => '',
+    'cover_image_url' => '',
+    'tags' => []
+];
 
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize input
+    $formData = [
+        'user_id' => $_SESSION['user_id'],
+        'title' => htmlspecialchars(trim($_POST['title'] ?? '')),
+        'location' => htmlspecialchars(trim($_POST['location'] ?? '')),
+        'start_date' => htmlspecialchars(trim($_POST['start_date'] ?? '')),
+        'end_date' => htmlspecialchars(trim($_POST['end_date'] ?? '')),
+        'start_time' => htmlspecialchars(trim($_POST['start_time'] ?? '')),
+        'end_time' => htmlspecialchars(trim($_POST['end_time'] ?? '')),
+        'description' => htmlspecialchars(trim($_POST['description'] ?? '')),
+        'tags' => isset($_POST['tags']) ? explode(',', $_POST['tags']) : [],
+        'status' => 'unverified'
+    ];
+
+    // Handle file upload if provided
+    if (isset($_FILES['cover_image'])) {
+        if ($_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '../storage/uploads/events/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $fileName = uniqid() . '_' . basename($_FILES['cover_image']['name']);
+            $targetPath = $uploadDir . $fileName;
+
+            // Validate image
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileType = mime_content_type($_FILES['cover_image']['tmp_name']);
+
+            if (in_array($fileType, $allowedTypes)) {
+                if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetPath)) {
+                    $formData['cover_image_url'] = '/uploads/events/' . $fileName;
+                } else {
+                    $errors[] = 'Failed to upload image';
+                }
+            } else {
+                $errors[] = 'Invalid file type. Only JPG, PNG, and GIF are allowed.';
+            }
+        } elseif ($_FILES['cover_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $errors[] = 'Error uploading image';
+        }
+    }
+
+    // If no errors, create event
+    if (empty($errors)) {
+        $result = $eventController->createEvent($formData);
+        if ($result['success']) {
+            $success = true;
+            // Reset form data
+            $formData = [
+                'title' => '',
+                'location' => '',
+                'start_date' => '',
+                'end_date' => '',
+                'start_time' => '',
+                'end_time' => '',
+                'description' => '',
+                'cover_image_url' => '',
+                'tags' => []
+            ];
+        } else {
+            $errors[] = $result['message'];
+        }
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,105 +181,128 @@ if (!$isLoggedIn) {
 
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
-            <div class="create-event-container">
-        <h3 class="create-event-title mb-4"></i>Create New Event</h3>
-        
-        <form id="eventForm" class="needs-validation" novalidate>
-            <!-- Event Title -->
-            <div class="mb-4">
-                <label for="eventTitle" class="form-label">Event Title *</label>
-                <input type="text" class="form-control" id="eventTitle" placeholder="Enter event name" required>
-                <div class="invalid-feedback">
-                    Please provide a title for your event.
+                <div class="create-event-container">
+                    <h3 class="create-event-title mb-4"><i class="bi bi-plus-circle me-2"></i>Create New Event</h3>
+                    
+                    <?php if (!empty($errors)): ?>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?php echo htmlspecialchars($error); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($success): ?>
+                        <div class="alert alert-success">
+                            Event created successfully!
+                        </div>
+                    <?php endif; ?>
+                    
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <!-- Hidden input for tags -->
+                        <input type="hidden" name="tags" id="tagsHiddenInput" value="<?php echo htmlspecialchars(implode(',', $formData['tags'])); ?>">
+                        
+                        <!-- Event Title -->
+                        <div class="mb-4">
+                            <label for="eventTitle" class="form-label">Event Title *</label>
+                            <input type="text" class="form-control" id="eventTitle" name="title" 
+                                   value="<?php echo htmlspecialchars($formData['title']); ?>" required>
+                            <div class="invalid-feedback">Please provide a title for your event.</div>
+                        </div>
+                        
+                        <!-- Location -->
+                        <div class="mb-4">
+                            <label for="eventLocation" class="form-label">Location *</label>
+                            <input type="text" class="form-control" id="eventLocation" name="location" 
+                                   value="<?php echo htmlspecialchars($formData['location']); ?>" required>
+                            <div class="invalid-feedback">Please provide a location for your event.</div>
+                        </div>
+                        
+                        <!-- Date Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="startDate" class="form-label">Start Date *</label>
+                                <input type="date" class="form-control" id="startDate" name="start_date" 
+                                       value="<?php echo htmlspecialchars($formData['start_date']); ?>" required>
+                                <div class="invalid-feedback">Please select a start date.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endDate" class="form-label">End Date *</label>
+                                <input type="date" class="form-control" id="endDate" name="end_date" 
+                                       value="<?php echo htmlspecialchars($formData['end_date']); ?>" required>
+                                <div class="invalid-feedback">Please select an end date.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Time Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="startTime" class="form-label">Start Time *</label>
+                                <input type="time" class="form-control" id="startTime" name="start_time" 
+                                       value="<?php echo htmlspecialchars($formData['start_time']); ?>" required>
+                                <div class="invalid-feedback">Please select a start time.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endTime" class="form-label">End Time *</label>
+                                <input type="time" class="form-control" id="endTime" name="end_time" 
+                                       value="<?php echo htmlspecialchars($formData['end_time']); ?>" required>
+                                <div class="invalid-feedback">Please select an end time.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="eventDescription" class="form-label">Description *</label>
+                            <textarea class="form-control" id="eventDescription" name="description" rows="5" 
+                                      required><?php echo htmlspecialchars($formData['description']); ?></textarea>
+                            <div class="invalid-feedback">Please provide a description for your event.</div>
+                        </div>
+                        
+                        <!-- Tags Section -->
+                        <div class="mb-4">
+                            <label class="form-label">Tags *</label>
+                            <div class="tags-input-container">
+                                <input type="text" class="tags-input form-control" placeholder="Type tag and press Enter">
+                                <div class="tags-list" id="tagsList">
+                                    <?php foreach ($formData['tags'] as $tag): ?>
+                                        <div class="badge">
+                                            <?php echo htmlspecialchars($tag); ?>
+                                            <span class="tag-remove">×</span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Please add at least one tag.</div>
+                        </div>
+                        
+                        <!-- Cover Image Upload -->
+                        <div class="mb-4">
+                            <label for="coverImage" class="form-label">Cover Image</label>
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <?php if (!empty($formData['cover_image_url'])): ?>
+                                        <img src="<?php echo htmlspecialchars($formData['cover_image_url']); ?>" alt="Cover Preview">
+                                    <?php else: ?>
+                                        <i class="bi bi-image image-placeholder"></i>
+                                        <span class="image-text">No image selected</span>
+                                    <?php endif; ?>
+                                </div>
+                                <input type="file" class="form-control d-none" id="coverImage" name="cover_image" accept="image/*">
+                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="document.getElementById('coverImage').click()">
+                                    <i class="bi bi-upload me-1"></i> Upload Image
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-end gap-3 mt-4">
+                            <a href="./" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-orange">Create Event</button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-            
-            <!-- Date and Time Section -->
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <label for="startDate" class="form-label">Start Date *</label>
-                    <input type="date" class="form-control" id="startDate" required>
-                    <div class="invalid-feedback">
-                        Please select a start date.
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="endDate" class="form-label">End Date</label>
-                    <input type="date" class="form-control" id="endDate" required>
-                    <div class="invalid-feedback">
-                        Please select a end date.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <label for="startTime" class="form-label">Start Time *</label>
-                    <input type="time" class="form-control" id="startTime" required>
-                    <div class="invalid-feedback">
-                        Please select a start time.
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="endTime" class="form-label">End Time</label>
-                    <input type="time" class="form-control" id="endTime" required>
-                    <div class="invalid-feedback">
-                        Please select a end time.
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Description -->
-            <div class="mb-4">
-                <label for="eventDescription" class="form-label">Description *</label>
-                <textarea class="form-control" id="eventDescription" rows="5" placeholder="Tell people what your event is about..." required></textarea>
-                <div class="invalid-feedback">
-                    Please provide a description for your event.
-                </div>
-            </div>
-            
-            <!-- Tags Section -->
-            <div class="mb-4">
-                <label class="form-label">Tags</label>
-                
-                <div class="tags-input-container">
-                    <input type="text" class="tags-input form-control" placeholder="Type tag and press Enter">
-                    <div class="tags-list"></div>
-                </div>
-            </div>
-            <!-- Location -->
-            <div class="mb-4">
-                <label class="form-label">Location</label>
-                <div class="tags-input-container">
-                    <input type="text" class="tags-input form-control" placeholder="Type tag and press Enter">
-                    <div class="tags-list"></div>
-                </div>
-            </div>             
-            <!-- Cover Image Upload -->
-            <div class="mb-4">
-                <label for="coverImage" class="form-label">Cover Image *</label>
-                <div class="image-upload-container">
-                    <div class="image-preview" id="imagePreview">
-                        <i class="bi bi-image image-placeholder"></i>
-                        <span class="image-text">No image selected</span>
-                    </div>
-                    <input type="file" class="form-control d-none" id="coverImage" accept="image/*" required>
-                    <button type="button" class="btn btn-outline-secondary mt-2" onclick="document.getElementById('coverImage').click()">
-                        <i class="bi bi-upload me-1"></i> Upload Image
-                    </button>
-                    <div class="invalid-feedback">
-                        Please upload a cover image for your event.
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Form Actions -->
-            <div class="d-flex justify-content-end gap-3 mt-4">
-                <button type="button" class="btn btn-outline-secondary">Cancel</button>
-                <button type="submit" class="btn btn-orange">Create Event</button>
-            </div>
-        </form>
-    </div>
             </div>
 
             <!-- Right Sidebar -->
@@ -287,7 +389,7 @@ if (!$isLoggedIn) {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
-    <script src="assets/js/add-event.js"></script>
+    <script src="assets/js/create-event.js"></script>
 </body>
 
 </html>
