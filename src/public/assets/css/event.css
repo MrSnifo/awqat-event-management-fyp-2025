@@ -183,7 +183,7 @@
 
 /* Countdown Timer */
 .countdown-container {
-    margin: 2rem 0;
+    margin-bottom: 2rem;
     padding: 2rem;
     background: var(--primary-light);
     border-radius: 12px;
