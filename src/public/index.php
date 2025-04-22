@@ -28,9 +28,16 @@ switch ($cleanPath) {
         include __DIR__ . '/../views/logout.php';
         break;
         
-    // Handle requests for files in storage/uploads
+    // Handle dynamic event routes
     default:
-        if (strpos($cleanPath, '/storage/') === 0) {
+        // Check for /event/<id> pattern
+        if (preg_match('#^/event/(\d+)$#', $cleanPath, $matches)) {
+            $eventId = $matches[1];
+            include __DIR__ . '/../views/event.php';
+            exit;
+        }
+        // Handle requests for files in storage/uploads
+        elseif (strpos($cleanPath, '/storage/') === 0) {
             $filePath = __DIR__ . '/..' . $cleanPath;
             
             // Ensure the requested path is a file, not a directory
@@ -66,6 +73,12 @@ switch ($cleanPath) {
                 echo 'File not found';
                 exit;
             }
+        }
+        // If no route matches
+        else {
+            header('HTTP/1.0 404 Not Found');
+            include __DIR__ . '/../views/404.php';
+            exit;
         }
         break;
 }
