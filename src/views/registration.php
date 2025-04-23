@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Ouqat</title>
+    <title>Sign Up - Awqat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="register-container">
             <div class="register-header clickable-logo" id="homeLink">
                 <h2>Create Account</h2>
-                <p>Join Ouqat today</p>
+                <p>Join Awqat today</p>
             </div>
             
             <?php if (!empty($error)): ?>

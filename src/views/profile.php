@@ -21,7 +21,7 @@ if (!$isLoggedIn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouqat</title>
+    <title>Awqat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
@@ -46,7 +46,7 @@ if (!$isLoggedIn) {
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
-                <span class="brand-gradient">Ouqat</span>
+                <span class="brand-gradient">Awqat</span>
                 <span class="brand-arabic">ما يفوتك شي</span>
             </a>
             
@@ -288,7 +288,7 @@ if (!$isLoggedIn) {
                         <a href="#" class="footer-link">Cookie Policy</a>
                         <button class="theme-toggle-btn" id="themeToggle">Switch Appearance</button>
                     </div>
-                    <div class="copyright">© 2025 Ouqat. All rights reserved.</div>
+                    <div class="copyright">© 2025 Awqat. All rights reserved.</div>
                 </div>
             </div>
         </div>
