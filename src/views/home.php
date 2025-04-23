@@ -1,12 +1,31 @@
 <?php
 session_start();
-require_once '../config/database.php';
 require_once '../controllers/auth.php';
+require_once '../controllers/event.php';
 
 // Create Auth instance
 $auth = new Auth();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
+
+// Get filter parameters from URL
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'recommended';
+
+
+$tags = isset($_GET['tags']) ? explode(',', $_GET['tags']) : [];
+// Validate sort parameter
+$validSorts = ['recommended', 'recent', 'interests_high', 'interests_low'];
+if (!in_array($sortBy, $validSorts)) {
+    $sortBy = 'recommended';
+}
+
+$eventController = new EventController();
+
+// Database query would go here - this is just mock data
+$events = $eventController->getevents();
+
+
+$filteredEvents = $events;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +54,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
 </head>
 
 <body>
-    <!-- Improved Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand navbar-dark sticky-top">
         <div class="container-fluid navbar-container">
             <a class="navbar-brand" href="./">
@@ -69,7 +88,6 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         </div>
     </nav>
 
-
     <div class="container-fluid mt-0 pt-0">
         <div class="row g-0">
             <!-- Left Sidebar -->
@@ -100,10 +118,10 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                         <div class="mb-3">
                             <label for="sort-by" class="form-label small mb-2">Sort by</label>
                             <select id="sort-by" class="form-select">
-                                <option value="recommended">Recommended for you</option>
-                                <option value="recent">Most Recent</option>
-                                <option value="interests_high">Interests (High to Low)</option>
-                                <option value="interests_low">Interests (Low to High)</option>
+                                <option value="recommended" <?php echo $sortBy === 'recommended' ? 'selected' : ''; ?>>Recommended for you</option>
+                                <option value="recent" <?php echo $sortBy === 'recent' ? 'selected' : ''; ?>>Most Recent</option>
+                                <option value="interests_high" <?php echo $sortBy === 'interests_high' ? 'selected' : ''; ?>>Interests (High to Low)</option>
+                                <option value="interests_low" <?php echo $sortBy === 'interests_low' ? 'selected' : ''; ?>>Interests (Low to High)</option>
                             </select>
                         </div>
                         <!-- Tags Input -->
@@ -111,7 +129,15 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                             <label class="form-label small mb-2">Add Tags</label>
                             <div class="tags-input-wrapper">
                                 <input type="text" class="tags-input form-control" placeholder="Type and press Enter">
-                                <div class="tags-list"></div>
+                                <div class="tags-list">
+                                    <?php foreach ($tags as $tag): ?>
+                                        <span class="tag-badge">
+                                            <?php echo htmlspecialchars($tag); ?>
+                                            <input type="hidden" name="tags[]" value="<?php echo htmlspecialchars($tag); ?>">
+                                            <button class="tag-remove-btn">&times;</button>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
                         <!-- Action Buttons -->
@@ -129,173 +155,109 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
 
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
-            <?php
-                // Hethi bech tkoun mn DATABASE ou bch na3mlou filter ou houni bech ykoun oma el recommend..
-                // $events = [];
-                $events = [
-                    [
-                        'id' => 1,
-                        'title' => "International Art Biennale",
-                        'description' => "Contemporary art exhibition featuring 200+ artists from 40 countries.",
-                        'date' => "Jun 5-Sep 5, 2024",
-                        'location' => "Venice, Italy",
-                        'category' => "art",
-                        'tags' => ["exhibition", "contemporary"],
-                        'image' => "https://images.unsplash.com/photo-1536922246289-88c42f957773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                        'interested' => 750,
-                        'badge' => "International"
-                    ],
-                    [
-                        'id' => 2,
-                        'title' => "Tech Summit 2024",
-                        'description' => "Annual technology conference showcasing the latest innovations in AI, blockchain and IoT.",
-                        'date' => "Aug 15-18, 2024",
-                        'location' => "San Francisco, CA",
-                        'category' => "tech",
-                        'tags' => ["conference", "innovation"],
-                        'image' => "https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                        'interested' => 1200,
-                        'badge' => "Featured"
-                    ],
-                    [
-                        'id' => 3,
-                        'title' => "Jazz in the Park",
-                        'description' => "Outdoor jazz festival with performances from world-renowned musicians.",
-                        'date' => "Jul 7-9, 2024",
-                        'location' => "Chicago, IL",
-                        'category' => "music",
-                        'tags' => ["festival", "outdoor"],
-                        'image' => "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                        'interested' => 980,
-                        'badge' => "Popular"
-                    ],
-                    [
-                        'id' => 4,
-                        'title' => "Food & Wine Festival",
-                        'description' => "Celebration of culinary arts featuring top chefs and winemakers.",
-                        'date' => "Sep 12-15, 2024",
-                        'location' => "Napa Valley, CA",
-                        'category' => "food",
-                        'tags' => ["culinary", "tasting"],
-                        'image' => "https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                        'interested' => 650,
-                        'badge' => "New"
-                    ],
-                    [
-                        'id' => 5,
-                        'title' => "Marathon Weekend",
-                        'description' => "Annual city marathon with routes through historic downtown areas.",
-                        'date' => "Oct 5, 2024",
-                        'location' => "Boston, MA",
-                        'category' => "sports",
-                        'tags' => ["running", "fitness"],
-                        'image' => "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                        'interested' => 1500,
-                        'badge' => "Featured"
-                    ]
-                ];
+            <?php if (empty($filteredEvents)): ?>
+    <div class="empty-events">
+        <i class="bi bi-calendar2-event empty-icon"></i>
+        <h3 class="empty-title">No Events Found</h3>
+        <p class="empty-message">Try broadening your search or check different categories</p>
+        <a href="./" class="btn btn-orange">Clear Filters</a>
+    </div>
+<?php else: ?>
+    <?php foreach ($filteredEvents as $event): ?>
+        <?php
+        $tags_html = '';
+        foreach ($event['tags'] as $tag) {
+            $tags_html .= '<span class="badge">' . htmlspecialchars($tag) . '</span>';
+        }
+        ?>
+        <div class="event-card" data-tags="<?php echo htmlspecialchars(implode(',', $event['tags'])); ?>">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="event-image-container">
+                    <img src="<?php echo htmlspecialchars($event['cover_image_url'] ?? ''); ?>" 
+     class="event-image img-fluid h-100" 
+     alt="<?php echo htmlspecialchars($event['title']); ?>" 
+     onerror="this.src='../storage/uploads/event_default.jpg'">
 
-                if (empty($events)) {
-                    echo '<div class="col-lg-7 p-3">
-                        <div class="empty-events">
-                            <i class="bi bi-calendar2-event empty-icon"></i>
-                            <h3 class="empty-title">No Events Found</h3>
-                            <p class="empty-message">Try broadening your search or check different categories</p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="bi bi-calendar"></i> <?php echo htmlspecialchars($event['start_date']); ?></span>
+                            <span><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($event['location']); ?></span>
                         </div>
-                    </div>';
-                }else{
-                    foreach ($events as $event) {
-                        $tags_html = '';
-
-                        foreach ($event['tags'] as $tag) {
-                            $tags_html .= '<span class="badge">' . htmlspecialchars($tag) . '</span>';
-                        }
-
-                        echo '
-                        <div class="event-card" data-category="' . htmlspecialchars($event['category']) . '" data-tags="' . htmlspecialchars(implode(',', $event['tags'])) . '">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <div class="event-image-container">
-                                        <img src="' . htmlspecialchars($event['image']) . '" 
-                                            class="event-image img-fluid h-100" alt="' . htmlspecialchars($event['title']) . '">
-                                        <div class="event-badge">' . htmlspecialchars($event['badge']) . '</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="event-content">
-                                        <div class="event-meta">
-                                            <span><i class="bi bi-calendar"></i> ' . htmlspecialchars($event['date']) . '</span>
-                                            <span><i class="bi bi-geo-alt"></i> ' . htmlspecialchars($event['location']) . '</span>
-                                        </div>
-                                        <h4 class="event-title">' . htmlspecialchars($event['title']) . '</h4>
-                                        <p class="event-description">
-                                            ' . htmlspecialchars($event['description']) . '
-                                        </p>
-                                        <div class="event-tags">
-                                            ' . $tags_html . '
-                                        </div>
-                                        <div class="event-actions">
-                                            <button class="btn interested-btn">
-                                                <i class="bi bi-star"></i>
-                                                <span>Interested</span>
-                                                <span class="count">' . number_format($event['interested']/1000, 1) . 'k</span>
-                                            </button>
-                                            <a href="event/' . htmlspecialchars($event['id']) . '" class="btn details-btn">
-                                                <span>View Details</span>
-                                                <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>';
-                    }
-                }
-                
-            ?>
+                        <h4 class="event-title"><?php echo htmlspecialchars($event['title']); ?></h4>
+                        <p class="event-description">
+                            <?php echo htmlspecialchars($event['description']); ?>
+                        </p>
+                        <div class="event-tags">
+                            <?php echo $tags_html; ?>
+                        </div>
+                        <div class="event-actions">
+                            <!-- Interested field is not in the database, so this section will need adjustment -->
+                            <!-- You might want to add a column or logic for the 'interested' count -->
+                            <button class="btn interested-btn">
+                                <i class="bi bi-star"></i>
+                                <span>Interested</span>
+                                <!-- Example interested count (you may want to replace this with actual logic) -->
+                                <span class="count">0k</span>
+                            </button>
+                            <a href="event/<?php echo htmlspecialchars($event['id']); ?>" class="btn details-btn">
+                                <span>View Details</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+
+            </div>
+
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
-
                 <!-- Trending Events Section -->
                 <div class="sidebar-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                     </div>
                     <?php
-                        $events = [
-                            [
-                                'title' => 'Food Truck Festival',
-                                'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                                'date' => 'Mar 28',
-                                'location' => 'Miami, FL'
-                            ],
-                            [
-                                'title' => 'Blockchain Conference',
-                                'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                                'date' => 'Apr 12-14',
-                                'location' => 'Austin, TX'
-                            ],
-                        ];
+                    $trendingEvents = [
+                        [
+                            'title' => 'Food Truck Festival',
+                            'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                            'date' => 'Mar 28',
+                            'location' => 'Miami, FL'
+                        ],
+                        [
+                            'title' => 'Blockchain Conference',
+                            'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
+                            'date' => 'Apr 12-14',
+                            'location' => 'Austin, TX'
+                        ],
+                    ];
 
-                        foreach ($events as $event) {
-                            echo '<div class="side-event-card">
-                                <div class="d-flex gap-3">
-                                    <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
-                                        <div class="d-flex align-items-center text-muted small mb-1">
-                                            <i class="bi bi-calendar me-2"></i>
-                                            <span>' . htmlspecialchars($event['date']) . '</span>
-                                        </div>
-                                        <div class="d-flex align-items-center text-muted small">
-                                            <i class="bi bi-geo-alt me-2"></i>
-                                            <span>' . htmlspecialchars($event['location']) . '</span>
-                                        </div>
+                    foreach ($trendingEvents as $event) {
+                        echo '<div class="side-event-card">
+                            <div class="d-flex gap-3">
+                                <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
+                                <div>
+                                    <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
+                                    <div class="d-flex align-items-center text-muted small mb-1">
+                                        <i class="bi bi-calendar me-2"></i>
+                                        <span>' . htmlspecialchars($event['date']) . '</span>
+                                    </div>
+                                    <div class="d-flex align-items-center text-muted small">
+                                        <i class="bi bi-geo-alt me-2"></i>
+                                        <span>' . htmlspecialchars($event['location']) . '</span>
                                     </div>
                                 </div>
-                            </div>';
-                        }
+                            </div>
+                        </div>';
+                    }
                     ?>
                 </div>
                 
@@ -315,7 +277,8 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                         ];
                         
                         foreach ($popularTags as $tag) {
-                            echo '<span class="popular-tag" data-tag="' . htmlspecialchars($tag['tag']) . '">
+                            $isActive = in_array($tag['tag'], $tags);
+                            echo '<span class="popular-tag ' . ($isActive ? 'active' : '') . '" data-tag="' . htmlspecialchars($tag['tag']) . '">
                                 <i class="bi bi-' . htmlspecialchars($tag['icon']) . '"></i>
                                 <span>' . htmlspecialchars($tag['label']) . '</span>
                             </span>';
@@ -323,6 +286,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                         ?>
                     </div>
                 </div>
+                
                 <!-- Footer Section -->
                 <div class="footer-container mt-4 pt-3">
                     <div class="footer-links d-flex flex-wrap align-items-center gap-3 mb-2">
@@ -336,9 +300,9 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/global.js"></script>
     <script src="assets/js/home.js"></script>
 </body>
-
 </html>

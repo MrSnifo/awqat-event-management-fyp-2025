@@ -106,5 +106,9 @@ class EventController {
         }
         return ['success' => false, 'message' => 'Event not found'];
     }
-    
+
+
+    public function getevents(): array {
+    return $this->event->getUpcomingEvents();
+    }
 }

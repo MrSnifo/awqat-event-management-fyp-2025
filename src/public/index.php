@@ -82,7 +82,7 @@ switch ($cleanPath) {
         // If no route matches
         else {
             header('HTTP/1.0 404 Not Found');
-            include __DIR__ . '/../views/404.php';
+            echo("Fech t3ml?");
             exit;
         }
         break;

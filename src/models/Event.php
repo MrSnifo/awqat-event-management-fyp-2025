@@ -104,23 +104,29 @@ class Event {
         return $events;
     }
 
-    // Get upcoming events
-    public function getUpcomingEvents(int $days = 30): array {
-        $query = "SELECT * FROM {$this->table} 
-                 WHERE status = 'verified' 
-                 AND start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL :days DAY) 
-                 ORDER BY start_date, start_time";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':days', $days, PDO::PARAM_INT);
-        $stmt->execute();
+
+    public function getUpcomingEvents(): array {
+        $query = "
+            SELECT * FROM {$this->table}
+            WHERE 
+                (end_date IS NULL AND start_date >= CURDATE())
+                OR 
+                (end_date IS NOT NULL AND end_date >= CURDATE())
+            ORDER BY created_at DESC
+        ";
         
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+    
         $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
         foreach ($events as &$event) {
             $event['tags'] = json_decode($event['tags'], true) ?? [];
         }
+        
         return $events;
     }
-
+    
     // Change event status
     public function changeStatus(int $eventId, string $status): bool {
         $validStatuses = ['blocked', 'unverified', 'verified'];
