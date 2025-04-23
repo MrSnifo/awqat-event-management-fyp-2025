@@ -25,8 +25,12 @@ if($event){
 
     $creator = $data['creator'];
 
+
     $eventInterestController = new EventInterestController();
-    $isInterested = $eventInterestController->hasUserInterest($_SESSION['user_id'], $eventId);
+    $isInterested = false;
+    if($isLoggedIn){
+        $isInterested = $eventInterestController->hasUserInterest($_SESSION['user_id'], $eventId);
+    }
     $interestCount = $eventInterestController->getEventInterestCount($eventId);
 }
 ?>

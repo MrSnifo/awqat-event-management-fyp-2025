@@ -80,11 +80,12 @@ function initInterestButton() {
                     interestLabel.textContent = added ? "Interested" : "Show Interest";
                     interestCount.textContent = data.interestCount.toLocaleString();
                 } else {
-                    throw new Error("API call failed");
+                    if (data.message === "Unauthorized") {
+                        window.location.href = "../login";
+                        return;
+                    }
                 }
             } catch (error) {
-                console.error("Error:", error);
-                // Revert label and icon
                 interestIcon.className = isInterested ? "bi-star-fill" : "bi-star";
                 interestLabel.textContent = isInterested ? "Interested" : "Show Interest";
             }
