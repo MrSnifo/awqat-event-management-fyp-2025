@@ -82,40 +82,6 @@ class Event {
         return $events;
     }
 
-    // Update an existing event
-    public function update(int $id, array $data): bool {
-        $query = "UPDATE {$this->table} SET 
-                 title = :title,
-                 location = :location,
-                 start_date = :start_date,
-                 end_date = :end_date,
-                 start_time = :start_time,
-                 end_time = :end_time,
-                 description = :description,
-                 tags = :tags,
-                 cover_image_url = :cover_image_url,
-                 status = :status
-                 WHERE id = :id";
-        
-        $stmt = $this->conn->prepare($query);
-        $tagsJson = json_encode($data['tags'] ?? []);
-        $status = $data['status'] ?? 'unverified';
-        
-        $stmt->bindParam(':title', $data['title']);
-        $stmt->bindParam(':location', $data['location']);
-        $stmt->bindParam(':start_date', $data['start_date']);
-        $stmt->bindParam(':end_date', $data['end_date']);
-        $stmt->bindParam(':start_time', $data['start_time']);
-        $stmt->bindParam(':end_time', $data['end_time']);
-        $stmt->bindParam(':description', $data['description']);
-        $stmt->bindParam(':tags', $tagsJson);
-        $stmt->bindParam(':cover_image_url', $data['cover_image_url']);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        return $stmt->execute();
-    }
-
     // Delete an event
     public function delete(int $id): bool {
         $query = "DELETE FROM {$this->table} WHERE id = :id";
@@ -153,22 +119,6 @@ class Event {
             $event['tags'] = json_decode($event['tags'], true) ?? [];
         }
         return $events;
-    }
-
-    // Increment interest count
-    public function incrementInterestCount(int $eventId): bool {
-        $query = "UPDATE {$this->table} SET interests = interests + 1 WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $eventId, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-
-    // Decrement interest count
-    public function decrementInterestCount(int $eventId): bool {
-        $query = "UPDATE {$this->table} SET interests = GREATEST(0, interests - 1) WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $eventId, PDO::PARAM_INT);
-        return $stmt->execute();
     }
 
     // Change event status

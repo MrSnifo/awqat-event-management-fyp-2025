@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/database.php'; // makes $connection available
+require_once __DIR__ . '/../controllers/interest.php';
+
+$eventInterestController = new EventInterestController();
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/' . implode('/', array_slice(explode('/', str_replace('\\', '/', __DIR__)), -3));
@@ -26,6 +28,9 @@ switch ($cleanPath) {
         break;
     case '/logout':
         include __DIR__ . '/../views/logout.php';
+        break;
+    case '/api/interest':
+        $eventInterestController->handleToggleInterest();
         break;
         
     // Handle dynamic event routes
