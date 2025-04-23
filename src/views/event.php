@@ -3,6 +3,7 @@ session_start();
 require_once '../config/database.php';
 require_once '../controllers/Auth.php';
 require_once '../controllers/event.php';
+require_once '../controllers/interest.php';
 
 // Create Auth instance
 $auth = new Auth();
@@ -10,23 +11,24 @@ $eventController = new EventController();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 
+
 $data = $eventController->getEvent($eventId);
 
 $event = $data['data'] ?? null;
-$creator = $data['creator'] ?? null;
 
 if($event){
+    $now = new DateTime();
+    $startDate = new DateTime($event['start_date'] . ' ' . $event['start_time']);
+    $endDate = new DateTime($event['end_date'] . ' ' . $event['end_time']);
+    $timeRemaining = $now->diff($startDate);
+    $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' : 'ongoing');
 
-    // Calculate time remaining
-$now = new DateTime();
-$startDate = new DateTime($event['start_date'] . ' ' . $event['start_time']);
-$endDate = new DateTime($event['end_date'] . ' ' . $event['end_time']);
-$timeRemaining = $now->diff($startDate);
-$eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' : 'ongoing');
+    $creator = $data['creator'];
 
+    $eventInterestController = new EventInterestController();
+    $isInterested = $eventInterestController->hasUserInterest($_SESSION['user_id'], $eventId);
+    $interestCount = $eventInterestController->getEventInterestCount($eventId);
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -238,15 +240,17 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <button class="interested-btn active" id="interest-btn">
-                        <i class="bi-star-fill"></i>
-                        <span>Interested</span>
-                        <span class="count"><?php echo number_format($event['interests']) ?></span>
-                    </button>
-                    <a href="#" class="btn-share" id="share-btn" data-event-title="<?php echo htmlspecialchars($event['title']) ?>">
-                        <i class="bi bi-share"></i> Share
-                    </a>
-                </div>
+                <button class="interested-btn <?php echo $isInterested ? 'active' : '' ?>" 
+                        id="interest-btn" 
+                        data-event-id="<?php echo htmlspecialchars($eventId) ?>">
+                    <i class="bi-star<?php echo $isInterested ? '-fill' : '' ?>" id="interest-icon"></i>
+                    <span id="interest-label"><?php echo $isInterested ? 'Interested' : 'Show Interest' ?></span>
+                    <span id="interest-count" class="count"><?php echo number_format($interestCount) ?></span>
+                </button>
+                <a href="#" class="btn-share" id="share-btn" data-event-title="<?php echo htmlspecialchars($event['title']) ?>">
+                    <i class="bi bi-share"></i> Share
+                </a>
+            </div>
             </div>
         </div>
        
