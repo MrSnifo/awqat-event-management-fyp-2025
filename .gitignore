@@ -1,3 +1,7 @@
-src/storage/
-!images/profile_default.jpg
-!images/event_default.jpg
+src/storage/*
+
+!src/storage/uploads/
+src/storage/uploads/*
+
+!src/storage/uploads/profile_default.jpg
+!src/storage/uploads/event_default.jpg
