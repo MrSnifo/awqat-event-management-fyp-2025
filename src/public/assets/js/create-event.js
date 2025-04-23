@@ -67,6 +67,7 @@ tagsInput.addEventListener('keydown', function(e) {
     }
 });
 
+
 // Initialize tags display
 renderTags();
 // Form Validation
@@ -128,6 +129,12 @@ document.querySelectorAll('input, textarea').forEach(input => {
 document.getElementById('create_event').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault(); // Prevent Enter key from submitting the form
+    }
+});
+
+document.getElementById('eventDescription').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.stopPropagation();
     }
 });
 });

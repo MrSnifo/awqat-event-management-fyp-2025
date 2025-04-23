@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'end_date' => htmlspecialchars(trim($_POST['end_date'] ?? '')),
         'start_time' => htmlspecialchars(trim($_POST['start_time'] ?? '')),
         'end_time' => htmlspecialchars(trim($_POST['end_time'] ?? '')),
-        'description' => htmlspecialchars(trim($_POST['description'] ?? '')),
+        'description' => trim($_POST['description'] ?? ''),
         'tags' => isset($_POST['tags']) ? explode(',', $_POST['tags']) : [],
         'status' => 'unverified'
     ];
