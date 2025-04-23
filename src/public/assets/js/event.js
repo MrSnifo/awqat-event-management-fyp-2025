@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Countdown Timer
     function updateCountdown() {
-        const countdownContainer = document.querySelector('.countdown-container');
+        const countdownContainer = document.getElementById('countdown-timer');
         if (!countdownContainer) return;
 
         const eventStart = countdownContainer.dataset.eventStart;

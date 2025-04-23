@@ -161,7 +161,7 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                 </div>
 
                 <!-- Countdown Timer or Ended Message -->
-                <div class="countdown-container" 
+                <div class="countdown-container" id="countdown-timer"
                      data-event-start="<?php echo $event['start_date'] ?>T<?php echo $event['start_time'] ?>" 
                      data-event-end="<?php echo $event['end_date'] ?>T<?php echo $event['end_time'] ?>">
                     <?php if ($eventStatus !== 'ended') : ?>

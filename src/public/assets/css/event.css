@@ -230,10 +230,10 @@
 .event-ended-message {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--text-secondary);
+    color: var(--primary);
     text-align: center;
     padding: 2rem;
-    background: var(--surface-light);
+    background: var(--surface-secondary);
     border-radius: 12px;
     margin: 2rem 0;
 }
