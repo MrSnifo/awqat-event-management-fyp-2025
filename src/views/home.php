@@ -36,9 +36,7 @@ foreach($events as $key => $event) {
     if ($isLoggedIn) {
         $event['isInterested'] = $eventInterestController->hasUserInterest($_SESSION['user_id'], $event['id']);
     }
-
-    // Make sure to update the event data in the events array
-    $events[$key] = $event; // This is necessary to persist changes to the event
+    $events[$key] = $event;
 }
 
 
@@ -174,12 +172,15 @@ $filteredEvents = $events;
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
             <?php if (empty($filteredEvents)): ?>
-    <div class="empty-events">
-        <i class="bi bi-calendar2-event empty-icon"></i>
-        <h3 class="empty-title">No Events Found</h3>
-        <p class="empty-message">Try broadening your search or check different categories</p>
-        <a href="./" class="btn btn-orange">Clear Filters</a>
-    </div>
+                <div class="empty-events">
+                    <i class="bi bi-calendar2-event empty-icon"></i>
+                    <h3 class="empty-title">No Events Found</h3>
+                    <p class="empty-message">Oops, no events found! Try again later.</p>
+                     <?php if (!empty($tags)): ?>
+                    <a href="./" class="btn btn-orange">Clear Filters</a>
+                    <?php endif; ?>
+                    
+                </div>
 <?php else: ?>
     <?php foreach ($filteredEvents as $event): ?>
         <?php

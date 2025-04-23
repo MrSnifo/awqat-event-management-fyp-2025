@@ -18,7 +18,7 @@ switch ($cleanPath) {
         include __DIR__ . '/../views/registration.php';
         break;
     case '/profile':
-        include __DIR__ . '/../views/profile.php';
+        include __DIR__ . '/../views/user_profile.php';
         break;
     case '/interests':
         include __DIR__ . '/../views/interests.php';
@@ -39,6 +39,11 @@ switch ($cleanPath) {
         if (preg_match('#^/event/(\d+)$#', $cleanPath, $matches)) {
             $eventId = $matches[1];
             include __DIR__ . '/../views/event.php';
+            exit;
+        }
+        elseif (preg_match('#^/profile/(\d+)$#', $cleanPath, $matches)) {
+            $userId = $matches[1];
+            include __DIR__ . '/../views/profile.php';
             exit;
         }
         // Handle requests for files in storage/uploads

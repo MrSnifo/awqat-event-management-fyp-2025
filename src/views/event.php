@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../config/database.php';
 require_once '../controllers/Auth.php';
 require_once '../controllers/event.php';
 require_once '../controllers/interest.php';
@@ -23,7 +22,7 @@ if($event){
     $timeRemaining = $now->diff($startDate);
     $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' : 'ongoing');
 
-    $creator = $data['creator'];
+    $creator =  $auth->getUserInfo($data['data']['user_id'])['data'];
 
 
     $eventInterestController = new EventInterestController();

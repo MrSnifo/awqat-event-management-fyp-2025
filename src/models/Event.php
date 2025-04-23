@@ -83,7 +83,7 @@ class Event {
     }
 
     // Delete an event
-    public function delete(int $id): bool {
+    public function deleteEvent(int $id): bool {
         $query = "DELETE FROM {$this->table} WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);

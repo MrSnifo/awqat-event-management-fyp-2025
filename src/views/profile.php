@@ -1,18 +1,45 @@
 <?php
 session_start();
-require_once '../config/database.php';
 require_once '../controllers/Auth.php';
+require_once '../controllers/event.php';
+require_once '../controllers/interest.php';
 
 // Create Auth instance
 $auth = new Auth();
+$eventController = new EventController();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 
-// Redirect to login if not authenticated
-if (!$isLoggedIn) {
-    header("Location: login");
-    exit();
+
+$user = $auth->getUserInfo($userId);
+
+if($user['success']){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_id'])) {
+
+        if (!$isLoggedIn) {
+            header("Location: ../login");
+            exit();
+        }
+        
+        $eventId = (int)$_POST['event_id'];
+        $eventData = $eventController->getEvent($eventId);
+    
+        if($eventData['success']){
+            if($_SESSION['user_id'] == $eventData['data']['user_id']){
+                $eventController->deleteEvent($eventId);
+    
+            }
+        }
+    }
+
+    $data = $eventController->getUserEvent($userId);
+
+    $events = $data['data'] ?? [];
 }
+
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -37,8 +64,8 @@ if (!$isLoggedIn) {
       );
     })();
     </script>
-    <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/profile.css">
 </head>
 
 <body>
@@ -59,18 +86,18 @@ if (!$isLoggedIn) {
                 <?php if ($isLoggedIn) : ?>
                     <div class="user-section">
                         <div class="user-info">
-                            <a href="profile" class="username-link">
+                            <a href="../profile" class="username-link">
                                 <span class="username"><?php echo htmlspecialchars($username); ?></span>
                             </a>
-                            <a href="logout" class="logout-btn">
+                            <a href="../logout" class="logout-btn">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Logout</span>
                             </a>
                         </div>
                     </div>
                 <?php else : ?>
-                    <a href="login" class="btn btn-outline-light">Log In</a>
-                    <a href="register" class="btn btn-orange">Sign Up</a>
+                    <a href="../login" class="btn btn-outline-light">Log In</a>
+                    <a href="../register" class="btn btn-orange">Sign Up</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -84,16 +111,17 @@ if (!$isLoggedIn) {
                 <!-- Navigation Menu -->
                 <div class="sidebar-section">
                     <nav class="nav flex-column gap-2 mb-4">
-                        <a class="nav-link" id="homeRefresh" href="./">
+                        <a class="nav-link" id="homeRefresh" href="../">
                             <i class="bi bi-house-door me-2"></i>Home
                         </a>
-                        <a class="nav-link active" href="profile">
+                        <a class="nav-link <?php if (!empty($user['success']) && $userId == $user['data']['id']) echo 'active'; ?>" href="../profile">
+
                             <i class="bi bi-person me-2"></i>Profile
                         </a>
-                        <a class="nav-link" href="interests">
+                        <a class="nav-link" href="../interests">
                             <i class="bi bi-star me-2"></i> My Interests
                         </a>
-                        <a class="nav-link" href="create-event">
+                        <a class="nav-link" href="../create-event">
                             <i class="bi bi-plus-circle me-2"></i> Create Event
                         </a>
                     </nav>
@@ -102,10 +130,13 @@ if (!$isLoggedIn) {
 
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
+                <?php if ($user['success']) :?>
                 <!-- Profile Header -->
                 <div class="profile-header">
                     <div class="profile-picture-container">
-                        <img src="../storage/uploads/profile_default.jpg" alt="Profile Picture" class="profile-picture">
+                    <img src="<?php echo htmlspecialchars($user['data']['profile_picture_url'] ?? '') ?>" 
+                         class="profile-picture" 
+                         alt="<?php echo htmlspecialchars($user['data']['username']) ?>" onerror="this.src='../storage/uploads/profile_default.jpg'">
                         <button class="edit-picture-btn">
                             <i class="bi bi-camera-fill"></i>
                         </button>
@@ -113,104 +144,111 @@ if (!$isLoggedIn) {
                     
                     <div class="profile-info">
                         <div class="profile-name-container">
-                            <h1 class="profile-name"><?php echo htmlspecialchars($username); ?></h1>
+                            <h1 class="profile-name"><?php echo htmlspecialchars($user['data']['username']); ?></h1>
                             <button class="edit-profile-btn">
                                 Edit Profile
                             </button>
                         </div>
-                        <p class="profile-username">@<?php echo htmlspecialchars($username); ?></p>
+                        <p class="profile-username">@<?php echo htmlspecialchars($user['data']['username']); ?></p>
                         <p class="profile-bio">
-                        We don't know much about them, but we're sure username is great.
+                        <?php echo htmlspecialchars($user['data']['description'] ?? "We don't know much about them, but we're sure " . $user['data']['username'] . " is great."); ?>
                         </p>
                         
                         <div class="profile-meta">
-                            <span><i class="bi bi-calendar"></i> Joined June 2022</span>
+                            <span><i class="bi bi-calendar"></i> Joined <?php echo date('M j, Y', strtotime($user['data']['created_at'])) ?></span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Events Section -->
                 <div class="events-section">
-                    <h2 class="section-title">
-                        <i class="bi bi-calendar-event"></i> My Events
-                    </h2>
+    <h2 class="section-title">
+        <i class="bi bi-calendar-event"></i> Created events
+    </h2>
+    
+    <div class="events-grid">
+
+    <?php if (!empty($events)) : ?>
+        <?php foreach ($events as $event): 
+            // Determine if event is upcoming or past
+            $today = new DateTime();
+            $endDate = new DateTime($event['end_date'] ?? $event['start_date']);
+            $isPast = $endDate < $today;
+            $badgeClass = $isPast ? 'past' : 'active';
+            $badgeText = $isPast ? 'Past' : 'Upcoming';
+            
+            // Format dates
+            $startDateObj = new DateTime($event['start_date']);
+            $endDateObj = new DateTime($event['end_date'] ?? $event['start_date']);
+            
+            // Single day event
+            if ($event['start_date'] == ($event['end_date'] ?? null)) {
+                $dateDisplay = $startDateObj->format('M j, Y');
+            } 
+            // Multi-day event in same month
+            elseif ($startDateObj->format('M') == $endDateObj->format('M')) {
+                $dateDisplay = $startDateObj->format('M j').'-'.$endDateObj->format('j, Y');
+            }
+            // Multi-day event across months
+            else {
+                $dateDisplay = $startDateObj->format('M j').'-'.$endDateObj->format('M j, Y');
+            }
+        ?>
+        <!-- Event Card -->
+        <div class="event-card">
+            <span class="event-badge <?= $badgeClass ?>"><?= $badgeText ?></span>
+            <div class="event-image-container">
+            <img src="<?php echo htmlspecialchars($event['cover_image_url'] ?? ''); ?>" 
+     class="event-image img-fluid h-100" 
+     alt="<?php echo htmlspecialchars($event['title']); ?>" 
+     onerror="this.src='../storage/uploads/event_default.jpg'">
+            </div>
+            <div class="event-content">
+                <h3 class="event-title"><?= htmlspecialchars($event['title']) ?></h3>
+                <div class="event-meta">
+                    <span><i class="bi bi-calendar"></i> <?= $dateDisplay ?></span>
+                    <span><i class="bi bi-geo-alt"></i> <?= htmlspecialchars($event['location']) ?></span>
+                </div>
+                <div class="event-actions">
+                    <button class="details-btn" onclick="window.location.href='../event/<?= $event['id'] ?>'">
+                        View Details
+                    </button>
+
+                    <?php if ($isLoggedIn && $_SESSION['user_id'] == $userId) : ?>
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="event_id" value="<?= $event['id'] ?>">
+                        <button type="submit" class="delete-btn">
+                            Delete
+                        </button>
+                    </form>
+                <?php endif; ?>
                     
-                    <div class="events-grid">
-                        <!-- Event 1 -->
-                        <div class="event-card">
-                            <span class="event-badge active">Upcoming</span>
-                            <div class="event-image-container">
-                                <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                                     alt="Tech & Arts Festival" class="event-image">
-                            </div>
-                            <div class="event-content">
-                                <h3 class="event-title">Tech & Arts Festival 2023</h3>
-                                <div class="event-meta">
-                                    <span><i class="bi bi-calendar"></i> Nov 10-12, 2023</span>
-                                    <span><i class="bi bi-geo-alt"></i> Miami, FL</span>
-                                </div>
-                                <div class="event-actions">
-                                    <button class="details-btn">
-                                        View Details
-                                    </button>
-                                    <button class="delete-btn">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Event 2 -->
-                        <div class="event-card">
-                            <span class="event-badge past">Past</span>
-                            <div class="event-image-container">
-                                <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                                     alt="Sunset Music Series" class="event-image">
-                            </div>
-                            <div class="event-content">
-                                <h3 class="event-title">Sunset Music Series</h3>
-                                <div class="event-meta">
-                                    <span><i class="bi bi-calendar"></i> Oct 15, 2023</span>
-                                    <span><i class="bi bi-geo-alt"></i> Bayfront Park</span>
-                                </div>
-                                <div class="event-actions">
-                                    <button class="details-btn">
-                                        View Details
-                                    </button>
-                                    <button class="delete-btn">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Event 3 -->
-                        <div class="event-card">
-                            <span class="event-badge">Upcoming</span>
-                            <div class="event-image-container">
-                                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                                     alt="Blockchain Workshop" class="event-image">
-                            </div>
-                            <div class="event-content">
-                                <h3 class="event-title">Blockchain Workshop</h3>
-                                <div class="event-meta">
-                                    <span><i class="bi bi-calendar"></i> Dec 5, 2023</span>
-                                    <span><i class="bi bi-geo-alt"></i> Miami Tech Hub</span>
-                                </div>
-                                <div class="event-actions">
-                                    <button class="details-btn">
-                                        View Details
-                                    </button>
-                                    <button class="delete-btn">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+        <?php endforeach; ?>
+        <?php else : ?>
+            <p class="event-meta">There are currently no events.</p>
+        <?php endif; ?>
+        
+    </div>
 
+    
+        
+</div>
+
+<script>
+function confirmDelete(eventId) {
+    if (confirm('Are you sure you want to delete this event?')) {
+        window.location.href = '/delete-event?id=' + eventId;
+    }
+}
+</script>
+
+        <?php else : ?>
+            <p class="event-meta">User not found.</p>
+        <?php endif; ?>
+            </div>
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
 
@@ -294,7 +332,7 @@ if (!$isLoggedIn) {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/global.js"></script>
+    <script src="../assets/js/global.js"></script>
 </body>
 
 </html>
