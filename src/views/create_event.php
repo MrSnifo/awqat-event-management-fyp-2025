@@ -183,6 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="col-lg-7 p-3">
                <div class="create-event-container">
                   <h3 class="create-event-title mb-4"><i class="bi bi-plus-circle me-2"></i>Create New Event</h3>
+                  <p class="warrning-text small mt-3">Once the event is created, it cannot be edited later due to integrity requirements.</p>
                   <div class="error-message-container">
                      <?php if (!empty($errors)): ?>
                      <ul>
