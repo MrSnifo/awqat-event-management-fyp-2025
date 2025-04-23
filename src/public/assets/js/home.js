@@ -10,7 +10,7 @@ const Home = {
       
       this.render();
       this.setupFilterEvents();
-      this.setupUIEvents();
+      this.initInterestButton();
   },
 
   setupFilterEvents() {
@@ -50,37 +50,46 @@ const Home = {
       });
   },
   
-  setupUIEvents() {
-      // Event delegation for interested buttons
-      document.addEventListener('click', (e) => {
-          if (e.target.closest('.interested-btn')) {
-              const btn = e.target.closest('.interested-btn');
-              const isActive = btn.classList.toggle('active');
-              const icon = btn.querySelector('.bi');
-              const countElement = btn.querySelector('.count');
-              
-              // Toggle star icon
-              if (icon) {
-                  icon.classList.toggle('bi-star');
-                  icon.classList.toggle('bi-star-fill');
-              }
-              
-              // Update counter if exists
-              if (countElement) {
-                  const currentText = countElement.textContent;
-                  const currentCount = parseFloat(currentText) * 1000;
-                  const newCount = isActive ? currentCount + 200 : currentCount - 200;
-                  countElement.textContent = (newCount/1000).toFixed(1) + 'k';
-              }
-          }
-          
-          // Handle event card clicks
-          if (e.target.closest('.side-event-card')) {
-              e.preventDefault();
-              window.location.href = `event/${Math.floor(1000 + Math.random() * 9000)}`;
-          }
-      });
-  },
+initInterestButton() {
+    const interestBtns = document.querySelectorAll(".interest-btn");
+
+    interestBtns.forEach(function (interestBtn) {
+        const interestIcon = interestBtn.querySelector(".interest-icon");
+        const interestLabel = interestBtn.querySelector(".interest-label");
+        const interestCount = interestBtn.querySelector(".interest-count");
+
+        if (interestBtn && interestIcon && interestLabel && interestCount) {
+            interestBtn.addEventListener("click", async function () {
+                const eventId = interestBtn.dataset.eventId;
+                const isInterested = interestIcon.classList.contains("bi-star-fill");
+
+                try {
+                    const response = await fetch('http://localhost/PFA-2024-2025/src/public/api/interest', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ event_id: eventId }),
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const added = data.action === 'added';
+                        interestIcon.className = added ? "interest-icon bi-star-fill" : "interest-icon bi-star";
+                        interestBtn.classList.toggle("active", added);
+                        interestLabel.textContent = added ? "Interested" : "Show Interest";
+                        interestCount.textContent = data.interestCount.toLocaleString();
+                    } else if (data.message === "Unauthorized") {
+                        window.location.href = "../login";
+                    }
+                } catch (error) {
+                    interestIcon.className = isInterested ? "interest-icon bi-star-fill" : "interest-icon bi-star";
+                    interestLabel.textContent = isInterested ? "Interested" : "Show Interest";
+                }
+            });
+        }
+    });
+},
 
   updateURL() {
       const params = new URLSearchParams();

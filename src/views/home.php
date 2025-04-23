@@ -2,6 +2,7 @@
 session_start();
 require_once '../controllers/auth.php';
 require_once '../controllers/event.php';
+require_once '../controllers/interest.php';
 
 // Create Auth instance
 $auth = new Auth();
@@ -23,6 +24,23 @@ $eventController = new EventController();
 
 // Database query would go here - this is just mock data
 $events = $eventController->getevents();
+
+$eventInterestController = new EventInterestController();
+
+foreach($events as $key => $event) {
+    // Get interest count for the event
+    $event['interests'] = $eventInterestController->getEventInterestCount($event['id']);
+    
+    // Check if the user is interested in the event
+    $event['isInterested'] = false;
+    if ($isLoggedIn) {
+        $event['isInterested'] = $eventInterestController->hasUserInterest($_SESSION['user_id'], $event['id']);
+    }
+
+    // Make sure to update the event data in the events array
+    $events[$key] = $event; // This is necessary to persist changes to the event
+}
+
 
 
 $filteredEvents = $events;
@@ -189,20 +207,19 @@ $filteredEvents = $events;
                         </div>
                         <h4 class="event-title"><?php echo htmlspecialchars($event['title']); ?></h4>
                         <p class="event-description">
-                            <?php echo htmlspecialchars($event['description']); ?>
+                            <?php echo nl2br(htmlspecialchars($event['description'])) ?>
                         </p>
                         <div class="event-tags">
                             <?php echo $tags_html; ?>
                         </div>
                         <div class="event-actions">
-                            <!-- Interested field is not in the database, so this section will need adjustment -->
-                            <!-- You might want to add a column or logic for the 'interested' count -->
-                            <button class="btn interested-btn">
-                                <i class="bi bi-star"></i>
-                                <span>Interested</span>
-                                <!-- Example interested count (you may want to replace this with actual logic) -->
-                                <span class="count">0k</span>
+                            <button class="interest-btn <?php echo $event['isInterested'] ? 'active' : '' ?>" 
+                            data-event-id="<?php echo htmlspecialchars($event['id']) ?>">
+                            <i class="interest-icon bi-star<?php echo $event['isInterested'] ? '-fill' : '' ?>"></i>
+                            <span class="interest-label"><?php echo $event['isInterested'] ? 'Interested' : 'Show Interest' ?></span>
+                            <span class="interest-count count"><?php echo number_format($event['interests']) ?></span>
                             </button>
+                        </button>
                             <a href="event/<?php echo htmlspecialchars($event['id']); ?>" class="btn details-btn">
                                 <span>View Details</span>
                                 <i class="bi bi-arrow-right"></i>

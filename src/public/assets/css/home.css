@@ -242,7 +242,7 @@
 	min-width: auto;
 }
 
-.interested-btn {
+.interest-btn {
 	background: transparent;
 	color: var(--text-secondary);
 	border: 1px solid var(--border-color);
@@ -256,19 +256,19 @@
 	cursor: pointer;
 }
 
-.interested-btn:hover {
+.interest-btn:hover {
 	border-color: var(--primary);
 	color: var(--primary);
 	background: var(--primary-light);
 }
 
-.interested-btn.active {
+.interest-btn.active {
 	background: var(--primary);
 	color: white;
 	border-color: var(--primary);
 }
 
-.interested-btn .count {
+.interest-btn.count {
 	color: inherit;
 	margin-left: 0.25rem;
 	font-size: 0.9rem;
