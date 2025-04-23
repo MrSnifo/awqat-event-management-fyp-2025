@@ -1,13 +1,16 @@
 <?php
 require_once '../config/Database.php';
 require_once '../models/Event.php';
+require_once '../models/User.php';
 
 class EventController {
     private $event;
+    private $user;
     
     public function __construct() {
         $database = new Database();
         $this->event = new Event($database->getConnection());
+        $this->user = new User($database->getConnection());
     }
 
     public function createEvent(mixed $data): array {
@@ -92,6 +95,16 @@ class EventController {
             ];
         }
         return ['success' => false, 'message' => 'Failed to create event'];
+    }
+
+    // gets event and its creator
+    public function getEvent(string $id): array {
+        $eventData = $this->event->getById($id);
+        if($eventData){
+            $userData = $this->user->getById($eventData['user_id']);
+            return ['success' => true, 'data' => $eventData, 'creator'=> $userData];
+        }
+        return ['success' => false, 'message' => 'Event not found'];
     }
     
 }

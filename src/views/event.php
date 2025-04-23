@@ -2,44 +2,30 @@
 session_start();
 require_once '../config/database.php';
 require_once '../controllers/Auth.php';
+require_once '../controllers/event.php';
 
 // Create Auth instance
 $auth = new Auth();
+$eventController = new EventController();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 
-// Redirect to login if not authenticated
-if (!$isLoggedIn) {
-    header("Location: login");
-    exit();
-}
+$data = $eventController->getEvent($eventId);
 
-$event = [
-    'id' => 123,
-    'title' => 'Tech Conference 2023',
-    'description' => "Join us for the biggest tech conference of the year featuring top industry speakers, workshops, and networking opportunities.\nThis three-day event will cover the latest trends in AI, blockchain, and cloud computing with hands-on sessions and panel discussions.",
-    'location' => 'Dubai World Trade Centre',
-    'start_date' => '2026-12-15',
-    'end_date' => '2023-12-17',
-    'start_time' => '09:00:00',
-    'end_time' => '18:00:00',
-    'cover_image_url' => 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80',
-    'status' => 'unverified',
-    'interests' => 1245,
-    'tags' => json_encode(['technology', 'conference', 'networking', 'workshops', 'dubai']),
-    'creator' => [
-        'id' => 456,
-        'name' => 'Tech Events Dubai',
-        'avatar' => 'http://localhost/PFA-2024-2025/src/public/storage/uploads/profile_default.jpg'
-    ]
-];
+$event = $data['data'] ?? null;
+$creator = $data['creator'] ?? null;
 
-// Calculate time remaining
+if($event){
+
+    // Calculate time remaining
 $now = new DateTime();
 $startDate = new DateTime($event['start_date'] . ' ' . $event['start_time']);
 $endDate = new DateTime($event['end_date'] . ' ' . $event['end_time']);
 $timeRemaining = $now->diff($startDate);
 $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' : 'ongoing');
+
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -127,23 +113,24 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                 </div>
             </div>
 
-            <!-- Main Content Area -->
-            <!-- Main Content Area -->
+            
+
 <div class="col-lg-7 p-3">
+<?php if ($event) : ?>
     <div class="event-detail-container">
         <div class="event-layout">
             <!-- Left Column - Timer & Info -->
             <div class="event-info-column">
                 <!-- Creator Section -->
                 <div class="creator-section">
-                    <img src="<?php echo htmlspecialchars($event['creator']['avatar']) ?>" 
+                    <img src="<?php echo htmlspecialchars($creator['profile_picture_url'] ?? '') ?>" 
                          class="creator-avatar" 
-                         alt="<?php echo htmlspecialchars($event['creator']['name']) ?>"
-                         onerror="this.src='https://via.placeholder.com/50'">
+                         alt="<?php echo htmlspecialchars($creator['username']) ?>"
+                         onerror="this.src='../storage/uploads/profile_default.jpg'">
                     <div class="creator-info">
                         <div class="creator-label">Created by</div>
-                        <a href="../profile/<?php echo $event['creator']['id'] ?>" class="creator-name">
-                            <?php echo htmlspecialchars($event['creator']['name']) ?>
+                        <a href="../profile/<?php echo $creator['id'] ?>" class="creator-name">
+                            <?php echo htmlspecialchars($creator['username']) ?>
                         </a>
                     </div>
                 </div>
@@ -217,7 +204,7 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
 
                 <!-- Event Tags -->
                 <div class="event-tags">
-                    <?php foreach (json_decode($event['tags']) as $tag) : ?>
+                    <?php foreach ($event['tags'] as $tag) : ?>
                         <span class="tag-badge"><?php echo htmlspecialchars($tag) ?></span>
                     <?php endforeach; ?>
                 </div>
@@ -225,10 +212,11 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
 
             <!-- Right Column - Image -->
             <div class="event-image-column">
-                <img src="<?php echo htmlspecialchars($event['cover_image_url']) ?>" 
+                <img src="<?php echo htmlspecialchars('../' . $event['cover_image_url'] ?? '') ?>" 
                      class="event-cover-img" 
                      alt="Event cover"
-                     onerror="this.src='https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80'">
+                     alt="<?php echo htmlspecialchars($event['title']) ?>"
+                     onerror="this.src='../storage/uploads/event_default.jpg'">
                 
                 <?php if ($event['status'] === 'verified') : ?>
                     <div class="verified-badge">
@@ -250,8 +238,8 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <button class="interested-btn" id="interest-btn">
-                        <i class="bi bi-star"></i>
+                    <button class="interested-btn active" id="interest-btn">
+                        <i class="bi-star-fill"></i>
                         <span>Interested</span>
                         <span class="count"><?php echo number_format($event['interests']) ?></span>
                     </button>
@@ -261,7 +249,13 @@ $eventStatus = ($now < $startDate) ? 'upcoming' : (($now > $endDate) ? 'ended' :
                 </div>
             </div>
         </div>
+       
     </div>
+    <?php else : ?>
+
+        Not Found
+    
+    <?php endif; ?>
 </div>
 
             <!-- Right Sidebar -->
