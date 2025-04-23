@@ -134,7 +134,7 @@ if($user['success']){
                 <!-- Profile Header -->
                 <div class="profile-header">
                     <div class="profile-picture-container">
-                    <img src="<?php echo htmlspecialchars($user['data']['profile_picture_url'] ?? '') ?>" 
+                    <img src="<?php echo htmlspecialchars('../' . $user['data']['profile_picture_url'] ?? '') ?>" 
                          class="profile-picture" 
                          alt="<?php echo htmlspecialchars($user['data']['username']) ?>" onerror="this.src='../storage/uploads/profile_default.jpg'">
                         <button class="edit-picture-btn">
@@ -198,7 +198,7 @@ if($user['success']){
         <div class="event-card">
             <span class="event-badge <?= $badgeClass ?>"><?= $badgeText ?></span>
             <div class="event-image-container">
-            <img src="<?php echo htmlspecialchars($event['cover_image_url'] ?? ''); ?>" 
+            <img src="<?php echo htmlspecialchars('../' . $event['cover_image_url'] ?? ''); ?>" 
      class="event-image img-fluid h-100" 
      alt="<?php echo htmlspecialchars($event['title']); ?>" 
      onerror="this.src='../storage/uploads/event_default.jpg'">
