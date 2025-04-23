@@ -13,6 +13,14 @@ class EventController {
         $this->user = new User($database->getConnection());
     }
 
+    public function deleteEvent(int $id): array {
+        $result = $this->event->deleteEvent($id); 
+        if ($result) {
+            return ['success' => true, 'message' => 'Event deleted successfully'];
+        }
+        return ['success' => false, 'message' => 'Event not found or could not be deleted'];
+    }
+
     public function createEvent(mixed $data): array {
         $required = [
             'user_id' => 'User ID',
@@ -97,11 +105,19 @@ class EventController {
         return ['success' => false, 'message' => 'Failed to create event'];
     }
 
-    // gets event and its creator
     public function getEvent(string $id): array {
         $eventData = $this->event->getById($id);
         if($eventData){
-            $userData = $this->user->getById($eventData['user_id']);
+            return ['success' => true, 'data' => $eventData];
+        }
+        return ['success' => false, 'message' => 'Event not found'];
+    }
+
+
+    public function getUserEvent(string $id): array {
+        $eventData = $this->event->getByUserId($id);
+        if($eventData){
+            $userData = $this->user->getById($id);
             return ['success' => true, 'data' => $eventData, 'creator'=> $userData];
         }
         return ['success' => false, 'message' => 'Event not found'];

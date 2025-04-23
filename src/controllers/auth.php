@@ -134,6 +134,14 @@ class Auth {
         session_destroy();
     }
 
+    public function getUserInfo(int $id): array {
+        $result = $this->user->getById($id);
+        if($result){
+            return ['success' => true, 'data' => $result];
+        }
+        return ['success' => false, 'message' => 'User not found'];
+    }
+
     public function getCurrentUser(): ?array {
         if (!$this->verifySession()) {
             return null;
