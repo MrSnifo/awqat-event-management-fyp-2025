@@ -150,7 +150,7 @@ if ($user["success"]) {
                         Edit Profile
                         </button>
                      </div>
-                     <p class="profile-username">@<?php echo htmlspecialchars($user['data']['username']); ?></p>
+                     <p class="profile-username">@<?php echo htmlspecialchars(strtolower($user['data']['username'])); ?></p>
                      <p class="profile-bio">
                         <?php echo htmlspecialchars($user['data']['description'] ?? "We don't know much about them, but we're sure " . $user['data']['username'] . " is great."); ?>
                      </p>
@@ -169,10 +169,27 @@ if ($user["success"]) {
                      <?php foreach ($events as $event): 
                         // Determine if event is upcoming or past
                         $today = new DateTime();
-                        $endDate = new DateTime($event['end_date'] ?? $event['start_date']);
+
+                        // Create DateTime objects for event dates
+                        $startDate = new DateTime($event['start_date']);
+                        $endDate = new DateTime($event['end_date'] ?? $event['start_date']); // Fallback to start_date if no end_date
+                        
+                        // Determine event status
                         $isPast = $endDate < $today;
-                        $badgeClass = $isPast ? 'past' : 'active';
-                        $badgeText = $isPast ? 'Past' : 'Upcoming';
+                        $isUpcoming = $startDate > $today;
+                        $isActiveNow = (!$isPast && !$isUpcoming); // Event is currently happening
+                        
+                        // Set badge classes and text
+                        if ($isActiveNow) {
+                            $badgeClass = 'active-now';
+                            $badgeText = 'Happening Now';
+                        } elseif ($isUpcoming) {
+                            $badgeClass = 'upcoming';
+                            $badgeText = 'Upcoming';
+                        } else {
+                            $badgeClass = 'past';
+                            $badgeText = 'Past';
+                        }
                         
                         // Format dates
                         $startDateObj = new DateTime($event['start_date']);

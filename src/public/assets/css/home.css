@@ -33,17 +33,19 @@
 }
 
 .event-badge {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	background: var(--primary);
-	color: white;
-	padding: 5px 10px;
-	border-radius: 20px;
-	font-size: 0.8rem;
-	font-weight: bold;
-	user-select: none;
+    position: absolute;
+    top: 15px;
+    left: 15px;  /* Changed from right to left */
+    background: var(--primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    user-select: none;
+    z-index: 1; /* Ensure it stays above other elements */
 }
+
 
 /* Card Content Section */
 .event-content {

@@ -40,6 +40,23 @@ foreach ($events as $key => $event) {
             $event["id"]
         );
     }
+
+$today = new DateTime();
+    $startDate = new DateTime($event['start_date']);
+    $endDate = new DateTime($event['end_date'] ?? $event['start_date']);
+    
+    $isPast = $endDate < $today;
+    $isUpcoming = $startDate > $today;
+    $isActiveNow = (!$isPast && !$isUpcoming);
+    
+    if ($isActiveNow) {
+        $event['status_text'] = 'Happening Now';
+    } elseif ($isUpcoming) {
+        $event['status_text'] = 'Upcoming';
+    } else {
+        $event['status_text'] = 'Past';
+    }
+
     $events[$key] = $event;
 }
 
@@ -193,6 +210,7 @@ $filteredEvents = $events;
                               class="event-image img-fluid h-100" 
                               alt="<?php echo htmlspecialchars($event['title']); ?>" 
                               onerror="this.src='../storage/uploads/event_default.jpg'">
+                              <div class="event-badge"><?php echo htmlspecialchars($event['status_text']); ?></div>
                         </div>
                      </div>
                      <div class="col-md-8">
