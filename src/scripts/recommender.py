@@ -137,7 +137,7 @@ def main():
     db = get_db_connection()
     try:
         user_df = get_user_interactions(db, user_id)
-        all_event_ids = get_all_events(db, limit=100)  # Get more events for potential recommendations
+        all_event_ids = get_all_events(db, limit=100)
 
         recommended_ids = generate_recommendations(db, user_df, all_event_ids)
 

@@ -121,7 +121,6 @@ class FilterController {
                     $recommended_event_ids = $this->run_ai($user_id);
                     if($recommended_event_ids['success']){
                         $events = $this->sortByRecommended($events, $recommended_event_ids);
-                        echo("works");
                         break;
                     }
                 }

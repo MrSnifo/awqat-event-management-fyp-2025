@@ -9,7 +9,7 @@ $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
 
 // Filters
-$sortBy = isset($_GET["sort"]) ? $_GET["sort"] : "recommended";
+$sortBy = isset($_GET["sort"]) ? $_GET["sort"] : "recent";
 $tags = isset($_GET["tags"]) ? explode(",", $_GET["tags"]) : [];
 
 $filter = new FilterController();
@@ -104,8 +104,8 @@ $filteredEvents = $filter->filter(
                      <div class="mb-3">
                         <label for="sort-by" class="form-label small mb-2">Sort by</label>
                         <select id="sort-by" class="form-select">
-                           <option value="recommended" <?php echo $sortBy === 'recommended' ? 'selected' : ''; ?>>Recommended for you</option>
                            <option value="recent" <?php echo $sortBy === 'recent' ? 'selected' : ''; ?>>Most Recent</option>
+                           <option value="recommended" <?php echo $sortBy === 'recommended' ? 'selected' : ''; ?>>Recommended for you</option>
                            <option value="interests_high" <?php echo $sortBy === 'interests_high' ? 'selected' : ''; ?>>Interests (High to Low)</option>
                            <option value="interests_low" <?php echo $sortBy === 'interests_low' ? 'selected' : ''; ?>>Interests (Low to High)</option>
                         </select>

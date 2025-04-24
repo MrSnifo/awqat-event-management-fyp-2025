@@ -1,12 +1,12 @@
 const Home = {
   tags: [],
-  sortBy: 'recommended',
+  sortBy: 'recent',
   
   init() {
       // Initialize filters from URL
       const params = new URLSearchParams(location.search);
       this.tags = params.get('tags')?.split(',').filter(Boolean) || [];
-      this.sortBy = params.get('sort') || 'recommended';
+      this.sortBy = params.get('sort') || 'recent';
       
       this.render();
       this.setupFilterEvents();
@@ -36,8 +36,8 @@ const Home = {
       // Clear filters
       document.getElementById('clear-filters')?.addEventListener('click', () => {
           this.tags = [];
-          this.sortBy = 'recommended';
-          document.getElementById('sort-by').value = 'recommended';
+          this.sortBy = 'recent';
+          document.getElementById('sort-by').value = 'recent';
           this.render();
       });
   
@@ -95,7 +95,7 @@ initInterestButton() {
   updateURL() {
       const params = new URLSearchParams();
       if (this.tags.length) params.set('tags', this.tags.join(','));
-      if (this.sortBy !== 'recommended') params.set('sort', this.sortBy);
+      if (this.sortBy !== 'recent') params.set('sort', this.sortBy);
       
       const newUrl = params.toString() 
           ? `${location.pathname}?${params}`
