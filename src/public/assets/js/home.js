@@ -80,9 +80,7 @@ initInterestButton() {
                         interestLabel.textContent = added ? "Interested" : "Show Interest";
                         interestCount.textContent = data.interestCount.toLocaleString();
                     } else if (data.message === "Unauthorized") {
-                        const currentUrl = window.location.pathname + window.location.search;
-                            const redirect = btoa(currentUrl);
-                            window.location.href = `./login?redirect=${redirect}`;
+                            window.location.href = './login';
                             return;
                     }
                 } catch (error) {

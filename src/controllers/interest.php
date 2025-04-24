@@ -2,9 +2,11 @@
 require_once '../config/Database.php';
 require_once '../models/Interest.php';
 require_once '../models/Event.php';
+require_once '../controllers/interaction.php';
 
 class EventInterestController {
     private $eventInterest;
+    private $interactionController;
     private $event;
     
     public function __construct() {
@@ -12,6 +14,10 @@ class EventInterestController {
         $db = $database->getConnection();
         $this->eventInterest = new EventInterest($db);
         $this->event = new Event($db);
+        // AI part
+        $this->interactionController = new InteractionController();
+
+         
     }
 
     public function handleToggleInterest(): void {
@@ -69,11 +75,13 @@ class EventInterestController {
 
         if ($hasInterest) {
             // Remove interest
+            $this->interactionController->recordInteraction($userId, $eventId, 'uninterested');
             $success = $this->eventInterest->removeInterest($userId, $eventId);
             $message = $success ? 'Interest removed successfully' : 'Failed to remove interest';
             $action = 'removed';
         } else {
             // Add interest
+            $this->interactionController->recordInteraction($userId, $eventId, 'interested');
             $success = $this->eventInterest->addInterest($userId, $eventId);
             $message = $success ? 'Interest added successfully' : 'Failed to add interest';
             $action = 'added';
