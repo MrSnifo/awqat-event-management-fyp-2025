@@ -151,7 +151,39 @@ class FilterController {
     }
 
 
+    private function run_search(string $query): array {
+        $python_binary = 'C:\Users\Snifo\AppData\Local\Programs\Python\Python313\python.exe';
+        $python_script = 'C:\wamp64\www\PFA-2024-2025\src\scripts\search.py';
+        
+        $command = escapeshellcmd($python_binary . " " . $python_script . " " . escapeshellarg($query));
+        $output = shell_exec($command);
+        
+        if ($output !== null) {
+            $result = json_decode($output, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return ['success' => true, 'data' => $result];
+            }
+        }
 
+        return ['success' => false, 'message' => 'Ai failed :('];
+    }
+
+
+    public function search(string $query, ?int $user_id) {
+        $result = $this->run_search($query);
+        $events = [];
+    
+        if ($result['success']) {
+            foreach ($result['data'] as $event_id) {
+                $event = $this->event->getById($event_id);
+                if ($event) {
+                    $events[] = $event;
+                }
+            }
+        }
+
+        return $this->format($events, $user_id);;
+    }
 
 
 

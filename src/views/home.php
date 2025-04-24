@@ -11,13 +11,24 @@ $username = $isLoggedIn ? $_SESSION["username"] : "";
 // Filters
 $sortBy = isset($_GET["sort"]) ? $_GET["sort"] : "recent";
 $tags = isset($_GET["tags"]) ? explode(",", $_GET["tags"]) : [];
+$query = isset($_GET["search"]) ? $_GET["search"] : null;
 
 $filter = new FilterController();
-$filteredEvents = $filter->filter(
-    sort: $sortBy,
-    tags: $tags,
-    user_id: $isLoggedIn ? ($_SESSION["user_id"] ?? null) : null
-);
+
+
+if($query){
+   $filteredEvents = $filter->search( 
+      query: $query,
+      user_id: $isLoggedIn ? ($_SESSION["user_id"] ?? null) : null
+  );
+}else{
+   $filteredEvents = $filter->filter(
+      sort: $sortBy,
+      tags: $tags,
+      user_id: $isLoggedIn ? ($_SESSION["user_id"] ?? null) : null
+  );
+}
+
 
 ?>
 
@@ -55,7 +66,7 @@ $filteredEvents = $filter->filter(
             </a>
             <div class="search-container">
                <i class="bi bi-search search-icon"></i>
-               <input type="search" class="search-bar" placeholder="Search events...">
+               <input id="event-search" type="search" class="search-bar" placeholder="Search events...">
             </div>
             <div class="auth-buttons">
                <?php if ($isLoggedIn) : ?>
@@ -145,7 +156,7 @@ $filteredEvents = $filter->filter(
                   <i class="bi bi-calendar2-event empty-icon"></i>
                   <h3 class="empty-title">No Events Found</h3>
                   <p class="empty-message">Oops, no events found! Try again later.</p>
-                  <?php if (!empty($tags)): ?>
+                  <?php if (!empty($tags) || $query): ?>
                   <a href="./" class="btn btn-orange">Clear Filters</a>
                   <?php endif; ?>
                </div>

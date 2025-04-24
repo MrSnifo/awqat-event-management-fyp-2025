@@ -100,7 +100,7 @@ def main():
 
     user_id = validate_user_id(sys.argv[1])
     recommended_events = recommend_events(user_id)
-    print(recommended_events)
+    print(recommended_events, flush=True)
 
 
 if __name__ == "__main__":
