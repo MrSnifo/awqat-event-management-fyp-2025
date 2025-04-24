@@ -1,7 +1,7 @@
 <?php
 require_once "../controllers/auth.php";
 
-$auth = new Auth();
+$auth = new AuthController();
 $auth->logout();
 
 $redirect = isset($_GET['redirect']) ? base64_decode($_GET['redirect']) : './';

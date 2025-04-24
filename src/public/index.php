@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../controllers/interest.php';
 
-$eventInterestController = new EventInterestController();
+$eventInterestController = new InterestController();
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/' . implode('/', array_slice(explode('/', str_replace('\\', '/', __DIR__)), -3));

@@ -6,7 +6,7 @@ require_once "../controllers/interest.php";
 require_once "../controllers/interaction.php";
 
 // Create Auth instance
-$auth = new Auth();
+$auth = new AuthController();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
@@ -40,7 +40,7 @@ if ($event) {
 
     $creator = $auth->getUserInfo($data["data"]["user_id"])["data"];
 
-    $eventInterestController = new EventInterestController();
+    $eventInterestController = new InterestController();
     $isInterested = false;
     if ($isLoggedIn) {
         $isInterested = $eventInterestController->hasUserInterest(

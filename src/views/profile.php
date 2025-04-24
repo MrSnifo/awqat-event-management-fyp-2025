@@ -5,7 +5,7 @@ require_once "../controllers/event.php";
 require_once "../controllers/interest.php";
 
 // Create Auth instance
-$auth = new Auth();
+$auth = new AuthController();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";

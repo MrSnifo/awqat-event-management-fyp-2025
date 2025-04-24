@@ -2,7 +2,7 @@
 require_once '../config/Database.php';
 require_once '../models/User.php';
 
-class Auth {
+class AuthController {
     private $user;
     
     public function __construct() {

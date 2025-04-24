@@ -1,66 +1,24 @@
 <?php
 session_start();
 require_once "../controllers/auth.php";
-require_once "../controllers/event.php";
-require_once "../controllers/interest.php";
+require_once "../controllers/filters.php";
 
-// Create Auth instance
-$auth = new Auth();
+// Auth
+$auth = new AuthController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
 
-// Get filter parameters from URL
+// Filters
 $sortBy = isset($_GET["sort"]) ? $_GET["sort"] : "recommended";
-
 $tags = isset($_GET["tags"]) ? explode(",", $_GET["tags"]) : [];
-// Validate sort parameter
-$validSorts = ["recommended", "recent", "interests_high", "interests_low"];
-if (!in_array($sortBy, $validSorts)) {
-    $sortBy = "recommended";
-}
 
-$eventController = new EventController();
+$filter = new FilterController();
+$filteredEvents = $filter->filter(
+    sort: $sortBy,
+    tags: $tags,
+    user_id: $isLoggedIn ? ($_SESSION["user_id"] ?? null) : null
+);
 
-// Database query would go here - this is just mock data
-$events = $eventController->getevents();
-
-$eventInterestController = new EventInterestController();
-
-foreach ($events as $key => $event) {
-    // Get interest count for the event
-    $event["interests"] = $eventInterestController->getEventInterestCount(
-        $event["id"]
-    );
-
-    // Check if the user is interested in the event
-    $event["isInterested"] = false;
-    if ($isLoggedIn) {
-        $event["isInterested"] = $eventInterestController->hasUserInterest(
-            $_SESSION["user_id"],
-            $event["id"]
-        );
-    }
-
-$today = new DateTime();
-    $startDate = new DateTime($event['start_date']);
-    $endDate = new DateTime($event['end_date'] ?? $event['start_date']);
-    
-    $isPast = $endDate < $today;
-    $isUpcoming = $startDate > $today;
-    $isActiveNow = (!$isPast && !$isUpcoming);
-    
-    if ($isActiveNow) {
-        $event['status_text'] = 'Happening Now';
-    } elseif ($isUpcoming) {
-        $event['status_text'] = 'Upcoming';
-    } else {
-        $event['status_text'] = 'Past';
-    }
-
-    $events[$key] = $event;
-}
-
-$filteredEvents = $events;
 ?>
 
 <!DOCTYPE html>

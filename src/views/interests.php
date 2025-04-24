@@ -4,7 +4,7 @@ require_once "../config/database.php";
 require_once "../controllers/Auth.php";
 
 // Create Auth instance
-$auth = new Auth();
+$auth = new AuthController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
 $redirect = base64_encode($_SERVER['REQUEST_URI']);

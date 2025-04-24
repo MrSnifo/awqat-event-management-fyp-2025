@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Invalid email format.";
     } else {
         // Proceed with registration
-        $auth = new Auth();
+        $auth = new AuthController();
         $result = $auth->register($data);
 
         if ($result["success"]) {

@@ -125,6 +125,6 @@ class EventController {
 
 
     public function getevents(): array {
-    return $this->event->getUpcomingEvents();
+        return $this->event->getUpcomingEvents();
     }
 }

@@ -4,7 +4,7 @@ require_once '../models/Interest.php';
 require_once '../models/Event.php';
 require_once '../controllers/interaction.php';
 
-class EventInterestController {
+class InterestController {
     private $eventInterest;
     private $interactionController;
     private $event;
@@ -14,7 +14,6 @@ class EventInterestController {
         $db = $database->getConnection();
         $this->eventInterest = new EventInterest($db);
         $this->event = new Event($db);
-        // AI part
         $this->interactionController = new InteractionController();
 
          

@@ -3,7 +3,7 @@ require_once "../config/database.php";
 require_once "../controllers/auth.php";
 
 // If user is already logged in
-$auth = new Auth();
+$auth = new AuthController();
 if ($auth->verifySession()) {
     header("Location: ./");
     exit();
