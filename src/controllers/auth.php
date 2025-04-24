@@ -10,6 +10,18 @@ class Auth {
         $this->user = new User($database->getConnection());
     }
 
+    function isSafeRedirect(string $url): bool {
+        if (strpos($url, '/') !== 0) {
+            return false;
+        }
+    
+        if (preg_match('#^//|\\\#', $url)) {
+            return false;
+        }
+    
+        return true;
+    }
+
     // Register a new user
     public function register(array $data): array {
         // Validate required fields

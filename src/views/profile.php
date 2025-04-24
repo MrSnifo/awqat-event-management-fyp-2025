@@ -9,6 +9,7 @@ $auth = new Auth();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
+$redirect = base64_encode($_SERVER['REQUEST_URI']);
 
 $user = $auth->getUserInfo($userId);
 
@@ -16,7 +17,7 @@ if ($user["success"]) {
     // Handle POST request for event deletion
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["event_id"])) {
         if (!$isLoggedIn) {
-            header("Location: ../login");
+            header("Location: ./login?redirect=$redirect");
             exit();
         }
 
@@ -95,10 +96,7 @@ if ($user["success"]) {
                      <a href="../profile" class="username-link">
                      <span class="username"><?php echo htmlspecialchars($username); ?></span>
                      </a>
-                     <a href="../logout" class="logout-btn">
-                     <i class="bi bi-box-arrow-right"></i>
-                     <span>Logout</span>
-                     </a>
+                     <a href="../logout?redirect=<?= urlencode($redirect) ?>" class="logout-btn">Logout</a>
                   </div>
                </div>
                <?php else : ?>

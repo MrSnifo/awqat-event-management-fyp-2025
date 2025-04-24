@@ -9,9 +9,10 @@ $auth = new Auth();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
+$redirect = base64_encode($_SERVER['REQUEST_URI']);
 
 if (!$isLoggedIn) {
-    header("Location: ./login");
+    header("Location: ./login?redirect=$redirect");
     exit();
 } else {
     header("Location: ./profile/" . $_SESSION["user_id"]);

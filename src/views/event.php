@@ -9,6 +9,8 @@ $auth = new Auth();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
+$redirect = base64_encode($_SERVER['REQUEST_URI']);
+
 
 $data = $eventController->getEvent($eventId);
 
@@ -85,10 +87,7 @@ if ($event) {
                      <a href="../profile" class="username-link">
                      <span class="username"><?php echo htmlspecialchars($username); ?></span>
                      </a>
-                     <a href="../logout" class="logout-btn">
-                     <i class="bi bi-box-arrow-right"></i>
-                     <span>Logout</span>
-                     </a>
+                     <a href="../logout?redirect=<?= urlencode($redirect) ?>" class="logout-btn">Logout</a>
                   </div>
                </div>
                <?php else : ?>

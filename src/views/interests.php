@@ -7,10 +7,12 @@ require_once "../controllers/Auth.php";
 $auth = new Auth();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
+$redirect = base64_encode($_SERVER['REQUEST_URI']);
 
 // Redirect to login if not authenticated
 if (!$isLoggedIn) {
-    header("Location: login");
+   $redirect = base64_encode($_SERVER['REQUEST_URI']);
+   header("Location: ./login?redirect=$redirect");
     exit();
 }
 
@@ -58,10 +60,7 @@ if (!$isLoggedIn) {
                      <a href="profile" class="username-link">
                      <span class="username"><?php echo htmlspecialchars($username); ?></span>
                      </a>
-                     <a href="logout" class="logout-btn">
-                     <i class="bi bi-box-arrow-right"></i>
-                     <span>Logout</span>
-                     </a>
+                     <a href="./logout" class="logout-btn">Logout</a>
                   </div>
                </div>
                <?php else : ?>

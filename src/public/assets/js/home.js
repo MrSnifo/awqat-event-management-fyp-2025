@@ -80,7 +80,10 @@ initInterestButton() {
                         interestLabel.textContent = added ? "Interested" : "Show Interest";
                         interestCount.textContent = data.interestCount.toLocaleString();
                     } else if (data.message === "Unauthorized") {
-                        window.location.href = "./login";
+                        const currentUrl = window.location.pathname + window.location.search;
+                            const redirect = btoa(currentUrl);
+                            window.location.href = `./login?redirect=${redirect}`;
+                            return;
                     }
                 } catch (error) {
                     interestIcon.className = isInterested ? "interest-icon bi-star-fill" : "interest-icon bi-star";

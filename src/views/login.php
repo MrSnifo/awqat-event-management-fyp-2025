@@ -29,7 +29,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $result["username"],
                     $result["role"]
                 );
-                header("Location: ./");
+
+                $redirect = isset($_GET['redirect']) ? base64_decode($_GET['redirect']) : './';
+                if($auth->isSafeRedirect($redirect)){
+                  header("Location: $redirect");
+                } else{
+                  header("Location: ./");
+                }
+                 
                 exit();
             } else {
                 $error = $result["message"];
