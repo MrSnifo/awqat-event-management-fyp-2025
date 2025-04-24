@@ -101,10 +101,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                   </button>
                </div>
                <div class="login-options">
+                  <!--  Remove it ki bch t5dm el remember me-->
+               <div class="remember-container"></div>
+                  <!--
+                  M9a3da lzmha database & token cookies storage, pain...
                   <div class="remember-container">
                      <input type="checkbox" id="remember" name="remember">
                      <labe²l for="remember">Remember me</label>
                   </div>
+                  -->
                   <a href="forgot-password" class="forgot-password">Forgot password?</a>
                </div>
                <button type="submit" class="login-btn">

@@ -116,7 +116,7 @@ if ($user["success"]) {
                      <a class="nav-link" id="homeRefresh" href="../">
                      <i class="bi bi-house-door me-2"></i>Home
                      </a>
-                     <a class="nav-link <?php if (!empty($user['success']) && $userId == $user['data']['id']) echo 'active'; ?>" href="../profile">
+                     <a class="nav-link <?php if ($isLoggedIn && $userId == $_SESSION["user_id"]) echo 'active'; ?>" href="../profile">
                      <i class="bi bi-person me-2"></i>Profile
                      </a>
                      <a class="nav-link" href="../interests">
