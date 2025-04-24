@@ -61,7 +61,7 @@ CREATE TABLE user_interactions (
     event_id INT NOT NULL,
     interaction_type VARCHAR(50) NOT NULL,
     weight INT DEFAULT 1,
-    created_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES events(id),
     INDEX (user_id),
