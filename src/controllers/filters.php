@@ -1,14 +1,17 @@
 <?php
 require_once '../config/Database.php';
+require_once '../config/Python.php';
 require_once '../models/Interest.php';
 require_once '../models/Event.php';
 
 class FilterController {
     private $event;
     private $interest;
+    private $python;
     
     public function __construct() {
         $database = new Database();
+        $this->python = new Python();
         $db = $database->getConnection();
         // Controllers
         $this->event = new Event($db);
@@ -16,16 +19,14 @@ class FilterController {
     }
 
 
-    private function run_ai(int $user_id): array {
-        $python_binary = 'C:\Users\Snifo\AppData\Local\Programs\Python\Python313\python.exe';
-        $python_script = 'C:\wamp64\www\PFA-2024-2025\src\scripts\recommender.py';
-        
-        $command = escapeshellcmd($python_binary . " " . $python_script . " " . escapeshellarg($user_id));
+    private function run_recommender(int $user_id): array {
+        $command = escapeshellcmd($this->python->binary . " " . __DIR__ . "/" . $this->python->recommender_script . " " . escapeshellarg($user_id));
         $output = shell_exec($command);
         
         if ($output !== null) {
             $result = json_decode($output, true);
             if (json_last_error() === JSON_ERROR_NONE) {
+                echo("good");
                 return ['success' => true, 'data' => $result];
             }
         }
@@ -50,7 +51,7 @@ class FilterController {
 
 
     private function sortByRecommended(array $events, array $recommended_event_ids): array {
-        // Get just the ordered IDs from recommendations
+        // Get just the ordered IDs afrom recommendations
         $orderedIds = $recommended_event_ids['data'] ?? [];
         
         // Create a map of event ID => event for quick lookup
@@ -118,7 +119,7 @@ class FilterController {
             case 'recommended':
                 if (isset($user_id)){
                     // A ordred array of event ids.
-                    $recommended_event_ids = $this->run_ai($user_id);
+                    $recommended_event_ids = $this->run_recommender($user_id);
                     if($recommended_event_ids['success']){
                         $events = $this->sortByRecommended($events, $recommended_event_ids);
                         break;
@@ -152,10 +153,9 @@ class FilterController {
 
 
     private function run_search(string $query): array {
-        $python_binary = 'C:\Users\Snifo\AppData\Local\Programs\Python\Python313\python.exe';
-        $python_script = 'C:\wamp64\www\PFA-2024-2025\src\scripts\search.py';
+
         
-        $command = escapeshellcmd($python_binary . " " . $python_script . " " . escapeshellarg($query));
+        $command = escapeshellcmd($this->python->binary . " " . __DIR__ . "/" . $this->python->serach_script . " " . escapeshellarg($query));
         $output = shell_exec($command);
         
         if ($output !== null) {
