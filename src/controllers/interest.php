@@ -15,8 +15,6 @@ class InterestController {
         $this->eventInterest = new EventInterest($db);
         $this->event = new Event($db);
         $this->interactionController = new InteractionController();
-
-         
     }
 
     public function handleToggleInterest(): void {
@@ -108,5 +106,10 @@ class InterestController {
 
     public function hasUserInterest(int $userId, int $eventId): bool {
         return $this->eventInterest->hasInterest($userId, $eventId);
+    }
+
+
+    public function getUserInterests(int $userid){
+        return $this->eventInterest->getUserInterests($userid);
     }
 }

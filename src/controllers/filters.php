@@ -182,7 +182,13 @@ class FilterController {
             }
         }
 
-        return $this->format($events, $user_id);;
+        return $this->format($events, $user_id);
+    }
+
+
+    public function getSpesificEvents(array $events_to_get, int $user_id): array {
+        $events = $this->event->getSpecificEvents($events_to_get);
+        return $this->format($events, $user_id);
     }
 
 
