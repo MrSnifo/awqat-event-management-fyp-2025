@@ -12,6 +12,10 @@ Main Tasks
 [] Home page Search (Index)
 [] Trending events
  
+ sofien     home/event
+ hazem      create-event/myintresets
+ rayen      dashboard/signup
+ baha       login/profile
 
 
 Later
