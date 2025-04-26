@@ -11,11 +11,16 @@ Main Tasks
 [x]  Home page filter
 [x] Home page Search (Index)
 [x] Trending events
- 
- sofien     home/event
- hazem      create-event/myintresets
- rayen      dashboard/signup
- baha       login/profile
+
+//check the rapport for deatils 
+tests interface : test create-event/event-filter/interested featuer
+Security :/XSS/user-permision 
+
+
+ sofien     home/event                      | 
+ hazem      create-event/myintresets        |Sql injection / test (Login/signup)
+ rayen      dashboard/signup                |
+ baha       login/profile                   |
 
 
 Later
