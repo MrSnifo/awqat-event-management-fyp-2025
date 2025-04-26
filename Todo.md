@@ -7,17 +7,17 @@ Test(Sql injection/test create/test (Login/signup)  )
 
 Main Tasks
 [x] redirect login Done
-[]  My Interests Page
-[]  Home page filter
-[] Home page Search (Index)
-[] Trending events
+[x]  My Interests Page
+[x]  Home page filter
+[x] Home page Search (Index)
+[x] Trending events
  
 
 
 Later
 [] Dashboard
-[] User activity storage (For AI)
-[] Home page Ai recommedation
+[x] User activity storage (For AI)
+[x] Home page Ai recommedation
 
 
 
