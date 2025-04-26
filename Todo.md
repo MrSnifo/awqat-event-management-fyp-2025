@@ -18,6 +18,8 @@ Later
 [] Dashboard
 [x] User activity storage (For AI)
 [x] Home page Ai recommedation
+[] Popular tags
+
 
 
 
