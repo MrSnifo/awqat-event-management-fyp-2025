@@ -26,7 +26,6 @@ class FilterController {
         if ($output !== null) {
             $result = json_decode($output, true);
             if (json_last_error() === JSON_ERROR_NONE) {
-                echo("good");
                 return ['success' => true, 'data' => $result];
             }
         }

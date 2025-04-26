@@ -5,3 +5,7 @@ src/storage/uploads/*
 
 !src/storage/uploads/profile_default.jpg
 !src/storage/uploads/event_default.jpg
+!src/storage/uploads/icon.png
+
+
+src/config/python.php

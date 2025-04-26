@@ -43,13 +43,18 @@ const init = () => {
 
     // Event delegation
     document.body.addEventListener('click', e => {
-        if (e.target.closest('.side-event-card')) {
+        const eventCard = e.target.closest('.side-event-card');
+        const popularTag = e.target.closest('.popular-tag');
+        
+        if (eventCard) {
             e.preventDefault();
-            window.location.href = `event/${Math.floor(1000 + Math.random() * 9000)}`;
+            const eventId = eventCard.dataset.eventId;
+            window.location.href = `event/${eventId}`;
         }
-        if (e.target.closest('.popular-tag')) {
+        
+        if (popularTag) {
             e.preventDefault();
-            handlePopularTagClick(e.target.closest('.popular-tag').dataset.tag);
+            handlePopularTagClick(popularTag.dataset.tag);
         }
     });
 };

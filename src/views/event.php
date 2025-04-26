@@ -4,6 +4,7 @@ require_once "../controllers/Auth.php";
 require_once "../controllers/event.php";
 require_once "../controllers/interest.php";
 require_once "../controllers/interaction.php";
+require_once "../controllers/filters.php";
 
 // Create Auth instance
 $auth = new AuthController();
@@ -49,6 +50,10 @@ if ($event) {
         );
     }
     $interestCount = $eventInterestController->getEventInterestCount($eventId);
+
+   $filter = new FilterController();
+   $trendingEvents = array_slice($filter->filter("interests_high", [], null), 0, 3);
+
 }
 ?>
 
@@ -57,6 +62,7 @@ if ($event) {
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" href="../storage/uploads/icon.png" type="image/x-icon" />
       <title>Awqat</title>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -267,41 +273,34 @@ if ($event) {
                   <div class="d-flex justify-content-between align-items-center mb-3">
                      <h5 class="fw-bold m-0"><i class="bi bi-fire me-2"></i>Trending</h5>
                   </div>
-                  <?php
-                     $events = [
-                         [
-                             'title' => 'Food Truck Festival',
-                             'image' => 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                             'date' => 'Mar 28',
-                             'location' => 'Miami, FL'
-                         ],
-                         [
-                             'title' => 'Blockchain Conference',
-                             'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80',
-                             'date' => 'Apr 12-14',
-                             'location' => 'Austin, TX'
-                         ],
-                     ];
-                     
-                     foreach ($events as $event) {
-                         echo '<div class="side-event-card">
-                             <div class="d-flex gap-3">
-                                 <img src="' . htmlspecialchars($event['image']) . '" class="side-event-card-img" alt="Event">
+                  <?php if (empty($trendingEvents)): ?>
+                     <div class="empty-events">
+                           <h3 class="empty-title">No Trending Events</h3>
+                           <p class="empty-message">Check back later for trending events.</p>
+                     </div>
+                  <?php else: ?>
+                     <?php foreach ($trendingEvents as $event): ?>
+                        <div class="side-event-card" data-event-id="<?php echo htmlspecialchars('../../event/' . $event['id']); ?>">
+                              <div class="d-flex gap-3">
+                                 <img src="<?php echo htmlspecialchars('../' . $event['cover_image_url'] ?? ''); ?>" 
+                                       class="side-event-card-img" 
+                                       alt="<?php echo htmlspecialchars($event['title']); ?>"
+                                       onerror="this.src='../storage/uploads/event_default.jpg'">
                                  <div>
-                                     <h6 class="mb-1 fw-semibold">' . htmlspecialchars($event['title']) . '</h6>
-                                     <div class="d-flex align-items-center text-muted small mb-1">
-                                         <i class="bi bi-calendar me-2"></i>
-                                         <span>' . htmlspecialchars($event['date']) . '</span>
-                                     </div>
-                                     <div class="d-flex align-items-center text-muted small">
-                                         <i class="bi bi-geo-alt me-2"></i>
-                                         <span>' . htmlspecialchars($event['location']) . '</span>
-                                     </div>
+                                       <h6 class="mb-1 fw-semibold"><?php echo htmlspecialchars($event['title']); ?></h6>
+                                       <div class="d-flex align-items-center text-muted small mb-1">
+                                          <i class="bi bi-calendar me-2"></i>
+                                          <span><?php echo htmlspecialchars($event['start_date']); ?></span>
+                                       </div>
+                                       <div class="d-flex align-items-center text-muted small">
+                                          <i class="bi bi-geo-alt me-2"></i>
+                                          <span><?php echo htmlspecialchars($event['location']); ?></span>
+                                       </div>
                                  </div>
-                             </div>
-                         </div>';
-                     }
-                     ?>
+                              </div>
+                           </div>
+                     <?php endforeach; ?>
+                  <?php endif; ?>
                </div>
                <!-- Popular Tags Section -->
                <div class="popular-tags-container">
