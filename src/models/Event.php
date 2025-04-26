@@ -140,4 +140,33 @@ class Event {
         $stmt->bindParam(':id', $eventId, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    // Get multiple events by an array of IDs
+    public function getSpecificEvents(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+
+        // Create placeholders for binding
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $query = "SELECT * FROM {$this->table} WHERE id IN ($placeholders)";
+        $stmt = $this->conn->prepare($query);
+
+        // Bind values
+        foreach ($ids as $index => $id) {
+            $stmt->bindValue($index + 1, $id, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Decode tags
+        foreach ($events as &$event) {
+            $event['tags'] = json_decode($event['tags'], true) ?? [];
+        }
+
+        return $events;
+    }
+
 }

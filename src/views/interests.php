@@ -2,6 +2,9 @@
 session_start();
 require_once "../config/database.php";
 require_once "../controllers/Auth.php";
+require_once "../controllers/interest.php";
+require_once "../controllers/filters.php";
+
 
 // Create Auth instance
 $auth = new AuthController();
@@ -16,6 +19,11 @@ if (!$isLoggedIn) {
     exit();
 }
 
+
+$interestController = new InterestController();
+$filter = new FilterController();
+$user_inersets = $interestController->getUserInterests($_SESSION['user_id']);
+$filteredEvents = $filter->getSpesificEvents($user_inersets,$_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +48,7 @@ if (!$isLoggedIn) {
          })();
       </script>
       <link rel="stylesheet" href="assets/css/global.css">
+      <link rel="stylesheet" href="assets/css/home.css">
    </head>
    <body>
       <!-- Improved Navigation Bar -->
@@ -94,7 +103,63 @@ if (!$isLoggedIn) {
             </div>
             <!-- Main Content Area -->
             <div class="col-lg-7 p-3">
-               <!-- You can cook here -->
+            <?php if (empty($filteredEvents)): ?>
+               <div class="empty-events">
+                  <i class="bi bi-calendar2-event empty-icon"></i>
+                  <h3 class="empty-title">No Events Found</h3>
+                  <p class="empty-message">Oops, no events found! Try again later.</p>
+               </div>
+               <?php else: ?>
+               <?php foreach ($filteredEvents as $event): ?>
+               <?php
+                  $tags_html = '';
+                  foreach ($event['tags'] as $tag) {
+                      $tags_html .= '<span class="badge">' . htmlspecialchars($tag) . '</span>';
+                  }
+                  ?>
+               <div class="event-card" data-tags="<?php echo htmlspecialchars(implode(',', $event['tags'])); ?>">
+                  <div class="row g-0">
+                     <div class="col-md-4">
+                        <div class="event-image-container">
+                           <img src="<?php echo htmlspecialchars($event['cover_image_url'] ?? ''); ?>" 
+                              class="event-image img-fluid h-100" 
+                              alt="<?php echo htmlspecialchars($event['title']); ?>" 
+                              onerror="this.src='../storage/uploads/event_default.jpg'">
+                              <div class="event-badge"><?php echo htmlspecialchars($event['status_text']); ?></div>
+                        </div>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="event-content">
+                           <div class="event-meta">
+                              <span><i class="bi bi-calendar"></i> <?php echo htmlspecialchars($event['start_date']); ?></span>
+                              <span><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($event['location']); ?></span>
+                           </div>
+                           <h4 class="event-title"><?php echo htmlspecialchars($event['title']); ?></h4>
+                           <p class="event-description">
+                              <?php echo nl2br(htmlspecialchars($event['description'])) ?>
+                           </p>
+                           <div class="event-tags">
+                              <?php echo $tags_html; ?>
+                           </div>
+                           <div class="event-actions">
+                              <button class="interest-btn <?php echo $event['isInterested'] ? 'active' : '' ?>" 
+                                 data-event-id="<?php echo htmlspecialchars($event['id']) ?>">
+                              <i class="interest-icon bi-star<?php echo $event['isInterested'] ? '-fill' : '' ?>"></i>
+                              <span class="interest-label"><?php echo $event['isInterested'] ? 'Interested' : 'Show Interest' ?></span>
+                              <span class="interest-count count"><?php echo number_format($event['interests']) ?></span>
+                              </button>
+                              </button>
+                              <a href="event/<?php echo htmlspecialchars($event['id']); ?>" class="btn details-btn">
+                              <span>View Details</span>
+                              <i class="bi bi-arrow-right"></i>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <?php endforeach; ?>
+               <?php endif; ?>
             </div>
             <!-- Right Sidebar -->
             <div class="col-lg-3 right-sidebar">
@@ -178,5 +243,6 @@ if (!$isLoggedIn) {
       </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       <script src="assets/js/global.js"></script>
+      <script src="assets/js/home.js"></script>
    </body>
 </html>
