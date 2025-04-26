@@ -5,7 +5,6 @@ require_once "../controllers/Auth.php";
 require_once "../controllers/interest.php";
 require_once "../controllers/filters.php";
 
-
 // Create Auth instance
 $auth = new AuthController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
@@ -25,9 +24,6 @@ $filter = new FilterController();
 $user_inersets = $interestController->getUserInterests($_SESSION['user_id']);
 $filteredEvents = $filter->getSpesificEvents($user_inersets,$_SESSION['user_id']);
 
-
-require_once "../controllers/filters.php";
-$filter = new FilterController();
 $trendingEvents = array_slice($filter->filter("interests_high", [], null), 0, 3);
 ?>
 

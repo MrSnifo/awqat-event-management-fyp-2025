@@ -4,6 +4,7 @@ require_once "../controllers/Auth.php";
 require_once "../controllers/event.php";
 require_once "../controllers/interest.php";
 require_once "../controllers/interaction.php";
+require_once "../controllers/filters.php";
 
 // Create Auth instance
 $auth = new AuthController();
@@ -50,8 +51,6 @@ if ($event) {
     }
     $interestCount = $eventInterestController->getEventInterestCount($eventId);
 
-
-   require_once "../controllers/filters.php";
    $filter = new FilterController();
    $trendingEvents = array_slice($filter->filter("interests_high", [], null), 0, 3);
 

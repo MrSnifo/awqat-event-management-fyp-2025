@@ -2,6 +2,7 @@
 session_start();
 require_once "../controllers/auth.php";
 require_once "../controllers/event.php";
+require_once "../controllers/filters.php";
 
 // Create Auth instance
 $auth = new AuthController();
@@ -107,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-require_once "../controllers/filters.php";
 $filter = new FilterController();
 $trendingEvents = array_slice($filter->filter("interests_high", [], null), 0, 3);
 ?>
