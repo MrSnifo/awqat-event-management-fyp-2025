@@ -68,8 +68,9 @@ $event = $result->fetch_assoc();
         <div class="mb-3">
             <label class="form-label">Status:</label>
             <select name="status" class="form-select" required>
-                <option value="active" <?php if($event['status'] == 'active') echo 'selected'; ?>>Active</option>
-                <option value="inactive" <?php if($event['status'] == 'inactive') echo 'selected'; ?>>Inactive</option>
+                <option value="blocked" <?php if($event['status'] == 'blocked') echo 'selected'; ?>>blocked</option>
+                <option value="unverified" <?php if($event['status'] == 'unverified') echo 'selected'; ?>>unverified</option>
+                <option value="verified" <?php if($event['status'] == 'verified') echo 'verified'; ?>>verified</option>
             </select>
         </div>
 

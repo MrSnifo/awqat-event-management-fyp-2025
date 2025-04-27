@@ -1,0 +1,126 @@
+body {
+    font-family: Arial, sans-serif;
+    overflow: auto;
+    transition: background-color 2s ease-in-out, color 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 60px;
+}
+
+/* Light mode */
+.bg-light {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Dark mode */
+.bg-dark {
+    background-color: #121212;
+    color: white;
+}
+
+.content {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    transition: all 0.5s ease;
+}
+
+/* Table style */
+.table-responsive {
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.table-striped tbody tr:hover {
+    background-color: rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease;
+}
+
+.table thead th {
+    background-color: #ffb742;
+    color: white;
+    font-weight: bold;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    background: white;
+}
+
+.bg-dark .card {
+    background: #1e1e1e;
+}
+
+.card:hover {
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+}
+
+.card-header h2 {
+    color: #ffb742;
+    font-weight: 900;
+    text-align: center;
+}
+
+#theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #FF6600;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    top: 140px; /* Moved downward from 120px to 140px */
+    right: 20px;
+    z-index: 1000;
+}
+
+#theme-toggle:hover {
+    background-color: #FF4500;
+}
+
+/* Search input */
+.search-box {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #ffb742;
+    box-shadow: 0 0 10px rgba(255,183,66,0.5);
+}
