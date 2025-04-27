@@ -1,6 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
+
 require_once __DIR__ . '/../src/controllers/filters.php';
 
 class FilterControllerTest extends TestCase
@@ -10,38 +11,62 @@ class FilterControllerTest extends TestCase
     protected function setUp(): void
     {
         $this->filters = new FilterController();
+    }
+
+    public function testRecentSortReturnsEvents()
+    {
+        $result = $this->filters->filter('recent', [], null);
+        $this->assertIsArray($result);
+        $this->assertNotEmpty($result);
+    }
+
+    public function testInterestsHighSortReturnsOrderedEvents()
+    {
+        $result = $this->filters->filter('interests_high', [], null);
+        $this->assertIsArray($result);
         
+        // Check if interests count is descending
+        $prevInterest = PHP_INT_MAX;
+        foreach ($result as $event) {
+            $this->assertLessThanOrEqual($prevInterest, $event['interests'] ?? 0);
+            $prevInterest = $event['interests'] ?? 0;
+        }
     }
 
-    public function testGuestCannotAccessProtectedPages()
+    public function testInterestsLowSortReturnsOrderedEvents()
     {
-        $this->assertFalse($this->auth->isLoggedIn());
+        $result = $this->filters->filter('interests_low', [], null);
+        $this->assertIsArray($result);
+        
+        // Check if interests count is ascending
+        $prevInterest = 0;
+        foreach ($result as $event) {
+            $this->assertGreaterThanOrEqual($prevInterest, $event['interests'] ?? 0);
+            $prevInterest = $event['interests'] ?? 0;
+        }
     }
 
-    public function testUserLoginCreatesSession()
+    public function testTagFilteringWorks()
     {
-        // Fake a successful login (you could also mock User class)
-        $this->auth->createSession('1', 'testuser', 'user');
-
-        $this->assertTrue($this->auth->isLoggedIn());
-        $this->assertEquals('testuser', $_SESSION['username']);
-        $this->assertEquals('user', $_SESSION['role']);
+        // Get all events first to find existing tags
+        $allEvents = $this->filters->filter('recent', [], null);
+        $sampleTag = $allEvents[0]['tags'][0] ?? 'music';
+        
+        $result = $this->filters->filter('recent', [$sampleTag], null);
+        $this->assertIsArray($result);
+        
+        foreach ($result as $event) {
+            $this->assertContains($sampleTag, $event['tags'] ?? []);
+        }
     }
 
-    public function testUserRoleChecking()
+    public function testFormatAddsRequiredFields()
     {
-        $this->auth->createSession('2', 'adminuser', 'admin');
-
-        $this->assertTrue($this->auth->hasRole('admin'));
-        $this->assertFalse($this->auth->hasRole('user'));
-    }
-
-    public function testLogoutClearsSession()
-    {
-        $this->auth->createSession('3', 'someuser', 'user');
-        $this->assertTrue($this->auth->isLoggedIn());
-
-        $this->auth->logout();
-        $this->assertFalse($this->auth->isLoggedIn());
+        $allEvents = $this->filters->filter('recent', [], null);
+        $sampleEvent = $allEvents[0] ?? null;
+        
+        $this->assertArrayHasKey('status_text', $sampleEvent);
+        $this->assertArrayHasKey('interests', $sampleEvent);
+        $this->assertArrayHasKey('isInterested', $sampleEvent);
     }
 }
