@@ -14,7 +14,6 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $userId = intval($_GET['id']);
     
-    // Vérifier si l'ID est un nombre valide
     if ($userId <= 0) {
         echo "ID invalide.";
         exit;
@@ -39,10 +38,13 @@ if (isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $conn->real_escape_string($_POST['username']);
     $email = $conn->real_escape_string($_POST['email']);
-    $phone = $conn->real_escape_string($_POST['phone']);
-    $genre = $conn->real_escape_string($_POST['genre']);
+    $password_hash = $conn->real_escape_string($_POST['password_hash']);
+    $profile_description = $conn->real_escape_string($_POST['profile_description']);
+    $profile_picture_url = $conn->real_escape_string($_POST['profile_picture_url']);
+    $social_links = $conn->real_escape_string($_POST['social_links']);
+    $role = $conn->real_escape_string($_POST['role']);
+    $status = $conn->real_escape_string($_POST['status']);
     
-    // Validation de l'email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Email invalide.";
         exit;
@@ -50,7 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Mise à jour dans la base de données
     $updateQuery = "UPDATE users 
-                    SET username='$username', email='$email', phone='$phone', genre='$genre' 
+                    SET username='$username', email='$email', password_hash='$password_hash',
+                        profile_description='$profile_description', profile_picture_url='$profile_picture_url',
+                        social_links='$social_links', role='$role', status='$status'
                     WHERE id=$userId";
     
     if ($conn->query($updateQuery)) {
@@ -78,25 +82,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="username" class="form-label">Name:</label>
             <input type="text" name="username" id="username" class="form-control" value="<?php echo htmlspecialchars($user['username']); ?>" required>
         </div>
-        
+
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
             <input type="email" name="email" id="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" required>
         </div>
-        
+
         <div class="mb-3">
-            <label for="phone" class="form-label">Phone:</label>
-            <input type="text" name="phone" id="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+            <label for="password_hash" class="form-label">Password Hash:</label>
+            <input type="text" name="password_hash" id="password_hash" class="form-control" value="<?php echo htmlspecialchars($user['password_hash']); ?>" required>
         </div>
-        
+
         <div class="mb-3">
-            <label for="genre" class="form-label">Gender:</label>
-            <select name="genre" id="genre" class="form-select" required>
-                <option value="Male" <?php if($user['genre'] == 'Male') echo 'selected'; ?>>Male</option>
-                <option value="Female" <?php if($user['genre'] == 'Female') echo 'selected'; ?>>Female</option>
-            </select>
+            <label for="profile_description" class="form-label">Profile Description:</label>
+            <textarea name="profile_description" id="profile_description" class="form-control" required><?php echo htmlspecialchars($user['profile_description']); ?></textarea>
         </div>
-        
+
+        <div class="mb-3">
+            <label for="profile_picture_url" class="form-label">Profile Picture URL:</label>
+            <input type="text" name="profile_picture_url" id="profile_picture_url" class="form-control" value="<?php echo htmlspecialchars($user['profile_picture_url']); ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="social_links" class="form-label">Social Links:</label>
+            <input type="text" name="social_links" id="social_links" class="form-control" value="<?php echo htmlspecialchars($user['social_links']); ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="role" class="form-label">Role:</label>
+            <input type="text" name="role" id="role" class="form-control" value="<?php echo htmlspecialchars($user['role']); ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="form-label">Status:</label>
+            <input type="text" name="status" id="status" class="form-control" value="<?php echo htmlspecialchars($user['status']); ?>" required>
+        </div>
+
         <button type="submit" class="btn btn-success">Save Changes</button>
         <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
     </form>
