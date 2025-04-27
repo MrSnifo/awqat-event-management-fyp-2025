@@ -12,7 +12,7 @@ Main Tasks
 [x] Home page Search (Index)
 [x] Trending events
 
-//check the rapport for deatils 
+//check the rapport for deatils
 tests interface :00 
 Security :00
 
