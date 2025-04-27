@@ -13,14 +13,14 @@ Main Tasks
 [x] Trending events
 
 //check the rapport for deatils 
-tests interface : test create-event/event-filter/interested featuer
-Security :/XSS/user-permision 
+tests interface :00 
+Security :00
 
-
- sofien     home/event                      | 
- hazem      create-event/myintresets        |Sql injection / test (Login/signup)
- rayen      dashboard/signup                |
- baha       login/profile                   |security Test – User permissions 
+            HTML/PHP                        |Test
+ sofien     home/event                      |event-filter/xss
+ hazem      create-event/myintresets        |Sql injection / test (Login)
+ rayen      dashboard/signup                |test (signup)/interested featuer
+ baha       login/profile                   |User permissions |test create-event
 
     
 Later
