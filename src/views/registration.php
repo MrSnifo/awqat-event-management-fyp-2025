@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                </button>
             </div>
             <div class="login-footer">
-               <p>Already have an account? <a href="login.php">Sign in</a></p>
+               <p>Already have an account? <a href="login">Sign in</a></p>
             </div>
          </div>
          <div class="register-decoration">
