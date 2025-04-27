@@ -20,9 +20,9 @@ Security :/XSS/user-permision
  sofien     home/event                      | 
  hazem      create-event/myintresets        |Sql injection / test (Login/signup)
  rayen      dashboard/signup                |
- baha       login/profile                   |
+ baha       login/profile                   |security Test – User permissions 
 
-
+    
 Later
 [] Dashboard
 [x] User activity storage (For AI)
