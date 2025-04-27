@@ -15,15 +15,12 @@ if(!$auth->hasRole("admin")){
 }
 
 
+
 // Database connection
 $host = 'localhost';
 $username = 'root';
 $password = '';
 $dbname = 'awqat';
-
-
-
-
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
@@ -32,34 +29,34 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Delete user
-if (isset($_GET['delete_id'])) {
-    $delete_id = intval($_GET['delete_id']);
-    $sql = "DELETE FROM users WHERE id = ?";
+// Delete event
+if (isset($_GET['delete_event_id'])) {
+    $delete_event_id = intval($_GET['delete_event_id']);
+    $sql = "DELETE FROM events WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $delete_id);
+    $stmt->bind_param("i", $delete_event_id);
     $stmt->execute();
     $stmt->close();
 }
 
-// Search users
+// Search events
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
-$sql = "SELECT * FROM users";
+$sql_events = "SELECT * FROM events";
 if (!empty($search_query)) {
-    $sql .= " WHERE username LIKE ? OR email LIKE ?";
+    $sql_events .= " WHERE title LIKE ? OR location LIKE ?";
 }
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare($sql_events);
 if (!empty($search_query)) {
     $search_param = "%" . $search_query . "%";
     $stmt->bind_param("ss", $search_param, $search_param);
 }
 $stmt->execute();
-$result = $stmt->get_result();
+$result_events = $stmt->get_result();
 
-// Count total users
-$total_users_sql = "SELECT COUNT(*) as total FROM users";
-$total_users_result = $conn->query($total_users_sql);
-$total_users = $total_users_result->fetch_assoc()['total'];
+// Count total events
+$total_events_sql = "SELECT COUNT(*) as total FROM events";
+$total_events_result = $conn->query($total_events_sql);
+$total_events = $total_events_result->fetch_assoc()['total'];
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +64,7 @@ $total_users = $total_users_result->fetch_assoc()['total'];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard</title>
+  <title>Events</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/dashboard/dashboard.css">
@@ -89,7 +86,7 @@ $total_users = $total_users_result->fetch_assoc()['total'];
   <!-- Sidebar -->
   <nav class="sidebar position-fixed">
     <h4 class="text-center text-white mt-3">Dashboard</h4>
-    <a href="#">Users</a>
+    <a href="dashboard">Users</a>
     <a href="eventsTable">Events</a>
     <a href="./logout" class="text-white">Logout</a>
   </nav>
@@ -99,7 +96,7 @@ $total_users = $total_users_result->fetch_assoc()['total'];
     <div class="mb-4">
       <form method="GET" action="">
         <div class="input-group">
-          <input type="text" name="search" class="form-control" placeholder="Search by username or email" value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
+          <input type="text" name="search" class="form-control" placeholder="Search by title or location" value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
           <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
         </div>
       </form>
@@ -109,45 +106,47 @@ $total_users = $total_users_result->fetch_assoc()['total'];
     <div class="row stats-row g-3 mb-4">
       <div class="col-md-4">
         <div class="card bg-primary text-white d-flex align-items-center p-3">
-          <i class="fas fa-users fa-2x me-3"></i>
+          <i class="fas fa-calendar-alt fa-2x me-3"></i>
           <div>
-            <h5>Total Users</h5>
-            <p class="mb-0"><?php echo $total_users; ?> Users</p>
+            <h5>Total Events</h5>
+            <p class="mb-0"><?php echo $total_events; ?> Events</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Users table -->
+    <!-- Events table -->
     <div class="card mb-4">
       <div class="card-header">
-        <h2>User List</h2>
+        <h2>Event List</h2>
       </div>
       <div class="card-body p-0">
         <table class="table table-striped mb-0 text-center">
           <thead class="table-light">
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+              <th>Title</th>
+              <th>Location</th>
               <th>Status</th>
+              <th>Start Date</th>
+              <th>Start Time</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <?php while ($row = $result->fetch_assoc()) { ?>
+            <?php while ($row_event = $result_events->fetch_assoc()) { ?>
               <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo htmlspecialchars($row['username']); ?></td>
-                <td><?php echo htmlspecialchars($row['email']); ?></td>
-                <td><?php echo htmlspecialchars($row['role']); ?></td> <!-- Display role -->
-                <td><?php echo htmlspecialchars($row['status']); ?></td> <!-- Display status -->
+                <td><?php echo $row_event['id']; ?></td>
+                <td><?php echo htmlspecialchars($row_event['title']); ?></td>
+                <td><?php echo htmlspecialchars($row_event['location']); ?></td>
+                <td><?php echo htmlspecialchars($row_event['status']); ?></td>
+                <td><?php echo htmlspecialchars($row_event['start_date']); ?></td>
+                <td><?php echo htmlspecialchars($row_event['start_time']); ?></td>
                 <td>
-                  <a href="edit_user?id=<?php echo $row['id']; ?>" class="btn btn-warning">
+                  <a href="edit_event?id=<?php echo $row_event['id']; ?>" class="btn btn-warning">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a href="?delete_id=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">
+                  <a href="?delete_event_id=<?php echo $row_event['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?');">
                     <i class="fas fa-trash-alt"></i>
                   </a>
                 </td>
@@ -169,3 +168,4 @@ $total_users = $total_users_result->fetch_assoc()['total'];
 $stmt->close();
 $conn->close();
 ?>
+
