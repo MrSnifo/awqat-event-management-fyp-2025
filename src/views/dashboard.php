@@ -108,9 +108,9 @@ $total_users = $total_users_result->fetch_assoc()['total'];
           <thead class="table-light">
             <tr>
               <th>ID</th>
-              <th>Name</th>
+              <th>Username</th>
               <th>Email</th>
-              <th>Phone</th>
+              <th></th>
               <th>Gender</th>
               <th>Actions</th>
             </tr>
