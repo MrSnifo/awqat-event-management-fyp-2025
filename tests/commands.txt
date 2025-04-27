@@ -1,0 +1,6 @@
+
+1)  composer require --dev phpunit/phpunit ^12
+
+2)  composer dump-autoload
+
+3)  php vendor/bin/phpunit tests

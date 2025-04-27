@@ -1,6 +1,4 @@
 <?php
-require_once '../config/Database.php';
-
 class Event {
     private $conn;
     private $table = 'events';

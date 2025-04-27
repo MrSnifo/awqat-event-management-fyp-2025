@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/../controllers/AuthController.php'; // Adjust path if needed
+require_once __DIR__ . '/../src/controllers/auth.php'; // Adjust path if needed
 
 class AuthControllerTest extends TestCase
 {

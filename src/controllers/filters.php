@@ -1,8 +1,8 @@
 <?php
-require_once '../config/Database.php';
-require_once '../config/Python.php';
-require_once '../models/Interest.php';
-require_once '../models/Event.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../config/Python.php';
+require_once __DIR__ . '/../models/Interest.php';
+require_once __DIR__ . '/../models/Event.php';
 
 class FilterController {
     private $event;
