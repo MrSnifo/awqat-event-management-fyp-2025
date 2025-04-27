@@ -107,12 +107,16 @@ $total_users = $total_users_result->fetch_assoc()['total'];
         <table class="table table-striped mb-0 text-center">
           <thead class="table-light">
             <tr>
-              <th>ID</th>
+                
               <th>Username</th>
               <th>Email</th>
-              <th></th>
-              <th>Gender</th>
-              <th>Actions</th>
+              <th>password_hash</th>
+              <th>profile_description</th>
+              <th>profile_picture_ur</th>
+              <th>social_links</th>
+              <th>role</th>
+              <th>status</th>
+                
             </tr>
           </thead>
           <tbody>
