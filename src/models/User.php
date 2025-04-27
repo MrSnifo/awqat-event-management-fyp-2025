@@ -119,7 +119,7 @@ public function create(array $data): int|false {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-
+        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

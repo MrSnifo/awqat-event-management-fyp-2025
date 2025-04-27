@@ -29,6 +29,9 @@ switch ($cleanPath) {
     case '/logout':
         include __DIR__ . '/../views/logout.php';
         break;
+    case '/dashboard':
+        include __DIR__ . '/../views/dashboard/index.php';
+        break;
     case '/api/interest':
         $eventInterestController->handleToggleInterest();
         break;

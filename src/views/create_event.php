@@ -11,6 +11,8 @@ $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
 $redirect = base64_encode($_SERVER['REQUEST_URI']);
 
+
+
 if (!$isLoggedIn) {
    $redirect = base64_encode($_SERVER['REQUEST_URI']);
    header("Location: ./login?redirect=$redirect");
@@ -42,12 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "end_date" => htmlspecialchars(trim($_POST["end_date"] ?? "")),
         "start_time" => htmlspecialchars(trim($_POST["start_time"] ?? "")),
         "end_time" => htmlspecialchars(trim($_POST["end_time"] ?? "")),
-        "description" => trim($_POST["description"] ?? ""),
+        "description" => htmlspecialchars(trim($_POST["description"]) ?? ""),
         "tags" => isset($_POST["tags"]) ? explode(",", $_POST["tags"]) : [],
         "status" => "unverified",
     ];
 
     // Handle file upload if provided
+
+    // Sofiene (Upload file)
     if (isset($_FILES["cover_image"])) {
         if ($_FILES["cover_image"]["error"] === UPLOAD_ERR_OK) {
             $uploadDir = "../storage/uploads/";
@@ -70,8 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $targetPath
                     )
                 ) {
-                    $formData["cover_image_url"] =
-                        "storage/uploads/" . $fileName;
+                    $formData["cover_image_url"] = "storage/uploads/" . $fileName;
                 } else {
                     $errors[] = "Failed to upload image";
                 }

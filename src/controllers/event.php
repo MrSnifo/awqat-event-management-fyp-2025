@@ -120,7 +120,7 @@ class EventController {
             $userData = $this->user->getById($id);
             return ['success' => true, 'data' => $eventData, 'creator'=> $userData];
         }
-        return ['success' => false, 'message' => 'Event not found'];
+        return ['success' => false,  'message' => 'Event not found'];
     }
 
 
