@@ -39,7 +39,7 @@ if ($event) {
                 ? "ended"
                 : "ongoing");
 
-    $creator = $auth->getUserInfo($data["data"]["user_id"])["data"];
+    $creator = $auth->getUserInfo($data["data"]["user_id"])["data"] ?? null;
 
     $eventInterestController = new InterestController();
     $isInterested = false;
@@ -143,12 +143,12 @@ if ($event) {
                         <div class="creator-section">
                            <img src="<?php echo htmlspecialchars($creator['profile_picture_url'] ?? '') ?>" 
                               class="creator-avatar" 
-                              alt="<?php echo htmlspecialchars($creator['username']) ?>"
+                              alt="<?php echo htmlspecialchars($creator['username'] ?? 'Deleted user') ?>"
                               onerror="this.src='../storage/uploads/profile_default.jpg'">
                            <div class="creator-info">
                               <div class="creator-label">Created by</div>
-                              <a href="../profile/<?php echo $creator['id'] ?>" class="creator-name">
-                              <?php echo htmlspecialchars($creator['username']) ?>
+                              <a href="../profile/<?php echo $event['user_id'] ?>" class="creator-name">
+                              <?php echo htmlspecialchars($creator['username'] ?? 'Deleted user') ?>
                               </a>
                            </div>
                         </div>

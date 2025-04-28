@@ -1,7 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-
 require_once __DIR__ . '/../src/controllers/filters.php';
 
 class FilterControllerTest extends TestCase
@@ -25,7 +24,6 @@ class FilterControllerTest extends TestCase
         $result = $this->filters->filter('interests_high', [], null);
         $this->assertIsArray($result);
         
-        // Check if interests count is descending
         $prevInterest = PHP_INT_MAX;
         foreach ($result as $event) {
             $this->assertLessThanOrEqual($prevInterest, $event['interests'] ?? 0);
@@ -38,7 +36,6 @@ class FilterControllerTest extends TestCase
         $result = $this->filters->filter('interests_low', [], null);
         $this->assertIsArray($result);
         
-        // Check if interests count is ascending
         $prevInterest = 0;
         foreach ($result as $event) {
             $this->assertGreaterThanOrEqual($prevInterest, $event['interests'] ?? 0);
@@ -48,7 +45,6 @@ class FilterControllerTest extends TestCase
 
     public function testTagFilteringWorks()
     {
-        // Get all events first to find existing tags
         $allEvents = $this->filters->filter('recent', [], null);
         $sampleTag = $allEvents[0]['tags'][0] ?? 'music';
         

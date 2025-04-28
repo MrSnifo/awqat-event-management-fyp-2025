@@ -15,17 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ];
 
     // Validate inputs
-    if (
-        empty($data["username"]) ||
-        empty($data["email"]) ||
-        empty($data["password"]) ||
-        empty($data["password_confirm"])
-    ) {
+    if (empty($data["username"]) || empty($data["email"]) || empty($data["password"]) || empty($data["password_confirm"])) {
         $error = "Please fill in all fields.";
     } elseif ($data["password"] !== $data["password_confirm"]) {
         $error = "Passwords do not match.";
-    } elseif (!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format.";
     } else {
         // Proceed with registration
         $auth = new AuthController();

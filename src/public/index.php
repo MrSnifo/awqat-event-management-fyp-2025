@@ -8,6 +8,7 @@ $basePath = '/' . implode('/', array_slice(explode('/', str_replace('\\', '/', _
 $cleanPath = str_replace($basePath, '', $path);
 
 switch ($cleanPath) {
+    
     case '/':
         include __DIR__ . '/../views/home.php';
         break;
@@ -28,6 +29,18 @@ switch ($cleanPath) {
         break;
     case '/logout':
         include __DIR__ . '/../views/logout.php';
+        break;
+    case '/dashboard':
+        include __DIR__ . '/../views/dashboard/index.php';
+        break;
+    case '/edit_user':
+        include __DIR__ . '/../views/dashboard/edit_user.php';
+        break;
+    case '/edit_event':
+        include __DIR__ . '/../views/dashboard/edit_event.php';
+        break;
+    case '/eventsTable':
+        include __DIR__ . '/../views/dashboard/event_tables.php';
         break;
     case '/api/interest':
         $eventInterestController->handleToggleInterest();
