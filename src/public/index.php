@@ -31,7 +31,7 @@ switch ($cleanPath) {
         include __DIR__ . '/../views/logout.php';
         break;
     case '/dashboard':
-        include __DIR__ . '/../views/dashboard/index.php';
+        include __DIR__ . '/../views/dashboard/users.php';
         break;
     case '/edit_user':
         include __DIR__ . '/../views/dashboard/edit_user.php';
@@ -39,8 +39,8 @@ switch ($cleanPath) {
     case '/edit_event':
         include __DIR__ . '/../views/dashboard/edit_event.php';
         break;
-    case '/eventsTable':
-        include __DIR__ . '/../views/dashboard/event_tables.php';
+    case '/events':
+        include __DIR__ . '/../views/dashboard/events.php';
         break;
     case '/api/interest':
         $eventInterestController->handleToggleInterest();

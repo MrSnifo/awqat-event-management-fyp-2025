@@ -38,13 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Sanitize input
     $formData = [
         "user_id" => $_SESSION["user_id"],
-        "title" => htmlspecialchars(trim($_POST["title"] ?? "")),
-        "location" => htmlspecialchars(trim($_POST["location"] ?? "")),
-        "start_date" => htmlspecialchars(trim($_POST["start_date"] ?? "")),
-        "end_date" => htmlspecialchars(trim($_POST["end_date"] ?? "")),
-        "start_time" => htmlspecialchars(trim($_POST["start_time"] ?? "")),
-        "end_time" => htmlspecialchars(trim($_POST["end_time"] ?? "")),
-        "description" => htmlspecialchars(trim($_POST["description"]) ?? ""),
+        "title" => trim($_POST["title"] ?? ""),
+        "location" => trim($_POST["location"] ?? ""),
+        "start_date" => trim($_POST["start_date"] ?? ""),
+        "end_date" => trim($_POST["end_date"] ?? ""),
+        "start_time" => trim($_POST["start_time"] ?? ""),
+        "end_time" => trim($_POST["end_time"] ?? ""),
+        "description" => trim($_POST["description"] ?? ""),
         "tags" => isset($_POST["tags"]) ? explode(",", $_POST["tags"]) : [],
         "status" => "unverified",
     ];
