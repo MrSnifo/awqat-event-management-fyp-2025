@@ -8,3 +8,4 @@ src/storage/uploads/*
 !src/storage/uploads/icon.png
 src/config/python.php
 /vendor/
+composer.lock²

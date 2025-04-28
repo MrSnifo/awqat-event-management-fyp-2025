@@ -1,5 +1,4 @@
 <?php
-require_once "../config/database.php";
 require_once "../controllers/auth.php";
 
 // If user is already logged in
@@ -17,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($email) || empty($password)) {
         $error = "Please fill in all fields";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format";
     } else {
         try {
             $result = $auth->login($email, $password);

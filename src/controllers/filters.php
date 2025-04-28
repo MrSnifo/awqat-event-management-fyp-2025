@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../config/Python.php';
-require_once __DIR__ . '/../models/Interest.php';
+require_once __DIR__ . '/../controllers/interest.php';
 require_once __DIR__ . '/../models/Event.php';
 
 class FilterController {

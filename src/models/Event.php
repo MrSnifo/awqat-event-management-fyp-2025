@@ -65,7 +65,6 @@ class Event {
         }
         return $event;
     }
-
     // Get all events for a specific user
     public function getByUserId(int $userId): array {
         $query = "SELECT * FROM {$this->table} WHERE user_id = :user_id ORDER BY start_date, start_time";
@@ -139,7 +138,7 @@ class Event {
         return $stmt->execute();
     }
 
-    // Get multiple events by an array of IDs
+    // Get multiple events by an array of IDs 
     public function getSpecificEvents(array $ids): array {
         if (empty($ids)) {
             return [];

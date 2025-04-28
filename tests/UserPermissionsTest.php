@@ -1,9 +1,10 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Environment\Console;
 
-require_once __DIR__ . '/../src/controllers/auth.php'; // Adjust path if needed
+require_once __DIR__ . '/../src/controllers/auth.php';
 
-class AuthControllerTest extends TestCase
+class UserPermissionsTest extends TestCase
 {
     private $auth;
 
@@ -33,9 +34,10 @@ class AuthControllerTest extends TestCase
 
     public function testUserRoleChecking()
     {
-        $this->auth->createSession('2', 'adminuser', 'admin');
-
-        $this->assertTrue($this->auth->hasRole('admin'));
+        // An admin in our database with an id of 
+        $user = $this->auth->getUserInfo(1);
+        $this->auth->createSession(($user['data']['id']), $user['data']['username'], $user['data']['role']);
+        $this->assertTrue($this->auth->²²²²²²ole('admin'));
         $this->assertFalse($this->auth->hasRole('user'));
     }
 

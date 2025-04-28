@@ -10,7 +10,8 @@ $auth = new AuthController();
 $eventController = new EventController();
 $isLoggedIn = isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true;
 $username = $isLoggedIn ? $_SESSION["username"] : "";
-$redirect = base64_encode($_SERVER['REQUEST_URI']);
+
+$redirect = base64_encode($_SERVER['REQUEST_URI']); // Sofiene
 
 $user = $auth->getUserInfo($userId);
 
@@ -51,6 +52,8 @@ if ($user["success"]) {
     $data = $eventController->getUserEvent($userId);
     $events = $data["data"] ?? [];
 
+
+   // Sofiene
    $filter = new FilterController();
    $trendingEvents = array_slice($filter->filter("interests_high", [], null), 0, 3);
 }
@@ -247,13 +250,6 @@ if ($user["success"]) {
                      <?php endif; ?>
                   </div>
                </div>
-               <script>
-                  function confirmDelete(eventId) {
-                      if (confirm('Are you sure you want to delete this event?')) {
-                          window.location.href = '/delete-event?id=' + eventId;
-                      }
-                  }
-               </script>
                <?php else : ?>
                <p class="event-meta">User not found.</p>
                <?php endif; ?>
