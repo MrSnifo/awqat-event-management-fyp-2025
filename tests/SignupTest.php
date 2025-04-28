@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/controllers/auth.php';
 
-class SignupControllerTest extends TestCase
+class SignupTest extends TestCase
 {
     private $authController;
 

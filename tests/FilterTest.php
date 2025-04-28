@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/controllers/filters.php';
 
-class FilterControllerTest extends TestCase
+class FilterTest extends TestCase
 {
     private $filters;
 
