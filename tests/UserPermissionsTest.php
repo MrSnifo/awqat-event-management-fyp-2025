@@ -37,7 +37,7 @@ class UserPermissionsTest extends TestCase
         // An admin in our database with an id of 
         $user = $this->auth->getUserInfo(1);
         $this->auth->createSession(($user['data']['id']), $user['data']['username'], $user['data']['role']);
-        $this->assertTrue($this->auth->hasRole('admin'));
+        $this->assertTrue($this->auth->²²²²²²ole('admin'));
         $this->assertFalse($this->auth->hasRole('user'));
     }
 
