@@ -4,7 +4,7 @@ use SebastianBergmann\Environment\Console;
 
 require_once __DIR__ . '/../src/controllers/auth.php';
 
-class LoginTest extends TestCase
+class UserPermissionsTest extends TestCase
 {
     private $auth;
 
