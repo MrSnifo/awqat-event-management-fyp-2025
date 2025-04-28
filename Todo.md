@@ -16,11 +16,11 @@ Main Tasks
 tests interface :00 
 Security :00
 
-            HTML/PHP                        |Test
- sofien     home/event                      |event-filter/xss
- hazem      create-event/myintresets        |Sql injection / test (Login)
- rayen      dashboard/signup                |test (signup)/interested featuer
- baha       login/profile                   |User permissions |test create-event
+                    |Test
+ sofien             |event-filter/xss
+ hazem              |Sql injection / test (Login)
+ rayen              |test (signup)
+ baha               |User permissions |test create-event
 
     
 Later
