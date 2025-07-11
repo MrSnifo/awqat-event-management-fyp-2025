@@ -4,7 +4,7 @@ Awqat is a modern web platform designed to simplify how people discover, create,
 
 Built with a robust PHP (MVC) backend and a hybrid Bootstrap 5 frontend combining Bootstrap’s power with custom CSS, Awqat delivers a seamless experience across all devices.
 
-![Image](https://github.com/user-attachments/assets/516927d4-7940-4fe2-b881-7e4835574dac)
+![Image](https://github.com/user-attachments/assets/0114770c-47ee-45f2-ac5a-f3f7a6b13f78)
 
 ### Key Features
 
