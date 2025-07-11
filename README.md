@@ -9,7 +9,7 @@ Awqat is a web platform that helps people find and create events easily. It uses
 * **Find Events** - Discover events that match your interests
 * **Create Events** - Set up your own events quickly
 * **Smart Suggestions** - AI recommends events you'll enjoy
-* **Easy Search** - Filter by tags, location, title
+* **Easy Search** - Filter by tags, location, text
 * **Manage Everything** - Simple dashboard to handle your events
 
 ## Built with
