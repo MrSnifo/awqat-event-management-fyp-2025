@@ -59,8 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 mkdir($uploadDir, 0755, true);
             }
 
-            $fileName =
-                uniqid() . "_" . basename($_FILES["cover_image"]["name"]);
+            $fileName = uniqid() . "_" . basename($_FILES["cover_image"]["name"]);
             $targetPath = $uploadDir . $fileName;
 
             // Validate image
@@ -68,11 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $fileType = mime_content_type($_FILES["cover_image"]["tmp_name"]);
 
             if (in_array($fileType, $allowedTypes)) {
-                if (
-                    move_uploaded_file(
-                        $_FILES["cover_image"]["tmp_name"],
-                        $targetPath
-                    )
+                if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $targetPath)
                 ) {
                     $formData["cover_image_url"] = "storage/uploads/" . $fileName;
                 } else {
