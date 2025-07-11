@@ -17,3 +17,6 @@ Awqat is a web platform that helps people find and create events easily. It uses
 * **Website** - Bootstrap 5 and custom styling
 * **Backend** - PHP and MySQL database
 * **AI Recommendations** - Python-based smart suggestions
+
+---
+**Final Year Project 2025**
